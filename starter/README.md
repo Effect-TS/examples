@@ -7,4 +7,4 @@ This project is a quick-start that uses the standard typescript compiler togethe
 
 ## Install & Run
 
-Run `npm install` and `npm run start` to start the `src/main.ts` program, to run the program in debug mode instead do `npm run debug`.
+Run `yarn install` and `yarn run start` to start the `src/main.ts` program, to run the program in debug mode instead do `yarn run debug`.
