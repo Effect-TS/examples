@@ -18,6 +18,6 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "effect": "2.0.0-next.4"
+    "effect": "2.0.0-next.5"
   }
 }

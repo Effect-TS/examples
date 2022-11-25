@@ -1,0 +1,11 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Effect-TS/examples.git",
+  "author": "Michael Arnaldi <arnaldimichael@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz"
+  }
+}

@@ -23,6 +23,5 @@ pipe(
   program,
   Effect.provideLayer(NameLive),
   Effect.tapErrorCause(Effect.logErrorCause),
-  Effect.provideLayer(Logger.console()),
   Effect.unsafeFork
 );

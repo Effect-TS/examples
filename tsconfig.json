@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "CommonJS",
+    "strict": true,
+    "downlevelIteration": true,
+    "plugins": [{ "name": "@effect/language-service" }],
+    "transformers": [{ "name": "@effect/language-service/transformer" }],
+    "tsPlusEnabled": false
+  },
+  "include": ["src/**/*.ts"]
+}
