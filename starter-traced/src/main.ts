@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, Logger, pipe } from "effect";
+import { Context, Effect, Layer, pipe } from "effect";
 
 export interface Name {
   getName: Effect.Effect<never, never, string>;
