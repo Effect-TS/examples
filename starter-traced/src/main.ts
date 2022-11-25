@@ -22,10 +22,7 @@ export const NameLive: Layer.Layer<never, never, Name> = Layer.fromEffect(Name)(
 pipe(
   program,
   Effect.provideLayer(NameLive),
+  Effect.tapErrorCause(Effect.logErrorCause),
   Effect.provideLayer(Logger.console()),
-  Effect.unsafeRunPromiseExit
-).then((exit) => {
-  if (Exit.isFailure(exit)) {
-    console.error(Cause.pretty()(exit.cause));
-  }
-});
+  Effect.unsafeFork
+);
