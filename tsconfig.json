@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "module": "CommonJS",
+        "strict": true,
+        "downlevelIteration": true
+    },
+    "include": ["src/**/*.ts"]
+}
