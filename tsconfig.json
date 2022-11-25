@@ -1,9 +1,10 @@
 {
-    "compilerOptions": {
-        "noEmit": true,
-        "module": "CommonJS",
-        "strict": true,
-        "downlevelIteration": true
-    },
-    "include": ["src/**/*.ts"]
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "CommonJS",
+    "strict": true,
+    "downlevelIteration": true,
+    "plugins": [{ "name": "@effect/language-service" }]
+  },
+  "include": ["src/**/*.ts"]
 }
