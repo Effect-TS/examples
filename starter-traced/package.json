@@ -18,6 +18,6 @@
     "typescript": "https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz"
   },
   "dependencies": {
-    "effect": "2.0.0-next.5"
+    "effect": "2.0.0-next.6"
   }
 }
