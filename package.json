@@ -7,7 +7,7 @@
     "start": "ts-node src/main.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Michael Arnaldi",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.9",
