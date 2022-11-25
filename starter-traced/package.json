@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/main.ts",
-    "debug": "ts-node src/main.debug.ts"
+    "start": "ts-node src/main.ts"
   },
   "keywords": [],
   "author": "Michael Arnaldi",
