@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/main.ts"
+    "start": "ts-node src/main.ts",
+    "debug": "ts-node src/main.debug.ts"
   },
   "keywords": [],
   "author": "Michael Arnaldi",
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@effect/language-service": "^0.0.2",
     "@types/node": "^18.11.9",
+    "prettier": "^2.8.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
   },
