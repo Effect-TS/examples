@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/main.ts"
+    "start": "ts-node src/main.ts",
+    "debug": "ts-node src/main.debug.ts"
   },
   "keywords": [],
   "author": "Michael Arnaldi",
@@ -18,6 +19,6 @@
     "typescript": "https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz"
   },
   "dependencies": {
-    "effect": "2.0.0-next.6"
+    "effect": "2.0.0-next.10"
   }
 }

@@ -10,3 +10,5 @@ This project is a quick-start that uses the standard TS+ compiler together with 
 Run `yarn install` and `yarn run start` to start the `src/main.ts` program.
 
 Note: there is no need for a debug mode as the normal run is already traced. If a debug mode is configured, like in the `starter` project it will take over tracing as it is more precised compared to the plugin based one at the price of being expensive performance wise.
+
+In this case the `main.debug.ts` script is used to enable execution logging, a feature that enables debug log of every operation encountered by the runtime.
