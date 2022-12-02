@@ -1,8 +1,5 @@
 import { Effect, Layer, Scope, pipe, Exit, Context } from "effect";
-import type {
-  LoaderFunction,
-  DataFunctionArgs as RemixDataFunctionArgs,
-} from "@remix-run/node";
+import type { LoaderFunction, DataFunctionArgs as RemixDataFunctionArgs } from "@remix-run/node";
 import { appLayer } from "~/layer/main.server";
 
 const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
@@ -21,35 +18,22 @@ const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
 
 const runtime = Effect.unsafeRunPromise(appRuntime(appLayer));
 
-process.on("beforeExit", () =>
-  Effect.unsafeRunPromise(
-    pipe(
-      Effect.promise(() => runtime),
-      Effect.flatMap((_) => _.clean)
-    )
-  )
-);
+process.on("beforeExit", () => Effect.unsafeRunPromise(pipe(
+  Effect.promise(() => runtime),
+  Effect.flatMap((_) => _.clean)
+)))
 
-export const LoaderArgs = Context.Tag<RemixDataFunctionArgs>();
+export const LoaderArgs = Context.Tag<RemixDataFunctionArgs>()
 
-export const makeLoader =
-  (data: RemixDataFunctionArgs) =>
-  <E, A>(
-    self: Effect.Effect<
-      typeof appLayer extends Layer.Layer<any, any, infer R>
-        ? R | RemixDataFunctionArgs
-        : RemixDataFunctionArgs,
-      E,
-      A
-    >
-  ): ReturnType<LoaderFunction> => {
-    return runtime.then((_) =>
-      _.runtime.unsafeRunPromise(
-        pipe(self, Effect.provideService(LoaderArgs)(data))
-      )
-    );
-  };
+export const makeLoader = <E, A>(
+  self: Effect.Effect<
+    typeof appLayer extends Layer.Layer<any, any, infer R> ? R | RemixDataFunctionArgs : RemixDataFunctionArgs,
+    E,
+    A
+  >
+): LoaderFunction => {
+  return (data) =>
+    runtime.then((_) => _.runtime.unsafeRunPromise(pipe(self, Effect.provideService(LoaderArgs)(data))));
+};
 
-export const requestURL = Effect.serviceWith(LoaderArgs)(
-  (_) => new URL(_.request.url)
-);
+export const requestURL = Effect.serviceWith(LoaderArgs)((_) => new URL(_.request.url))
