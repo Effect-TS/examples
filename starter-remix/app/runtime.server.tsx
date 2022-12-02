@@ -1,6 +1,6 @@
 import { Effect, Layer, Scope, pipe, Exit } from "effect";
 import type { LoaderFunction } from "@remix-run/node";
-import { appLayer } from "./layer/main.server";
+import { appLayer } from "~/layer/main.server";
 
 const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
   Effect.gen(function* ($) {
