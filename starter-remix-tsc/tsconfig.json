@@ -1,0 +1,27 @@
+{
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "ES2019",
+    "strict": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+    "noEmit": true,
+    "transformers": [
+      {
+        "name": "@effect/language-service/transformer",
+        "trace": { "include": ["app/**/*.tsx"] }
+      }
+    ],
+    "tsPlusEnabled": false
+  }
+}

@@ -21,7 +21,7 @@ const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
   });
 
 const cleanupSymbol = Symbol.for(
-  "@effect/examples/starter-remix/runtime/cleanup"
+  "@effect/examples/starter-remix-tsc/runtime/cleanup"
 );
 
 const existing = process
