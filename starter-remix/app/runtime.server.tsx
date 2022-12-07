@@ -1,4 +1,4 @@
-import { Effect, Layer, Scope, pipe, Exit, Context } from "effect";
+import { Effect, Layer, Scope, pipe, Exit, Context } from "~/effect.server";
 import type { LoaderFunction, DataFunctionArgs as RemixDataFunctionArgs } from "@remix-run/node";
 import { appLayer } from "~/layer/main.server";
 

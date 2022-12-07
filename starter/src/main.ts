@@ -1,4 +1,5 @@
-import { Context, Effect, Layer, pipe } from "effect";
+import { Effect, Layer } from "effect/io";
+import { Context, pipe } from "effect/data";
 
 export interface Name {
   getName: Effect.Effect<never, never, string>;

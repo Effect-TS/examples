@@ -1,6 +1,6 @@
-import { runtimeDebug } from "effect/Debug";
+import { runtimeDebug } from "effect/debug";
 
 runtimeDebug.traceExecutionLogEnabled = true;
-runtimeDebug.logLevelOverride = "Debug";
+runtimeDebug.defaultLogLevel = "Debug";
 
 import("./main");
