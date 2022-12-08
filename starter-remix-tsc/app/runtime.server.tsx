@@ -1,7 +1,6 @@
 import { Effect, Layer, Scope, Exit } from "effect/io";
 import { pipe, Context } from "effect/data";
 import type {
-  LoaderFunction,
   DataFunctionArgs as RemixDataFunctionArgs,
   DataFunctionArgs,
 } from "@remix-run/node";
@@ -62,7 +61,7 @@ export const makeLoader =
       E,
       A
     >
-  ): ReturnType<LoaderFunction> => {
+  ): Promise<A> => {
     return runtime.then((_) =>
       _.runtime.unsafeRunPromise(
         pipe(self, Effect.provideService(LoaderArgs)(data))

@@ -14,7 +14,7 @@ export const loader = (data: LoaderArgs) => makeLoader(data)(
 );
 
 export default function Index() {
-  const { message } = useLoaderData();
+  const { message } = useLoaderData<typeof loader>();
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
