@@ -1,0 +1,439 @@
+diff --git a/dist/compiler/assets.js b/dist/compiler/assets.js
+index c278cacdb2e1b312d2fa9b42caa6e38d0b17c40d..a2ba1aded12b16c21d8b5a6acfb8695ee4f2bd59 100644
+--- a/dist/compiler/assets.js
++++ b/dist/compiler/assets.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/build.js b/dist/compiler/build.js
+index 1066571d68f1db9498d4e3bb33d0d2d4908ca352..2c326ffcb89bf829cae57fb9b72af8b743f1362c 100644
+--- a/dist/compiler/build.js
++++ b/dist/compiler/build.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/compileBrowser.js b/dist/compiler/compileBrowser.js
+index 8b3e1c2b66c028979f24dade94c4cd762d9ed77a..264034ebd954ae80f1fad215425d8036640eef04 100644
+--- a/dist/compiler/compileBrowser.js
++++ b/dist/compiler/compileBrowser.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+@@ -26,6 +26,7 @@ var emptyModulesPlugin = require('./plugins/emptyModulesPlugin.js');
+ var mdx = require('./plugins/mdx.js');
+ var urlImportsPlugin = require('./plugins/urlImportsPlugin.js');
+ var fs = require('./utils/fs.js');
++var tsPlugin = require('./plugins/tsPlugin');
+ 
+ function _interopNamespace(e) {
+   if (e && e.__esModule) return e;
+@@ -76,7 +77,7 @@ const createEsbuildConfig = (config, options) => {
+     // that we don't want to run in the browser (i.e. action & loader).
+     entryPoints[id] = config.routes[id].file + "?browser";
+   }
+-  let plugins = [deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
++  let plugins = [tsPlugin.tsPlugin(), deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
+   return {
+     entryPoints,
+     outdir: config.assetsBuildDirectory,
+diff --git a/dist/compiler/compilerServer.js b/dist/compiler/compilerServer.js
+index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..d3b40cabf96bbe08a67a85474374d89cd3becb6d 100644
+--- a/dist/compiler/compilerServer.js
++++ b/dist/compiler/compilerServer.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+@@ -26,6 +26,7 @@ var serverBareModulesPlugin = require('./plugins/serverBareModulesPlugin.js');
+ var serverEntryModulePlugin = require('./plugins/serverEntryModulePlugin.js');
+ var serverRouteModulesPlugin = require('./plugins/serverRouteModulesPlugin.js');
+ var urlImportsPlugin = require('./plugins/urlImportsPlugin.js');
++var tsPlugin = require('./plugins/tsPlugin');
+ 
+ function _interopNamespace(e) {
+   if (e && e.__esModule) return e;
+@@ -67,6 +68,7 @@ const createEsbuildConfig = (config, assetsManifestChannel, options) => {
+   if (config.serverPlatform !== "node") {
+     plugins.unshift(nodeModulesPolyfill.NodeModulesPolyfillPlugin());
+   }
++  plugins.unshift(tsPlugin.tsPlugin());
+   return {
+     absWorkingDir: config.rootDirectory,
+     stdin,
+diff --git a/dist/compiler/dependencies.js b/dist/compiler/dependencies.js
+index 785ec5b8e0596b88a844c1e5ca5592944e5eff12..6ab0a9d3aebd08475be9cd65363df0d0da146a98 100644
+--- a/dist/compiler/dependencies.js
++++ b/dist/compiler/dependencies.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/loaders.js b/dist/compiler/loaders.js
+index 273563f29a525ea7a979a646d01093ed406636d3..1bf795a6641b40ff0a01a00dd7100962dbe38414 100644
+--- a/dist/compiler/loaders.js
++++ b/dist/compiler/loaders.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/onCompileFailure.js b/dist/compiler/onCompileFailure.js
+index e6c3ac5d6c9aa63f1f0369222bf4811236d28e09..5dc215bf1a79af9657355af3d2db1ade58ac05c6 100644
+--- a/dist/compiler/onCompileFailure.js
++++ b/dist/compiler/onCompileFailure.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/options.js b/dist/compiler/options.js
+index 62c3b0edb1488095c868b6f4eaf09797acb3386c..befeff9d5295c2c242ad8228f2c0e8c477ee475c 100644
+--- a/dist/compiler/options.js
++++ b/dist/compiler/options.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/browserRouteModulesPlugin.js b/dist/compiler/plugins/browserRouteModulesPlugin.js
+index e0553248479576c6e11a5320d4a26cc8d7f0719e..260345405f5d364d46ddfc9ca7583fd1da6fa1ca 100644
+--- a/dist/compiler/plugins/browserRouteModulesPlugin.js
++++ b/dist/compiler/plugins/browserRouteModulesPlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/cssFilePlugin.js b/dist/compiler/plugins/cssFilePlugin.js
+index 77042a4096c3f57574ef1ea56a5779b2391c9dda..abdea8a8903b6c25a210d70b3497a1dd5f6a377c 100644
+--- a/dist/compiler/plugins/cssFilePlugin.js
++++ b/dist/compiler/plugins/cssFilePlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/deprecatedRemixPackagePlugin.js b/dist/compiler/plugins/deprecatedRemixPackagePlugin.js
+index 99fdb652ec5f32537aafe6189ab583cff0bdde6e..5863ffa03e402d317899ec165a73480814783bf4 100644
+--- a/dist/compiler/plugins/deprecatedRemixPackagePlugin.js
++++ b/dist/compiler/plugins/deprecatedRemixPackagePlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/emptyModulesPlugin.js b/dist/compiler/plugins/emptyModulesPlugin.js
+index 92caac1e3d1e70e6b877f9de783e854550a05251..a550260bf66e776692cf4fd161173890bbc74981 100644
+--- a/dist/compiler/plugins/emptyModulesPlugin.js
++++ b/dist/compiler/plugins/emptyModulesPlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/mdx.js b/dist/compiler/plugins/mdx.js
+index 7a6fda2ea79b76b60135d9345340adf160ddc79a..404d50ccde81147821940d6fc9f5f1c933eb446b 100644
+--- a/dist/compiler/plugins/mdx.js
++++ b/dist/compiler/plugins/mdx.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/serverAssetsManifestPlugin.js b/dist/compiler/plugins/serverAssetsManifestPlugin.js
+index 5d861278e14237570e9ab2d6d2d38ae423c4b172..e5b79d7fff40c40327b7129f0c697b67bf75dd89 100644
+--- a/dist/compiler/plugins/serverAssetsManifestPlugin.js
++++ b/dist/compiler/plugins/serverAssetsManifestPlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/serverBareModulesPlugin.js b/dist/compiler/plugins/serverBareModulesPlugin.js
+index 5b9e912c61fc4ee31f44eec768384c95720fc472..b9029b17bd3bef3c8e5ffa30760a70a37d873567 100644
+--- a/dist/compiler/plugins/serverBareModulesPlugin.js
++++ b/dist/compiler/plugins/serverBareModulesPlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/serverEntryModulePlugin.js b/dist/compiler/plugins/serverEntryModulePlugin.js
+index 1f0776d4ea287c62feb4c198f3a6fb0a022aef2e..d5a3b68ebc65c9d44206508f1bd6bc290082970a 100644
+--- a/dist/compiler/plugins/serverEntryModulePlugin.js
++++ b/dist/compiler/plugins/serverEntryModulePlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/serverRouteModulesPlugin.js b/dist/compiler/plugins/serverRouteModulesPlugin.js
+index ab8a203fd9fe8d807d50209005e292b355aa2d4f..109450b80de2af7b52952a6168c3c3b6f070487c 100644
+--- a/dist/compiler/plugins/serverRouteModulesPlugin.js
++++ b/dist/compiler/plugins/serverRouteModulesPlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/plugins/tsPlugin.js b/dist/compiler/plugins/tsPlugin.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..c06e4c1a0259a63b506a57bf5236f23d93ee0f7e
+--- /dev/null
++++ b/dist/compiler/plugins/tsPlugin.js
+@@ -0,0 +1,91 @@
++const crypto = require("crypto");
++const nodePath = require("path");
++const ts = require("typescript");
++
++let tsPlugin = () => {
++  const registry = ts.createDocumentRegistry();
++
++  const files = new Set();
++
++  const configPath = ts.findConfigFile(
++    "./",
++    ts.sys.fileExists,
++    "tsconfig.json"
++  );
++
++  if (!configPath) {
++    throw new Error('Could not find a valid "tsconfig.json".');
++  }
++
++  const { config } = ts.parseConfigFileTextToJson(
++    configPath,
++    ts.sys.readFile(configPath)
++  );
++
++  Object.assign(config.compilerOptions, {
++    sourceMap: false,
++    inlineSourceMap: true,
++    inlineSources: true,
++    noEmit: false,
++    declaration: false,
++    declarationMap: false,
++    module: "ESNext",
++    target: "ES2022",
++  });
++
++  const tsconfig = ts.parseJsonConfigFileContent(
++    config,
++    ts.sys,
++    nodePath.dirname(nodePath.resolve(configPath))
++  );
++
++  if (!tsconfig.options) tsconfig.options = {};
++
++  tsconfig.fileNames.forEach((fileName) => {
++    files.add(fileName);
++  });
++
++  const servicesHost = {
++    realpath: (fileName) => ts.sys.realpath(fileName),
++    getScriptFileNames: () => Array.from(files),
++    getScriptVersion: (fileName) => {
++      const fileBuffer = ts.sys.readFile(fileName);
++      if (fileBuffer) {
++        const hashSum = crypto.createHash("sha256");
++        hashSum.update(fileBuffer, "utf-8");
++        return hashSum.digest("hex");
++      } else {
++        files.delete(fileName);
++      }
++    },
++    getScriptSnapshot: (fileName) => {
++      if (!ts.sys.fileExists(fileName)) {
++        return undefined;
++      }
++      return ts.ScriptSnapshot.fromString(ts.sys.readFile(fileName).toString());
++    },
++    getCurrentDirectory: () => process.cwd(),
++    getCompilationSettings: () => tsconfig.options,
++    getDefaultLibFileName: (options) => ts.getDefaultLibFilePath(options),
++    fileExists: (fileName) => ts.sys.fileExists(fileName),
++    readFile: (fileName) => ts.sys.readFile(fileName),
++  };
++
++  const services = ts.createLanguageService(servicesHost, registry);
++
++  return {
++    name: "ts-plugin",
++    setup(build) {
++      build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args) => {
++        const path = args.path;
++        files.add(path);
++        return {
++          contents: services.getEmitOutput(path).outputFiles[0].text,
++          loader: "js",
++        };
++      });
++    },
++  };
++};
++
++exports.tsPlugin = tsPlugin;
+\ No newline at end of file
+diff --git a/dist/compiler/plugins/urlImportsPlugin.js b/dist/compiler/plugins/urlImportsPlugin.js
+index 85a54fcd271b82144e7532e3cfc71d4a29b2169e..a17c887be4538d421a1bc570068016b0158613b9 100644
+--- a/dist/compiler/plugins/urlImportsPlugin.js
++++ b/dist/compiler/plugins/urlImportsPlugin.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/remixCompiler.js b/dist/compiler/remixCompiler.js
+index af3be19a65bab5c1285f1e9fc16a427ac4b2ad63..1fd6ab9c5153aa2437b38c3ef4ad137caa2f86ab 100644
+--- a/dist/compiler/remixCompiler.js
++++ b/dist/compiler/remixCompiler.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/routeExports.js b/dist/compiler/routeExports.js
+index fecab80ecc6165bab3865920421d9f47449f4d57..0fd22bf6ae9e3f0ff04faa4efd629535bb99c240 100644
+--- a/dist/compiler/routeExports.js
++++ b/dist/compiler/routeExports.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/utils/crypto.js b/dist/compiler/utils/crypto.js
+index d18091139660d9fd9f3b479b3f4d3525f589c38c..e19115d4c12b805b95044dee6271180f3f230bf9 100644
+--- a/dist/compiler/utils/crypto.js
++++ b/dist/compiler/utils/crypto.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/utils/fs.js b/dist/compiler/utils/fs.js
+index 545de1afb4c850a1a4dcdca0c71d7d4bdedfcd52..f86c8f4fd1a470d9364d7e6415f09162530ec835 100644
+--- a/dist/compiler/utils/fs.js
++++ b/dist/compiler/utils/fs.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/utils/tsconfig/index.js b/dist/compiler/utils/tsconfig/index.js
+index d5736a6caaf6e7dc27ca6cb5d6b24c5131287a09..f8d89f260705343fc4193690294164ea4afd244c 100644
+--- a/dist/compiler/utils/tsconfig/index.js
++++ b/dist/compiler/utils/tsconfig/index.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/utils/tsconfig/write-config-defaults.js b/dist/compiler/utils/tsconfig/write-config-defaults.js
+index 14a88db2515c8cfb27d3cea0ed05464140120903..41c9b979134253a0a272fd5e83c91d45a3897ce0 100644
+--- a/dist/compiler/utils/tsconfig/write-config-defaults.js
++++ b/dist/compiler/utils/tsconfig/write-config-defaults.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/utils/url.js b/dist/compiler/utils/url.js
+index 11ed761bd60a9b21b10a5088a9a6d471a62af5d4..19bccd799eaf668bab063fd798711fb267cfaf78 100644
+--- a/dist/compiler/utils/url.js
++++ b/dist/compiler/utils/url.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/virtualModules.js b/dist/compiler/virtualModules.js
+index 149e9c3b842b22299283aa878938045451ddabee..936e700b01a3a49ba7346c1cb3d53452a4f54bed 100644
+--- a/dist/compiler/virtualModules.js
++++ b/dist/compiler/virtualModules.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/warnings.js b/dist/compiler/warnings.js
+index 19eb1347adf85d96d0114d7d99066ef29787e03b..e6107df4895786b839a84e977981ce0a9ddeec08 100644
+--- a/dist/compiler/warnings.js
++++ b/dist/compiler/warnings.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *
+diff --git a/dist/compiler/watch.js b/dist/compiler/watch.js
+index 18f8bc883b2e4d6a01bd42d3e41388c87ed2ecc6..cdc1edf3dec55cc7324662c00c7fac48a57aa20c 100644
+--- a/dist/compiler/watch.js
++++ b/dist/compiler/watch.js
+@@ -1,5 +1,5 @@
+ /**
+- * @remix-run/dev v1.8.2
++ * @remix-run/dev v1.8.1
+  *
+  * Copyright (c) Remix Software Inc.
+  *

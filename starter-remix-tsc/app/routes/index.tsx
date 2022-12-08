@@ -1,5 +1,17 @@
+import type { LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-export { loader } from "./index.server";
+import { Effect } from "~/utils.server";
+import { makeLoader, requestURL } from "~/runtime.server";
+
+export const loader = (data: LoaderArgs) => makeLoader(data)(
+  Effect.gen(function* ($) {
+    const { pathname } = yield* $(requestURL);
+    
+    return yield* $(
+      Effect.succeed({ message: `hello world from ${pathname}` })
+    );
+  })
+);
 
 export default function Index() {
   const { message } = useLoaderData();

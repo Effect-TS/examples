@@ -3,6 +3,7 @@ import { pipe, Context } from "effect/data";
 import type {
   LoaderFunction,
   DataFunctionArgs as RemixDataFunctionArgs,
+  DataFunctionArgs,
 } from "@remix-run/node";
 import { appLayer } from "~/layer/main.server";
 
@@ -51,22 +52,23 @@ process.on("beforeExit", cleanup);
 
 export const LoaderArgs = Context.Tag<RemixDataFunctionArgs>();
 
-export const makeLoader = <E, A>(
-  self: Effect.Effect<
-    typeof appLayer extends Layer.Layer<any, any, infer R>
-      ? R | RemixDataFunctionArgs
-      : RemixDataFunctionArgs,
-    E,
-    A
-  >
-): LoaderFunction => {
-  return (data) =>
-    runtime.then((_) =>
+export const makeLoader =
+  (data: DataFunctionArgs) =>
+  <E, A>(
+    self: Effect.Effect<
+      typeof appLayer extends Layer.Layer<any, any, infer R>
+        ? R | RemixDataFunctionArgs
+        : RemixDataFunctionArgs,
+      E,
+      A
+    >
+  ): ReturnType<LoaderFunction> => {
+    return runtime.then((_) =>
       _.runtime.unsafeRunPromise(
         pipe(self, Effect.provideService(LoaderArgs)(data))
       )
     );
-};
+  };
 
 export const requestURL = Effect.serviceWith(LoaderArgs)(
   (_) => new URL(_.request.url)

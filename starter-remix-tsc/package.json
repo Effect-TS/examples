@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@effect/language-service": "^0.0.11",
-    "@remix-run/dev": "^1.8.1",
+    "@remix-run/dev": "^1.8.2",
     "@remix-run/eslint-config": "^1.8.1",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.8",
@@ -38,7 +38,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "@remix-run/dev@1.8.1": "patches/@remix-run__dev@1.8.1.patch"
+      "@remix-run/dev@1.8.2": "patches/@remix-run__dev@1.8.2.patch"
     }
   }
 }
