@@ -34,7 +34,6 @@ let tsPlugin = (isClient: boolean) => {
   });
 
   const baseDir = nodePath.dirname(nodePath.resolve(configPath));
-  const routesDir = nodePath.join(baseDir, "/app/routes");
   const tsconfig = ts.parseJsonConfigFileContent(config, ts.sys, baseDir);
 
   if (!tsconfig.options) tsconfig.options = {};
@@ -87,36 +86,39 @@ let tsPlugin = (isClient: boolean) => {
             if (file.isDeclarationFile) {
               return file;
             }
-            if (
-              file.fileName.startsWith(routesDir) &&
-              !file.fileName.match(/\.server\.ts[x?]$/)
-            ) {
-              const statements: Array<ts.Statement> = [];
-              for (const statement of file.statements) {
-                if (
-                  ts.isVariableStatement(statement) &&
-                  statement.declarationList.declarations.length === 1 &&
-                  ts.isIdentifier(
-                    statement.declarationList.declarations[0].name
-                  ) &&
-                  statement.declarationList.declarations[0].name.text ===
-                    "loader"
-                ) {
-                  continue;
+            const visitor =
+              (add: boolean) =>
+              (node: ts.Node): ts.Node => {
+                if (ts.isBlock(node)) {
+                  return ts.visitEachChild(node, visitor(false), ctx);
                 }
+                if (ts.isCallExpression(node) && add) {
+                  return ts.addSyntheticLeadingComment(
+                    ts.visitEachChild(node, visitor(add), ctx),
+                    ts.SyntaxKind.MultiLineCommentTrivia,
+                    "@__PURE__",
+                    false
+                  );
+                }
+                return ts.visitEachChild(node, visitor(add), ctx);
+              };
+            const statements: Array<ts.Statement> = [];
+            for (const statement of file.statements) {
+              if (ts.isVariableStatement(statement)) {
+                statements.push(ts.visitNode(statement, visitor(true)));
+              } else {
                 statements.push(statement);
               }
-              return ctx.factory.updateSourceFile(
-                file,
-                statements,
-                file.isDeclarationFile,
-                file.referencedFiles,
-                file.typeReferenceDirectives,
-                file.hasNoDefaultLib,
-                file.libReferenceDirectives
-              );
             }
-            return file;
+            return ctx.factory.updateSourceFile(
+              file,
+              statements,
+              file.isDeclarationFile,
+              file.referencedFiles,
+              file.typeReferenceDirectives,
+              file.hasNoDefaultLib,
+              file.libReferenceDirectives
+            );
           };
         };
         const transformers: ts.CustomTransformers["before"] = [];
@@ -133,7 +135,7 @@ let tsPlugin = (isClient: boolean) => {
           },
           void 0,
           void 0,
-          { before: transformers }
+          { after: transformers }
         );
         return {
           contents: text,

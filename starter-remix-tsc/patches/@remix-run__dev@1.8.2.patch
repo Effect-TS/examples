@@ -41,10 +41,10 @@ index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..ef5140f9df16b498a79fac87d0fcc72a
      stdin,
 diff --git a/dist/compiler/plugins/tsPlugin.js b/dist/compiler/plugins/tsPlugin.js
 new file mode 100644
-index 0000000000000000000000000000000000000000..4702ed0cabaebd758c8fc14d8f857e30599e1eb6
+index 0000000000000000000000000000000000000000..790f36b9acc76b66b08b6f5e1e9c28b083df2c85
 --- /dev/null
 +++ b/dist/compiler/plugins/tsPlugin.js
-@@ -0,0 +1,110 @@
+@@ -0,0 +1,114 @@
 +"use strict";
 +exports.__esModule = true;
 +var crypto = require("crypto");
@@ -69,7 +69,6 @@ index 0000000000000000000000000000000000000000..4702ed0cabaebd758c8fc14d8f857e30
 +        target: "ES2022"
 +    });
 +    var baseDir = nodePath.dirname(nodePath.resolve(configPath));
-+    var routesDir = nodePath.join(baseDir, "/app/routes");
 +    var tsconfig = ts.parseJsonConfigFileContent(config, ts.sys, baseDir);
 +    if (!tsconfig.options)
 +        tsconfig.options = {};
@@ -117,23 +116,28 @@ index 0000000000000000000000000000000000000000..4702ed0cabaebd758c8fc14d8f857e30
 +                        if (file.isDeclarationFile) {
 +                            return file;
 +                        }
-+                        if (file.fileName.startsWith(routesDir) &&
-+                            !file.fileName.match(/\.server\.ts[x?]$/)) {
-+                            var statements = [];
-+                            for (var _i = 0, _a = file.statements; _i < _a.length; _i++) {
-+                                var statement = _a[_i];
-+                                if (ts.isVariableStatement(statement) &&
-+                                    statement.declarationList.declarations.length === 1 &&
-+                                    ts.isIdentifier(statement.declarationList.declarations[0].name) &&
-+                                    statement.declarationList.declarations[0].name.text ===
-+                                        "loader") {
-+                                    continue;
++                        var visitor = function (add) {
++                            return function (node) {
++                                if (ts.isBlock(node)) {
++                                    return ts.visitEachChild(node, visitor(false), ctx);
 +                                }
++                                if (ts.isCallExpression(node) && add) {
++                                    return ts.addSyntheticLeadingComment(ts.visitEachChild(node, visitor(add), ctx), ts.SyntaxKind.MultiLineCommentTrivia, "@__PURE__", false);
++                                }
++                                return ts.visitEachChild(node, visitor(add), ctx);
++                            };
++                        };
++                        var statements = [];
++                        for (var _i = 0, _a = file.statements; _i < _a.length; _i++) {
++                            var statement = _a[_i];
++                            if (ts.isVariableStatement(statement)) {
++                                statements.push(ts.visitNode(statement, visitor(true)));
++                            }
++                            else {
 +                                statements.push(statement);
 +                            }
-+                            return ctx.factory.updateSourceFile(file, statements, file.isDeclarationFile, file.referencedFiles, file.typeReferenceDirectives, file.hasNoDefaultLib, file.libReferenceDirectives);
 +                        }
-+                        return file;
++                        return ctx.factory.updateSourceFile(file, statements, file.isDeclarationFile, file.referencedFiles, file.typeReferenceDirectives, file.hasNoDefaultLib, file.libReferenceDirectives);
 +                    };
 +                };
 +                var transformers = [];
@@ -145,7 +149,7 @@ index 0000000000000000000000000000000000000000..4702ed0cabaebd758c8fc14d8f857e30
 +                    if (file.endsWith(".js")) {
 +                        text = content;
 +                    }
-+                }, void 0, void 0, { before: transformers });
++                }, void 0, void 0, { after: transformers });
 +                return {
 +                    contents: text,
 +                    loader: "js"
