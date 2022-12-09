@@ -3,8 +3,8 @@ exports.__esModule = true;
 var crypto = require("crypto");
 var nodePath = require("path");
 var ts = require("typescript");
+var registry = ts.createDocumentRegistry();
 var tsPlugin = function (isClient) {
-    var registry = ts.createDocumentRegistry();
     var files = new Set();
     var configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
     if (!configPath) {

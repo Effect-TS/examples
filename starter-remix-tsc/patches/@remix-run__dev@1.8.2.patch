@@ -41,7 +41,7 @@ index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..ef5140f9df16b498a79fac87d0fcc72a
      stdin,
 diff --git a/dist/compiler/plugins/tsPlugin.js b/dist/compiler/plugins/tsPlugin.js
 new file mode 100644
-index 0000000000000000000000000000000000000000..790f36b9acc76b66b08b6f5e1e9c28b083df2c85
+index 0000000000000000000000000000000000000000..1148368e1071d86b81333e0ff1eff9706e34024f
 --- /dev/null
 +++ b/dist/compiler/plugins/tsPlugin.js
 @@ -0,0 +1,114 @@
@@ -50,8 +50,8 @@ index 0000000000000000000000000000000000000000..790f36b9acc76b66b08b6f5e1e9c28b0
 +var crypto = require("crypto");
 +var nodePath = require("path");
 +var ts = require("typescript");
++var registry = ts.createDocumentRegistry();
 +var tsPlugin = function (isClient) {
-+    var registry = ts.createDocumentRegistry();
 +    var files = new Set();
 +    var configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
 +    if (!configPath) {

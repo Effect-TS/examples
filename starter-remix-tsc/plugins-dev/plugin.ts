@@ -2,9 +2,9 @@ import * as crypto from "crypto";
 import * as nodePath from "path";
 import * as ts from "typescript";
 
-let tsPlugin = (isClient: boolean) => {
-  const registry = ts.createDocumentRegistry();
+const registry = ts.createDocumentRegistry();
 
+let tsPlugin = (isClient: boolean) => {
   const files = new Set<string>();
 
   const configPath = ts.findConfigFile(
