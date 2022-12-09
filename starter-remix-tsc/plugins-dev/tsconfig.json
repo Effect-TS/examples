@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["./plugin.ts"]
+}

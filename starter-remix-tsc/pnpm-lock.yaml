@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 patchedDependencies:
   '@remix-run/dev@1.8.2':
-    hash: ftssamlb3g6gw3ocrlagaer7om
+    hash: rw4mjydv6yfzuodze6kgq4szie
     path: patches/@remix-run__dev@1.8.2.patch
 
 specifiers:
@@ -43,7 +43,7 @@ dependencies:
 
 devDependencies:
   '@effect/language-service': 0.0.11
-  '@remix-run/dev': 1.8.2_ftssamlb3g6gw3ocrlagaer7om_biqbaboplfbrettd7655fr4n2y
+  '@remix-run/dev': 1.8.2_rw4mjydv6yfzuodze6kgq4szie_biqbaboplfbrettd7655fr4n2y
   '@remix-run/eslint-config': 1.8.1_ez7jd7eetwkj4ag7irqypgmcyu
   '@types/react': 18.0.26
   '@types/react-dom': 18.0.9
@@ -1590,7 +1590,7 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /@remix-run/dev/1.8.2_ftssamlb3g6gw3ocrlagaer7om_biqbaboplfbrettd7655fr4n2y:
+  /@remix-run/dev/1.8.2_rw4mjydv6yfzuodze6kgq4szie_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-hhLOsILCuo8qBqmbc4Aw1Rps+d8VkuxcwEO04ZQPbz3zGVILvuJQ07O02deWfbF/oK71e0OysU/4CpP1wcXxJA==}
     engines: {node: '>=14'}
     hasBin: true

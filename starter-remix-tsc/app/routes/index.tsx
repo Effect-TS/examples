@@ -1,8 +1,8 @@
-import type { LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Effect, makeLoader, requestURL } from "~/utils.server";
+import { Effect } from "effect/io"
+import { makeLoader, requestURL } from "~/utils";
 
-export const loader = (data: LoaderArgs) => makeLoader(data)(
+export const loader = makeLoader(
   Effect.gen(function* ($) {
     const { pathname } = yield* $(requestURL);
     
