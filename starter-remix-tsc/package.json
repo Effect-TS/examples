@@ -2,11 +2,8 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "remix build",
-    "dev": "run-p \"dev:*\"",
-    "dev:node": "cross-env NODE_ENV=development nodemon --require dotenv/config ./server.js --watch ./server.js",
-    "dev:remix": "remix watch",
-    "start": "cross-env NODE_ENV=production node ./server.js"
+    "build": "node scripts/build.js",
+    "dev": "node scripts/dev.js"
   },
   "dependencies": {
     "@remix-run/express": "^1.8.1",
