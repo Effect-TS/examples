@@ -1,33 +1,33 @@
 diff --git a/dist/compiler/compileBrowser.js b/dist/compiler/compileBrowser.js
-index 8b3e1c2b66c028979f24dade94c4cd762d9ed77a..2eadd0c67586cfb476eb1213699ba66bc53ae406 100644
+index 8b3e1c2b66c028979f24dade94c4cd762d9ed77a..89f542fa4bc1de7046012a5b33cfc04103d45dd1 100644
 --- a/dist/compiler/compileBrowser.js
 +++ b/dist/compiler/compileBrowser.js
-@@ -25,6 +25,7 @@ var deprecatedRemixPackagePlugin = require('./plugins/deprecatedRemixPackagePlug
- var emptyModulesPlugin = require('./plugins/emptyModulesPlugin.js');
+@@ -26,6 +26,7 @@ var emptyModulesPlugin = require('./plugins/emptyModulesPlugin.js');
  var mdx = require('./plugins/mdx.js');
  var urlImportsPlugin = require('./plugins/urlImportsPlugin.js');
-+var tsPlugin = require('./plugins/tsPlugin');
  var fs = require('./utils/fs.js');
++var effectPlugin = require('@effect/remix-plugin');
  
  function _interopNamespace(e) {
+   if (e && e.__esModule) return e;
 @@ -76,7 +77,7 @@ const createEsbuildConfig = (config, options) => {
      // that we don't want to run in the browser (i.e. action & loader).
      entryPoints[id] = config.routes[id].file + "?browser";
    }
 -  let plugins = [deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
-+  let plugins = [tsPlugin.tsPlugin(true), deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
++  let plugins = [effectPlugin.plugin(true), deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
    return {
      entryPoints,
      outdir: config.assetsBuildDirectory,
 diff --git a/dist/compiler/compilerServer.js b/dist/compiler/compilerServer.js
-index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..ef5140f9df16b498a79fac87d0fcc72a339ebfc1 100644
+index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..393f21a75fc78d838ac138d6c9066a86d0d8fde6 100644
 --- a/dist/compiler/compilerServer.js
 +++ b/dist/compiler/compilerServer.js
 @@ -26,6 +26,7 @@ var serverBareModulesPlugin = require('./plugins/serverBareModulesPlugin.js');
  var serverEntryModulePlugin = require('./plugins/serverEntryModulePlugin.js');
  var serverRouteModulesPlugin = require('./plugins/serverRouteModulesPlugin.js');
  var urlImportsPlugin = require('./plugins/urlImportsPlugin.js');
-+var tsPlugin = require('./plugins/tsPlugin.js');
++var effectPlugin = require('@effect/remix-plugin');
  
  function _interopNamespace(e) {
    if (e && e.__esModule) return e;
@@ -35,127 +35,7 @@ index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..ef5140f9df16b498a79fac87d0fcc72a
    if (config.serverPlatform !== "node") {
      plugins.unshift(nodeModulesPolyfill.NodeModulesPolyfillPlugin());
    }
-+  plugins.unshift(tsPlugin.tsPlugin(false));
++  plugins.unshift(effectPlugin.plugin(false));
    return {
      absWorkingDir: config.rootDirectory,
      stdin,
-diff --git a/dist/compiler/plugins/tsPlugin.js b/dist/compiler/plugins/tsPlugin.js
-new file mode 100644
-index 0000000000000000000000000000000000000000..1148368e1071d86b81333e0ff1eff9706e34024f
---- /dev/null
-+++ b/dist/compiler/plugins/tsPlugin.js
-@@ -0,0 +1,114 @@
-+"use strict";
-+exports.__esModule = true;
-+var crypto = require("crypto");
-+var nodePath = require("path");
-+var ts = require("typescript");
-+var registry = ts.createDocumentRegistry();
-+var tsPlugin = function (isClient) {
-+    var files = new Set();
-+    var configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
-+    if (!configPath) {
-+        throw new Error('Could not find a valid "tsconfig.json".');
-+    }
-+    var config = ts.parseConfigFileTextToJson(configPath, ts.sys.readFile(configPath)).config;
-+    Object.assign(config.compilerOptions, {
-+        sourceMap: false,
-+        inlineSourceMap: true,
-+        inlineSources: true,
-+        noEmit: false,
-+        declaration: false,
-+        declarationMap: false,
-+        module: "ESNext",
-+        target: "ES2022"
-+    });
-+    var baseDir = nodePath.dirname(nodePath.resolve(configPath));
-+    var tsconfig = ts.parseJsonConfigFileContent(config, ts.sys, baseDir);
-+    if (!tsconfig.options)
-+        tsconfig.options = {};
-+    tsconfig.fileNames.forEach(function (fileName) {
-+        files.add(fileName);
-+    });
-+    var servicesHost = {
-+        realpath: function (fileName) { var _a, _b, _c; return (_c = (_b = (_a = ts.sys).realpath) === null || _b === void 0 ? void 0 : _b.call(_a, fileName)) !== null && _c !== void 0 ? _c : fileName; },
-+        getScriptFileNames: function () { return Array.from(files); },
-+        getScriptVersion: function (fileName) {
-+            var fileBuffer = ts.sys.readFile(fileName);
-+            if (fileBuffer) {
-+                var hashSum = crypto.createHash("sha256");
-+                hashSum.update(fileBuffer, "utf-8");
-+                return hashSum.digest("hex");
-+            }
-+            else {
-+                files["delete"](fileName);
-+            }
-+            return "none";
-+        },
-+        getScriptSnapshot: function (fileName) {
-+            if (!ts.sys.fileExists(fileName)) {
-+                return undefined;
-+            }
-+            return ts.ScriptSnapshot.fromString(ts.sys.readFile(fileName).toString());
-+        },
-+        getCurrentDirectory: function () { return process.cwd(); },
-+        getCompilationSettings: function () { return tsconfig.options; },
-+        getDefaultLibFileName: function (options) { return ts.getDefaultLibFilePath(options); },
-+        fileExists: function (fileName) { return ts.sys.fileExists(fileName); },
-+        readFile: function (fileName) { return ts.sys.readFile(fileName); }
-+    };
-+    var services = ts.createLanguageService(servicesHost, registry);
-+    return {
-+        name: "ts-plugin",
-+        setup: function (build) {
-+            build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, function (args) {
-+                var path = args.path;
-+                files.add(path);
-+                var program = services.getProgram();
-+                var source = program.getSourceFile(path);
-+                var transformer = function (ctx) {
-+                    return function (file) {
-+                        if (file.isDeclarationFile) {
-+                            return file;
-+                        }
-+                        var visitor = function (add) {
-+                            return function (node) {
-+                                if (ts.isBlock(node)) {
-+                                    return ts.visitEachChild(node, visitor(false), ctx);
-+                                }
-+                                if (ts.isCallExpression(node) && add) {
-+                                    return ts.addSyntheticLeadingComment(ts.visitEachChild(node, visitor(add), ctx), ts.SyntaxKind.MultiLineCommentTrivia, "@__PURE__", false);
-+                                }
-+                                return ts.visitEachChild(node, visitor(add), ctx);
-+                            };
-+                        };
-+                        var statements = [];
-+                        for (var _i = 0, _a = file.statements; _i < _a.length; _i++) {
-+                            var statement = _a[_i];
-+                            if (ts.isVariableStatement(statement)) {
-+                                statements.push(ts.visitNode(statement, visitor(true)));
-+                            }
-+                            else {
-+                                statements.push(statement);
-+                            }
-+                        }
-+                        return ctx.factory.updateSourceFile(file, statements, file.isDeclarationFile, file.referencedFiles, file.typeReferenceDirectives, file.hasNoDefaultLib, file.libReferenceDirectives);
-+                    };
-+                };
-+                var transformers = [];
-+                if (isClient) {
-+                    transformers.push(transformer);
-+                }
-+                var text;
-+                program.emit(source, function (file, content) {
-+                    if (file.endsWith(".js")) {
-+                        text = content;
-+                    }
-+                }, void 0, void 0, { after: transformers });
-+                return {
-+                    contents: text,
-+                    loader: "js"
-+                };
-+            });
-+        }
-+    };
-+};
-+exports.tsPlugin = tsPlugin;

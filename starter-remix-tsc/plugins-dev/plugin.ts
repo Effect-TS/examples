@@ -3,10 +3,11 @@ import * as nodePath from "path";
 import * as ts from "typescript";
 
 const registry = ts.createDocumentRegistry();
+const files = new Set<string>();
 
-let tsPlugin = (isClient: boolean) => {
-  const files = new Set<string>();
+let services: ts.LanguageService;
 
+const init = () => {
   const configPath = ts.findConfigFile(
     "./",
     ts.sys.fileExists,
@@ -71,8 +72,13 @@ let tsPlugin = (isClient: boolean) => {
     readFile: (fileName) => ts.sys.readFile(fileName),
   };
 
-  const services = ts.createLanguageService(servicesHost, registry);
+  return ts.createLanguageService(servicesHost, registry);
+};
 
+export const plugin = (isClient: boolean) => {
+  if (!services) {
+    services = init();
+  }
   return {
     name: "ts-plugin",
     setup(build: any) {
@@ -145,5 +151,3 @@ let tsPlugin = (isClient: boolean) => {
     },
   };
 };
-
-exports.tsPlugin = tsPlugin;

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "module": "CommonJS",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": ["./plugin.ts"]
 }

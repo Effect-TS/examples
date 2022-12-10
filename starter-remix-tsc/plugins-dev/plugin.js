@@ -1,11 +1,36 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 exports.__esModule = true;
-var crypto = require("crypto");
-var nodePath = require("path");
-var ts = require("typescript");
+exports.plugin = void 0;
+var crypto = __importStar(require("crypto"));
+var nodePath = __importStar(require("path"));
+var ts = __importStar(require("typescript"));
 var registry = ts.createDocumentRegistry();
-var tsPlugin = function (isClient) {
-    var files = new Set();
+var files = new Set();
+var services;
+var init = function () {
     var configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
     if (!configPath) {
         throw new Error('Could not find a valid "tsconfig.json".');
@@ -55,7 +80,12 @@ var tsPlugin = function (isClient) {
         fileExists: function (fileName) { return ts.sys.fileExists(fileName); },
         readFile: function (fileName) { return ts.sys.readFile(fileName); }
     };
-    var services = ts.createLanguageService(servicesHost, registry);
+    return ts.createLanguageService(servicesHost, registry);
+};
+var plugin = function (isClient) {
+    if (!services) {
+        services = init();
+    }
     return {
         name: "ts-plugin",
         setup: function (build) {
@@ -111,4 +141,4 @@ var tsPlugin = function (isClient) {
         }
     };
 };
-exports.tsPlugin = tsPlugin;
+exports.plugin = plugin;
