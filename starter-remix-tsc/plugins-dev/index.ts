@@ -1,26 +1,39 @@
 import * as babel from "@babel/core";
 import * as nodePath from "path";
 import * as path from "path";
+import * as fs from "fs";
 import ts from "typescript";
 
 const configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
-const baseDir = configPath
-  ? nodePath.dirname(nodePath.resolve(configPath))
-  : undefined;
+
+if (!configPath) {
+  throw new Error('Could not find a valid "tsconfig.json".');
+}
+
+const baseDir = nodePath.dirname(nodePath.resolve(configPath));
+const cacheDir = nodePath.join(baseDir, ".cache/effect");
+
+if (!fs.existsSync(cacheDir)) {
+  fs.mkdirSync(cacheDir, { recursive: true });
+}
 
 const registry = ts.createDocumentRegistry();
 const files = new Set<string>();
-const babelConfigPath = baseDir
-  ? nodePath.join(baseDir, "babel.config.js")
-  : undefined;
+const babelConfigPath = nodePath.join(baseDir, "babel.config.js");
 
 let services: ts.LanguageService;
 
-const init = () => {
-  if (!configPath) {
-    throw new Error('Could not find a valid "tsconfig.json".');
+const getScriptVersion = (fileName: string): string => {
+  const modified = ts.sys.getModifiedTime!(fileName);
+  if (modified) {
+    return ts.sys.createHash!(`${fileName}${modified.toISOString()}`);
+  } else {
+    files.delete(fileName);
   }
+  return "none";
+};
 
+const init = () => {
   const { config } = ts.parseConfigFileTextToJson(
     configPath,
     ts.sys.readFile(configPath)!
@@ -48,15 +61,7 @@ const init = () => {
   const servicesHost: ts.LanguageServiceHost = {
     realpath: (fileName) => ts.sys.realpath?.(fileName) ?? fileName,
     getScriptFileNames: () => Array.from(files),
-    getScriptVersion: (fileName) => {
-      const modified = ts.sys.getModifiedTime!(fileName);
-      if (modified) {
-        return ts.sys.createHash!(`${fileName}${modified.toISOString()}`);
-      } else {
-        files.delete(fileName);
-      }
-      return "none";
-    },
+    getScriptVersion: getScriptVersion,
     getScriptSnapshot: (fileName) => {
       if (!ts.sys.fileExists(fileName)) {
         return undefined;
@@ -72,25 +77,23 @@ const init = () => {
     readFile: (fileName) => ts.sys.readFile(fileName),
   };
 
-  return ts.createLanguageService(servicesHost, registry);
-};
+  const services = ts.createLanguageService(servicesHost, registry);
 
-const cache = new Map<string, { hash: string; text: string }>();
+  setTimeout(() => {
+    services.getProgram();
+  }, 200);
+
+  return services;
+};
 
 const getEmit = (path: string) => {
   files.add(path);
+
   const program = services.getProgram()!;
   const source = program.getSourceFile(path);
-  // @ts-expect-error
-  const hash = source["version"];
-  if (cache.has(path)) {
-    const cached = cache.get(path)!;
-    if (cached.hash === hash) {
-      return cached.text;
-    }
-    cache.delete(path);
-  }
+
   let text: string | undefined;
+
   program.emit(
     source,
     (file, content) => {
@@ -101,11 +104,47 @@ const getEmit = (path: string) => {
     void 0,
     void 0
   );
+
   if (!text) {
     throw new Error(`Typescript failed emit for file: ${path}`);
   }
-  cache.set(path, { hash, text });
+
   return text;
+};
+
+const cache = new Map<string, { hash: string; content: string }>();
+
+export const fromCache = (fileName: string) => {
+  const current = getScriptVersion(fileName);
+  if (cache.has(fileName)) {
+    const cached = cache.get(fileName)!;
+    if (cached.hash === current) {
+      return cached.content;
+    }
+  }
+  const path = nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.hash`);
+  if (fs.existsSync(path)) {
+    const hash = fs.readFileSync(path).toString("utf-8");
+    if (hash === current) {
+      return fs
+        .readFileSync(
+          nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.content`)
+        )
+        .toString("utf-8");
+    }
+  }
+};
+
+export const toCache = (fileName: string, content: string) => {
+  const current = getScriptVersion(fileName);
+  const path = nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.hash`);
+  fs.writeFileSync(path, current);
+  fs.writeFileSync(
+    nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.content`),
+    content
+  );
+  cache.set(fileName, { hash: current, content });
+  return content;
 };
 
 export const plugin = (_isBrowser: any, _config: any, _options: any) => {
@@ -131,6 +170,13 @@ export const plugin = (_isBrowser: any, _config: any, _options: any) => {
             services = init();
           }
           build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
+            const cached = fromCache(args.path);
+            if (cached) {
+              return {
+                contents: cached,
+                loader: "js",
+              };
+            }
             const result = babel.transformSync(getEmit(args.path), {
               filename: args.path,
               configFile: babelConfigPath,
@@ -138,7 +184,7 @@ export const plugin = (_isBrowser: any, _config: any, _options: any) => {
             });
             if (result?.code) {
               return {
-                contents: result?.code,
+                contents: toCache(args.path, result?.code),
                 loader: "js",
               };
             }
@@ -149,21 +195,35 @@ export const plugin = (_isBrowser: any, _config: any, _options: any) => {
             services = init();
           }
           build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
+            const cached = fromCache(args.path);
+            if (cached) {
+              return {
+                contents: cached,
+                loader: "js",
+              };
+            }
             return {
-              contents: getEmit(args.path),
+              contents: toCache(args.path, getEmit(args.path)),
               loader: "js",
             };
           });
         } else if (useBabel) {
           build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
+            const cached = fromCache(args.path);
+            if (cached) {
+              return {
+                contents: cached,
+                loader: "js",
+              };
+            }
             const result = babel.transformFileSync(args.path, {
               configFile: babelConfigPath,
               sourceMaps: "inline",
             });
             if (result?.code) {
               return {
-                contents: result?.code,
-                loader: args.path.endsWith("tsx") ? "jsx" : "js",
+                contents: toCache(args.path, result?.code),
+                loader: "js",
               };
             }
             throw new Error(`Babel failed emit for file: ${args.path}`);
