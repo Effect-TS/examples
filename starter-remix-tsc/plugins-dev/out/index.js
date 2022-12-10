@@ -120,11 +120,18 @@ var plugin = function (_isBrowser, _config, _options) {
         name: "effect-plugin",
         setup: function (build) {
             if (baseDir) {
+                var config = require(path.join(baseDir, "/remix.config.js"));
                 var useBabel = false;
                 if (babelConfigPath && typescript_1["default"].sys.fileExists(babelConfigPath)) {
-                    useBabel = true;
+                    if (config.future &&
+                        "babel" in config.future &&
+                        !config.future.babel) {
+                        // config found but babel is disabled
+                    }
+                    else {
+                        useBabel = true;
+                    }
                 }
-                var config = require(path.join(baseDir, "/remix.config.js"));
                 if (config.future && config.future.typescript && useBabel) {
                     if (!services) {
                         services = init();

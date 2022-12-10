@@ -2,6 +2,7 @@
 module.exports = {
   ignoredRouteFiles: ["**/.*"],
   future: {
-    typescript: true
+    typescript: true,
+    babel: true
   }
 };
