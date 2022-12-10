@@ -1,4 +1,3 @@
-import * as crypto from "crypto";
 import * as nodePath from "path";
 import * as ts from "typescript";
 
@@ -47,11 +46,9 @@ const init = () => {
     realpath: (fileName) => ts.sys.realpath?.(fileName) ?? fileName,
     getScriptFileNames: () => Array.from(files),
     getScriptVersion: (fileName) => {
-      const fileBuffer = ts.sys.readFile(fileName);
-      if (fileBuffer) {
-        const hashSum = crypto.createHash("sha256");
-        hashSum.update(fileBuffer, "utf-8");
-        return hashSum.digest("hex");
+      const modified = ts.sys.getModifiedTime!(fileName);
+      if (modified) {
+        return ts.sys.createHash!(`${fileName}${modified.toISOString()}`);
       } else {
         files.delete(fileName);
       }
@@ -75,7 +72,81 @@ const init = () => {
   return ts.createLanguageService(servicesHost, registry);
 };
 
-export const plugin = (isClient: boolean) => {
+const cache = new Map<string, { hash: string; text: string }>();
+
+const getEmit = (path: string) => {
+  files.add(path);
+  const program = services.getProgram()!;
+  const source = program.getSourceFile(path);
+  // @ts-expect-error
+  const hash = source["version"];
+  if (cache.has(path)) {
+    const cached = cache.get(path)!;
+    if (cached.hash === hash) {
+      return cached.text;
+    }
+    cache.delete(path);
+  }
+  const transformer: ts.TransformerFactory<ts.SourceFile> = (ctx) => {
+    return (file) => {
+      if (file.isDeclarationFile) {
+        return file;
+      }
+      const visitor =
+        (add: boolean) =>
+        (node: ts.Node): ts.Node => {
+          if (ts.isBlock(node)) {
+            return ts.visitEachChild(node, visitor(false), ctx);
+          }
+          if (ts.isCallExpression(node) && add) {
+            return ts.addSyntheticLeadingComment(
+              ts.visitEachChild(node, visitor(add), ctx),
+              ts.SyntaxKind.MultiLineCommentTrivia,
+              "@__PURE__",
+              false
+            );
+          }
+          return ts.visitEachChild(node, visitor(add), ctx);
+        };
+      const statements: Array<ts.Statement> = [];
+      for (const statement of file.statements) {
+        if (ts.isVariableStatement(statement)) {
+          statements.push(ts.visitNode(statement, visitor(true)));
+        } else {
+          statements.push(statement);
+        }
+      }
+      return ctx.factory.updateSourceFile(
+        file,
+        statements,
+        file.isDeclarationFile,
+        file.referencedFiles,
+        file.typeReferenceDirectives,
+        file.hasNoDefaultLib,
+        file.libReferenceDirectives
+      );
+    };
+  };
+  let text: string | undefined;
+  program.emit(
+    source,
+    (file, content) => {
+      if (file.endsWith(".js")) {
+        text = content;
+      }
+    },
+    void 0,
+    void 0,
+    { after: [transformer] }
+  );
+  if (!text) {
+    throw new Error(`Typescript failed emit for file: ${path}`);
+  }
+  cache.set(path, { hash, text });
+  return text;
+};
+
+export const plugin = () => {
   if (!services) {
     services = init();
   }
@@ -83,68 +154,8 @@ export const plugin = (isClient: boolean) => {
     name: "ts-plugin",
     setup(build: any) {
       build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
-        const path = args.path;
-        files.add(path);
-        const program = services.getProgram()!;
-        const source = program.getSourceFile(path);
-        const transformer: ts.TransformerFactory<ts.SourceFile> = (ctx) => {
-          return (file) => {
-            if (file.isDeclarationFile) {
-              return file;
-            }
-            const visitor =
-              (add: boolean) =>
-              (node: ts.Node): ts.Node => {
-                if (ts.isBlock(node)) {
-                  return ts.visitEachChild(node, visitor(false), ctx);
-                }
-                if (ts.isCallExpression(node) && add) {
-                  return ts.addSyntheticLeadingComment(
-                    ts.visitEachChild(node, visitor(add), ctx),
-                    ts.SyntaxKind.MultiLineCommentTrivia,
-                    "@__PURE__",
-                    false
-                  );
-                }
-                return ts.visitEachChild(node, visitor(add), ctx);
-              };
-            const statements: Array<ts.Statement> = [];
-            for (const statement of file.statements) {
-              if (ts.isVariableStatement(statement)) {
-                statements.push(ts.visitNode(statement, visitor(true)));
-              } else {
-                statements.push(statement);
-              }
-            }
-            return ctx.factory.updateSourceFile(
-              file,
-              statements,
-              file.isDeclarationFile,
-              file.referencedFiles,
-              file.typeReferenceDirectives,
-              file.hasNoDefaultLib,
-              file.libReferenceDirectives
-            );
-          };
-        };
-        const transformers: ts.CustomTransformers["before"] = [];
-        if (isClient) {
-          transformers.push(transformer);
-        }
-        let text;
-        program.emit(
-          source,
-          (file, content) => {
-            if (file.endsWith(".js")) {
-              text = content;
-            }
-          },
-          void 0,
-          void 0,
-          { after: transformers }
-        );
         return {
-          contents: text,
+          contents: getEmit(args.path),
           loader: "js",
         };
       });

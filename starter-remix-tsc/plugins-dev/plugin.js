@@ -24,7 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 exports.__esModule = true;
 exports.plugin = void 0;
-var crypto = __importStar(require("crypto"));
 var nodePath = __importStar(require("path"));
 var ts = __importStar(require("typescript"));
 var registry = ts.createDocumentRegistry();
@@ -57,11 +56,9 @@ var init = function () {
         realpath: function (fileName) { var _a, _b, _c; return (_c = (_b = (_a = ts.sys).realpath) === null || _b === void 0 ? void 0 : _b.call(_a, fileName)) !== null && _c !== void 0 ? _c : fileName; },
         getScriptFileNames: function () { return Array.from(files); },
         getScriptVersion: function (fileName) {
-            var fileBuffer = ts.sys.readFile(fileName);
-            if (fileBuffer) {
-                var hashSum = crypto.createHash("sha256");
-                hashSum.update(fileBuffer, "utf-8");
-                return hashSum.digest("hex");
+            var modified = ts.sys.getModifiedTime(fileName);
+            if (modified) {
+                return ts.sys.createHash("".concat(fileName).concat(modified.toISOString()));
             }
             else {
                 files["delete"](fileName);
@@ -82,7 +79,62 @@ var init = function () {
     };
     return ts.createLanguageService(servicesHost, registry);
 };
-var plugin = function (isClient) {
+var cache = new Map();
+var getEmit = function (path) {
+    files.add(path);
+    var program = services.getProgram();
+    var source = program.getSourceFile(path);
+    // @ts-expect-error
+    var hash = source["version"];
+    if (cache.has(path)) {
+        var cached = cache.get(path);
+        if (cached.hash === hash) {
+            return cached.text;
+        }
+        cache["delete"](path);
+    }
+    var transformer = function (ctx) {
+        return function (file) {
+            if (file.isDeclarationFile) {
+                return file;
+            }
+            var visitor = function (add) {
+                return function (node) {
+                    if (ts.isBlock(node)) {
+                        return ts.visitEachChild(node, visitor(false), ctx);
+                    }
+                    if (ts.isCallExpression(node) && add) {
+                        return ts.addSyntheticLeadingComment(ts.visitEachChild(node, visitor(add), ctx), ts.SyntaxKind.MultiLineCommentTrivia, "@__PURE__", false);
+                    }
+                    return ts.visitEachChild(node, visitor(add), ctx);
+                };
+            };
+            var statements = [];
+            for (var _i = 0, _a = file.statements; _i < _a.length; _i++) {
+                var statement = _a[_i];
+                if (ts.isVariableStatement(statement)) {
+                    statements.push(ts.visitNode(statement, visitor(true)));
+                }
+                else {
+                    statements.push(statement);
+                }
+            }
+            return ctx.factory.updateSourceFile(file, statements, file.isDeclarationFile, file.referencedFiles, file.typeReferenceDirectives, file.hasNoDefaultLib, file.libReferenceDirectives);
+        };
+    };
+    var text;
+    program.emit(source, function (file, content) {
+        if (file.endsWith(".js")) {
+            text = content;
+        }
+    }, void 0, void 0, { after: [transformer] });
+    if (!text) {
+        throw new Error("Typescript failed emit for file: ".concat(path));
+    }
+    cache.set(path, { hash: hash, text: text });
+    return text;
+};
+var plugin = function () {
     if (!services) {
         services = init();
     }
@@ -90,51 +142,8 @@ var plugin = function (isClient) {
         name: "ts-plugin",
         setup: function (build) {
             build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, function (args) {
-                var path = args.path;
-                files.add(path);
-                var program = services.getProgram();
-                var source = program.getSourceFile(path);
-                var transformer = function (ctx) {
-                    return function (file) {
-                        if (file.isDeclarationFile) {
-                            return file;
-                        }
-                        var visitor = function (add) {
-                            return function (node) {
-                                if (ts.isBlock(node)) {
-                                    return ts.visitEachChild(node, visitor(false), ctx);
-                                }
-                                if (ts.isCallExpression(node) && add) {
-                                    return ts.addSyntheticLeadingComment(ts.visitEachChild(node, visitor(add), ctx), ts.SyntaxKind.MultiLineCommentTrivia, "@__PURE__", false);
-                                }
-                                return ts.visitEachChild(node, visitor(add), ctx);
-                            };
-                        };
-                        var statements = [];
-                        for (var _i = 0, _a = file.statements; _i < _a.length; _i++) {
-                            var statement = _a[_i];
-                            if (ts.isVariableStatement(statement)) {
-                                statements.push(ts.visitNode(statement, visitor(true)));
-                            }
-                            else {
-                                statements.push(statement);
-                            }
-                        }
-                        return ctx.factory.updateSourceFile(file, statements, file.isDeclarationFile, file.referencedFiles, file.typeReferenceDirectives, file.hasNoDefaultLib, file.libReferenceDirectives);
-                    };
-                };
-                var transformers = [];
-                if (isClient) {
-                    transformers.push(transformer);
-                }
-                var text;
-                program.emit(source, function (file, content) {
-                    if (file.endsWith(".js")) {
-                        text = content;
-                    }
-                }, void 0, void 0, { after: transformers });
                 return {
-                    contents: text,
+                    contents: getEmit(args.path),
                     loader: "js"
                 };
             });
