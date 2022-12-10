@@ -1,5 +1,5 @@
 diff --git a/dist/compiler/compileBrowser.js b/dist/compiler/compileBrowser.js
-index 8b3e1c2b66c028979f24dade94c4cd762d9ed77a..89f542fa4bc1de7046012a5b33cfc04103d45dd1 100644
+index 8b3e1c2b66c028979f24dade94c4cd762d9ed77a..ae0955c30211c9c0362b1f9ceaf0a037bcb1ace3 100644
 --- a/dist/compiler/compileBrowser.js
 +++ b/dist/compiler/compileBrowser.js
 @@ -26,6 +26,7 @@ var emptyModulesPlugin = require('./plugins/emptyModulesPlugin.js');
@@ -15,12 +15,12 @@ index 8b3e1c2b66c028979f24dade94c4cd762d9ed77a..89f542fa4bc1de7046012a5b33cfc041
      entryPoints[id] = config.routes[id].file + "?browser";
    }
 -  let plugins = [deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
-+  let plugins = [effectPlugin.plugin(true), deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
++  let plugins = [effectPlugin.plugin(true, config, options), deprecatedRemixPackagePlugin.deprecatedRemixPackagePlugin(options.onWarning), cssFilePlugin.cssFilePlugin(options), urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin()];
    return {
      entryPoints,
      outdir: config.assetsBuildDirectory,
 diff --git a/dist/compiler/compilerServer.js b/dist/compiler/compilerServer.js
-index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..393f21a75fc78d838ac138d6c9066a86d0d8fde6 100644
+index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..112dc42173f89a3aea3a22ba8ec725daed96d611 100644
 --- a/dist/compiler/compilerServer.js
 +++ b/dist/compiler/compilerServer.js
 @@ -26,6 +26,7 @@ var serverBareModulesPlugin = require('./plugins/serverBareModulesPlugin.js');
@@ -35,7 +35,7 @@ index 4f4dc1c3417cffd55b02822c5fa9231cce25dc29..393f21a75fc78d838ac138d6c9066a86
    if (config.serverPlatform !== "node") {
      plugins.unshift(nodeModulesPolyfill.NodeModulesPolyfillPlugin());
    }
-+  plugins.unshift(effectPlugin.plugin(false));
++  plugins.unshift(effectPlugin.plugin(false, config, options));
    return {
      absWorkingDir: config.rootDirectory,
      stdin,

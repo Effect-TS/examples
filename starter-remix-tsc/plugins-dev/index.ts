@@ -1,18 +1,22 @@
+import * as babel from "@babel/core";
 import * as nodePath from "path";
-import * as ts from "typescript";
+import * as path from "path";
+import ts from "typescript";
+
+const configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
+const baseDir = configPath
+  ? nodePath.dirname(nodePath.resolve(configPath))
+  : undefined;
 
 const registry = ts.createDocumentRegistry();
 const files = new Set<string>();
+const babelConfigPath = baseDir
+  ? nodePath.join(baseDir, "babel.config.js")
+  : undefined;
 
 let services: ts.LanguageService;
 
 const init = () => {
-  const configPath = ts.findConfigFile(
-    "./",
-    ts.sys.fileExists,
-    "tsconfig.json"
-  );
-
   if (!configPath) {
     throw new Error('Could not find a valid "tsconfig.json".');
   }
@@ -33,8 +37,7 @@ const init = () => {
     target: "ES2022",
   });
 
-  const baseDir = nodePath.dirname(nodePath.resolve(configPath));
-  const tsconfig = ts.parseJsonConfigFileContent(config, ts.sys, baseDir);
+  const tsconfig = ts.parseJsonConfigFileContent(config, ts.sys, baseDir!);
 
   if (!tsconfig.options) tsconfig.options = {};
 
@@ -87,46 +90,6 @@ const getEmit = (path: string) => {
     }
     cache.delete(path);
   }
-  const transformer: ts.TransformerFactory<ts.SourceFile> = (ctx) => {
-    return (file) => {
-      if (file.isDeclarationFile) {
-        return file;
-      }
-      const visitor =
-        (add: boolean) =>
-        (node: ts.Node): ts.Node => {
-          if (ts.isBlock(node)) {
-            return ts.visitEachChild(node, visitor(false), ctx);
-          }
-          if (ts.isCallExpression(node) && add) {
-            return ts.addSyntheticLeadingComment(
-              ts.visitEachChild(node, visitor(add), ctx),
-              ts.SyntaxKind.MultiLineCommentTrivia,
-              "@__PURE__",
-              false
-            );
-          }
-          return ts.visitEachChild(node, visitor(add), ctx);
-        };
-      const statements: Array<ts.Statement> = [];
-      for (const statement of file.statements) {
-        if (ts.isVariableStatement(statement)) {
-          statements.push(ts.visitNode(statement, visitor(true)));
-        } else {
-          statements.push(statement);
-        }
-      }
-      return ctx.factory.updateSourceFile(
-        file,
-        statements,
-        file.isDeclarationFile,
-        file.referencedFiles,
-        file.typeReferenceDirectives,
-        file.hasNoDefaultLib,
-        file.libReferenceDirectives
-      );
-    };
-  };
   let text: string | undefined;
   program.emit(
     source,
@@ -136,8 +99,7 @@ const getEmit = (path: string) => {
       }
     },
     void 0,
-    void 0,
-    { after: [transformer] }
+    void 0
   );
   if (!text) {
     throw new Error(`Typescript failed emit for file: ${path}`);
@@ -146,19 +108,60 @@ const getEmit = (path: string) => {
   return text;
 };
 
-export const plugin = () => {
-  if (!services) {
-    services = init();
-  }
+export const plugin = (_isBrowser: any, _config: any, _options: any) => {
   return {
-    name: "ts-plugin",
+    name: "effect-plugin",
     setup(build: any) {
-      build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
-        return {
-          contents: getEmit(args.path),
-          loader: "js",
-        };
-      });
+      if (baseDir) {
+        let useBabel = false;
+        if (babelConfigPath && ts.sys.fileExists(babelConfigPath)) {
+          useBabel = true;
+        }
+        const config = require(path.join(baseDir!, "/remix.config.js"));
+        if (config.future && config.future.typescript && useBabel) {
+          if (!services) {
+            services = init();
+          }
+          build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
+            const result = babel.transformSync(getEmit(args.path), {
+              filename: args.path,
+              configFile: babelConfigPath,
+              sourceMaps: "inline",
+            });
+            if (result?.code) {
+              return {
+                contents: result?.code,
+                loader: "js",
+              };
+            }
+            throw new Error(`Babel failed emit for file: ${args.path}`);
+          });
+        } else if (config.future && config.future.typescript) {
+          if (!services) {
+            services = init();
+          }
+          build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
+            return {
+              contents: getEmit(args.path),
+              loader: "js",
+            };
+          });
+        } else if (useBabel) {
+          build.onLoad({ filter: /(.ts|.tsx|.tsx?browser)$/ }, (args: any) => {
+            const result = babel.transformFileSync(args.path, {
+              configFile: babelConfigPath,
+              sourceMaps: "inline",
+            });
+            if (result?.code) {
+              return {
+                contents: result?.code,
+                loader: args.path.endsWith("tsx") ? "jsx" : "js",
+              };
+            }
+            throw new Error(`Babel failed emit for file: ${args.path}`);
+          });
+        }
+      }
     },
   };
 };

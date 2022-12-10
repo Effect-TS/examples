@@ -3,7 +3,8 @@
     "module": "CommonJS",
     "strict": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "out"
   },
-  "include": ["./plugin.ts"]
+  "include": ["./*.ts"]
 }
