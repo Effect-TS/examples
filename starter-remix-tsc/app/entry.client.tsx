@@ -6,9 +6,13 @@ function hydrate() {
   startTransition(() => {
     hydrateRoot(
       document,
-      <StrictMode>
+      process.env["NODE_ENV"] === "development" ? (
+        <StrictMode>
+          <RemixBrowser />
+        </StrictMode>
+      ) : (
         <RemixBrowser />
-      </StrictMode>
+      )
     );
   });
 }
