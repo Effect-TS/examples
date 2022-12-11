@@ -6,9 +6,7 @@ const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
   Effect.gen(function* ($) {
     const scope = yield* $(Scope.make());
     const env = yield* $(Layer.buildWithScope(scope)(layer));
-    const runtime = yield* $(
-      pipe(Effect.runtime<A>(), Effect.provideEnvironment(env))
-    );
+    const runtime = yield* $(pipe(Effect.runtime<A>(), Effect.provideEnvironment(env)));
 
     return {
       runtime,
@@ -18,9 +16,7 @@ const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
 
 const runtimeSymbol = Symbol.for("@effect/examples/starter-remix-tsc/runtime");
 
-const existing = process
-  .listeners("beforeExit")
-  .find((listener) => runtimeSymbol in listener);
+const existing = process.listeners("beforeExit").find((listener) => runtimeSymbol in listener);
 
 if (existing) {
   process.removeListener("beforeExit", existing);

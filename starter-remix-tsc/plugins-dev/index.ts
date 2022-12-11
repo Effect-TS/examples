@@ -34,10 +34,7 @@ const getScriptVersion = (fileName: string): string => {
 };
 
 const init = () => {
-  const { config } = ts.parseConfigFileTextToJson(
-    configPath,
-    ts.sys.readFile(configPath)!
-  );
+  const { config } = ts.parseConfigFileTextToJson(configPath, ts.sys.readFile(configPath)!);
 
   Object.assign(config.compilerOptions, {
     sourceMap: false,
@@ -66,9 +63,7 @@ const init = () => {
       if (!ts.sys.fileExists(fileName)) {
         return undefined;
       }
-      return ts.ScriptSnapshot.fromString(
-        ts.sys.readFile(fileName)!.toString()
-      );
+      return ts.ScriptSnapshot.fromString(ts.sys.readFile(fileName)!.toString());
     },
     getCurrentDirectory: () => process.cwd(),
     getCompilationSettings: () => tsconfig.options,
@@ -127,9 +122,7 @@ export const fromCache = (fileName: string) => {
     const hash = fs.readFileSync(path).toString("utf-8");
     if (hash === current) {
       return fs
-        .readFileSync(
-          nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.content`)
-        )
+        .readFileSync(nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.content`))
         .toString("utf-8");
     }
   }
@@ -139,10 +132,7 @@ export const toCache = (fileName: string, content: string) => {
   const current = getScriptVersion(fileName);
   const path = nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.hash`);
   fs.writeFileSync(path, current);
-  fs.writeFileSync(
-    nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.content`),
-    content
-  );
+  fs.writeFileSync(nodePath.join(cacheDir, `${ts.sys.createHash!(fileName)}.content`), content);
   cache.set(fileName, { hash: current, content });
   return content;
 };
@@ -155,11 +145,7 @@ export const plugin = (_isBrowser: any, _config: any, _options: any) => {
         const config = require(path.join(baseDir!, "/remix.config.js"));
         let useBabel = false;
         if (babelConfigPath && ts.sys.fileExists(babelConfigPath)) {
-          if (
-            config.future &&
-            "babel" in config.future &&
-            !config.future.babel
-          ) {
+          if (config.future && "babel" in config.future && !config.future.babel) {
             // config found but babel is disabled
           } else {
             useBabel = true;

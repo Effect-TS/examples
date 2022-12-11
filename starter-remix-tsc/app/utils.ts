@@ -6,7 +6,7 @@ import type { Codec } from "effect/schema";
 
 export { Chunk } from "effect/collection";
 export { pipe } from "effect/data";
-export { Effect } from "effect/io";
+export { Effect, Layer } from "effect/io";
 export { Codec } from "effect/schema";
 
 export const LoaderArgs = Context.Tag<DataFunctionArgs>();
@@ -27,11 +27,9 @@ export const makeLoader: <A>(
         )
       );
 
-export const requestURL = Effect.serviceWith(LoaderArgs)(
-  (_) => new URL(_.request.url)
-);
+export const requestURL = Effect.serviceWith(LoaderArgs)((_) => new URL(_.request.url));
 
-export const useLoaderData = <A,>(type: Codec.Codec<A>) => {
+export const useLoaderData = <A>(type: Codec.Codec<A>) => {
   const data = useLoaderDataRemix();
   const parsed = type.decode(data);
   if (parsed._tag === "Left") {
