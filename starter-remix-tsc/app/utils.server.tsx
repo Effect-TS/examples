@@ -1,4 +1,4 @@
-import type { DataFunctionArgs } from "@remix-run/node";
+import type { DataFunctionArgs, LoaderFunction } from "@remix-run/node";
 import { Context, pipe } from "effect/data";
 import { Effect, Exit, Layer, Scope } from "effect/io";
 import type { Codec } from "effect/schema";
@@ -30,7 +30,7 @@ if (existing) {
   process.removeListener("beforeExit", existing);
 }
 
-const runtime = (
+const deferredRuntime = (
   existing ? (existing as () => Promise<void>)() : Promise.resolve()
 ).then(() => Effect.unsafeRunPromise(appRuntime(appLayer)));
 
@@ -38,7 +38,7 @@ const cleanup = Object.assign(
   () =>
     Effect.unsafeRunPromise(
       pipe(
-        Effect.promise(() => runtime),
+        Effect.promise(() => deferredRuntime),
         Effect.flatMap((_) => _.clean)
       )
     ),
@@ -51,12 +51,10 @@ export const LoaderArgs = Context.Tag<DataFunctionArgs>();
 
 export const makeLoader: <A>(
   type: Codec.Codec<A>
-) => <E>(
-  self: Effect.Effect<DataFunctionArgs, E, A>
-) => (data: DataFunctionArgs) => Promise<unknown> =
-  (type) => (self) => (data: DataFunctionArgs) =>
-    runtime.then((_) =>
-      _.runtime.unsafeRunPromise(
+) => <E>(self: Effect.Effect<DataFunctionArgs, E, A>) => LoaderFunction =
+  (type) => (self) => (data) =>
+    deferredRuntime.then(({ runtime }) =>
+      runtime.unsafeRunPromise(
         pipe(
           self,
           Effect.map((a) => type.encode(a)),
