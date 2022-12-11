@@ -1,16 +1,15 @@
-import { Chunk, Codec, Effect, pipe, useLoaderData } from "~/utils";
-import { makeLoader, requestURL } from "~/utils.server";
+import * as _ from "~/utils";
 
-export const data = Codec.struct({
-  messages: Codec.chunk(Codec.string),
+export const data = _.Codec.struct({
+  messages: _.Codec.chunk(_.Codec.string),
 });
 
-export const loader = makeLoader(data)(
-  Effect.gen(function* ($) {
-    const { pathname } = yield* $(requestURL);
+export const loader = _.makeLoader(data)(
+  _.Effect.gen(function* ($) {
+    const { pathname } = yield* $(_.requestURL);
 
     return {
-      messages: Chunk.make(
+      messages: _.Chunk.make(
         `hello world from ${pathname}`,
         `this is a complex data structure`
       ),
@@ -19,15 +18,15 @@ export const loader = makeLoader(data)(
 );
 
 export default function Index() {
-  const { messages } = useLoaderData(data);
+  const { messages } = _.useLoaderData(data);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Welcome to Remix, via babel & ts</h1>
       <>
-        {pipe(
+        {_.pipe(
           messages,
-          Chunk.mapWithIndex((message, index) => (
+          _.Chunk.mapWithIndex((message, index) => (
             <div key={`message-${index}`}>{message}</div>
           ))
         )}

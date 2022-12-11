@@ -1,7 +1,5 @@
-import type { DataFunctionArgs, LoaderFunction } from "@remix-run/node";
-import { Context, pipe } from "effect/data";
+import { pipe } from "effect/data";
 import { Effect, Exit, Layer, Scope } from "effect/io";
-import type { Codec } from "effect/schema";
 import { appLayer } from "~/layer/main";
 
 const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
@@ -18,19 +16,17 @@ const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
     };
   });
 
-const cleanupSymbol = Symbol.for(
-  "@effect/examples/starter-remix-tsc/runtime/cleanup"
-);
+const runtimeSymbol = Symbol.for("@effect/examples/starter-remix-tsc/runtime");
 
 const existing = process
   .listeners("beforeExit")
-  .find((listener) => cleanupSymbol in listener);
+  .find((listener) => runtimeSymbol in listener);
 
 if (existing) {
   process.removeListener("beforeExit", existing);
 }
 
-const deferredRuntime = (
+export const deferredRuntime = (
   existing ? (existing as () => Promise<void>)() : Promise.resolve()
 ).then(() => Effect.unsafeRunPromise(appRuntime(appLayer)));
 
@@ -42,27 +38,10 @@ const cleanup = Object.assign(
         Effect.flatMap((_) => _.clean)
       )
     ),
-  { [cleanupSymbol]: true }
+  { [runtimeSymbol]: true }
 );
+
+// @ts-expect-error
+globalThis[runtimeSymbol] = deferredRuntime;
 
 process.on("beforeExit", cleanup);
-
-export const LoaderArgs = Context.Tag<DataFunctionArgs>();
-
-export const makeLoader: <A>(
-  type: Codec.Codec<A>
-) => <E>(self: Effect.Effect<DataFunctionArgs, E, A>) => LoaderFunction =
-  (type) => (self) => (data) =>
-    deferredRuntime.then(({ runtime }) =>
-      runtime.unsafeRunPromise(
-        pipe(
-          self,
-          Effect.map((a) => type.encode(a)),
-          Effect.provideService(LoaderArgs)(data)
-        )
-      )
-    );
-
-export const requestURL = Effect.serviceWith(LoaderArgs)(
-  (_) => new URL(_.request.url)
-);
