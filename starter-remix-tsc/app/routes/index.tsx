@@ -1,19 +1,24 @@
-import { useLoaderData } from "@remix-run/react";
 import { Effect } from "effect/io";
-import { makeLoader, requestURL } from "~/utils";
+import * as I from "io-ts";
+import { useLoaderData } from "~/utils";
+import { makeLoader, requestURL } from "~/utils.server";
 
-export const loader = makeLoader(
+export const data = I.type({
+  message: I.string,
+});
+
+export const loader = makeLoader(data)(
   Effect.gen(function* ($) {
     const { pathname } = yield* $(requestURL);
 
-    return yield* $(
-      Effect.succeed({ message: `hello world from ${pathname}` })
-    );
+    return {
+      message: `hello world from ${pathname}`,
+    };
   })
 );
 
 export default function Index() {
-  const { message } = useLoaderData<typeof loader>();
+  const { message } = useLoaderData(data);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
