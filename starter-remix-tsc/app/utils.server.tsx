@@ -1,7 +1,7 @@
 import type { DataFunctionArgs } from "@remix-run/node";
 import { Context, pipe } from "effect/data";
 import { Effect, Exit, Layer, Scope } from "effect/io";
-import type { Type } from "io-ts";
+import type { Codec } from "effect/schema";
 import { appLayer } from "~/layer/main";
 
 const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
@@ -49,8 +49,8 @@ process.on("beforeExit", cleanup);
 
 export const LoaderArgs = Context.Tag<DataFunctionArgs>();
 
-export const makeLoader: <A, O, I>(
-  type: Type<A, O, I>
+export const makeLoader: <A>(
+  type: Codec.Codec<A>
 ) => <E>(
   self: Effect.Effect<DataFunctionArgs, E, A>
 ) => (data: DataFunctionArgs) => Promise<unknown> =

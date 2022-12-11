@@ -1,10 +1,10 @@
 import { Effect } from "effect/io";
-import * as I from "io-ts";
+import { Codec } from "effect/schema";
 import { useLoaderData } from "~/utils";
 import { makeLoader, requestURL } from "~/utils.server";
 
-export const data = I.type({
-  message: I.string,
+export const data = Codec.struct({
+  message: Codec.string,
 });
 
 export const loader = makeLoader(data)(
