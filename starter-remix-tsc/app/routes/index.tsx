@@ -1,12 +1,12 @@
-import { Codec, makeLoader, Effect, requestURL, Chunk, useLoaderData, pipe } from "~/utils";
+import { Codec, Remix, Effect, Chunk, pipe, RemixServer } from "~/utils";
 
 export const data = Codec.struct({
   messages: Codec.chunk(Codec.string),
 });
 
-export const loader = makeLoader(data)(
+export const loader = RemixServer.makeLoader(data)(
   Effect.gen(function* ($) {
-    const { pathname } = yield* $(requestURL);
+    const { pathname } = yield* $(RemixServer.requestURL);
 
     return {
       messages: Chunk.make(`hello world from ${pathname}`, `this is a complex data structure`),
@@ -15,7 +15,7 @@ export const loader = makeLoader(data)(
 );
 
 export default function Index() {
-  const { messages } = useLoaderData(data);
+  const { messages } = Remix.useLoaderData(data);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
