@@ -1,6 +1,4 @@
-import { Effect } from "effect/io";
-import { Codec } from "effect/schema";
-import { useLoaderData } from "~/utils";
+import { Codec, Effect, useLoaderData } from "~/utils";
 import { makeLoader, requestURL } from "~/utils.server";
 
 export const data = Codec.struct({
