@@ -4,6 +4,7 @@ const child = require("child_process");
 const cli = index.cli;
 const argv = process.argv;
 
+process.env["NODE_ENV"] = "development";
 process.argv = [...argv, "build"];
 
 cli.run().then(
