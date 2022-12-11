@@ -48,7 +48,7 @@ const server = app.listen(port, () => {
   console.log(`Express server listening on port ${port}`);
 });
 
-if (process.env["NODE_ENV"] !== "production") {
+if (process.env["NODE_ENV"] === "development") {
   const connectToRemixSocket = (cb, attempts = 0) => {
       const remixSocket = new WebSocket(`ws://127.0.0.1:8002`);
 

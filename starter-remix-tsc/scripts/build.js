@@ -3,6 +3,7 @@ const index = require("@remix-run/dev/dist/index.js");
 const cli = index.cli;
 const argv = process.argv;
 
+process.env["NODE_ENV"] = "production";
 process.argv = [...argv, "build"];
 
 cli.run().then(
