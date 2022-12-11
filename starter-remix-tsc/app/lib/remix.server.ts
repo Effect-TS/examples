@@ -9,7 +9,7 @@ export const makeLoader: <A>(
   type: Codec.Codec<A>
 ) => <E>(self: Effect.Effect<DataFunctionArgs, E, A>) => LoaderFunction =
   (type) => (self) => (data) =>
-    import("../runtime.server")
+    import("~/lib/runtime.server")
       .then((_) => _.deferredRuntime)
       .then(({ runtime }) =>
         runtime.unsafeRunPromise(
