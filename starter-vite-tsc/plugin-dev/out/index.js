@@ -22,16 +22,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.tsPlugin = exports.toCache = exports.fromCache = void 0;
+exports.tsPlugin = exports.getCompiled = exports.toCache = exports.fromCache = void 0;
 var pluginutils_1 = require("@rollup/pluginutils");
 var fs_1 = __importDefault(require("fs"));
 var nodePath = __importStar(require("path"));
 var typescript_1 = __importDefault(require("typescript"));
-var babel = __importStar(require("@babel/core"));
+var plugin_react_1 = __importDefault(require("@vitejs/plugin-react"));
 var configPath = typescript_1["default"].findConfigFile("./", typescript_1["default"].sys.fileExists, "tsconfig.json");
 if (!configPath) {
     throw new Error('Could not find a valid "tsconfig.json".');
@@ -43,7 +52,6 @@ if (!fs_1["default"].existsSync(cacheDir)) {
 }
 var registry = typescript_1["default"].createDocumentRegistry();
 var files = new Set();
-var babelConfigPath = nodePath.join(baseDir, "babel.config.js");
 var services;
 var getScriptVersion = function (fileName) {
     var modified = typescript_1["default"].sys.getModifiedTime(fileName);
@@ -139,11 +147,37 @@ var toCache = function (fileName, content) {
     return content;
 };
 exports.toCache = toCache;
+var getCompiled = function (path) {
+    var cached = (0, exports.fromCache)(path);
+    if (cached) {
+        return {
+            code: cached
+        };
+    }
+    var syntactic = services.getSyntacticDiagnostics(path);
+    if (syntactic.length > 0) {
+        throw new Error(syntactic
+            .map(function (_) { return typescript_1["default"].flattenDiagnosticMessageText(_.messageText, "\n"); })
+            .join("\n"));
+    }
+    var semantic = services.getSemanticDiagnostics(path);
+    services.cleanupSemanticCache();
+    if (semantic.length > 0) {
+        throw new Error(semantic
+            .map(function (_) { return typescript_1["default"].flattenDiagnosticMessageText(_.messageText, "\n"); })
+            .join("\n"));
+    }
+    var code = (0, exports.toCache)(path, getEmit(path));
+    return {
+        code: code
+    };
+};
+exports.getCompiled = getCompiled;
 function tsPlugin(options) {
     var filter = (0, pluginutils_1.createFilter)(options === null || options === void 0 ? void 0 : options.include, options === null || options === void 0 ? void 0 : options.exclude);
-    return {
+    var plugin = {
         name: "ts-plugin",
-        // Vitest Specific Watch
+        enforce: "pre",
         configureServer: function (dev) {
             if (!services) {
                 services = init();
@@ -169,7 +203,6 @@ function tsPlugin(options) {
                 }
             });
         },
-        // Rollup Generic Watch
         watchChange: function (path, change) {
             if (filter(path)) {
                 if (/\.tsx?/.test(path)) {
@@ -190,52 +223,12 @@ function tsPlugin(options) {
                 }
             }
         },
-        transform: function (code, path) {
-            if (filter(path)) {
-                if (/\.tsx?/.test(path)) {
-                    var cached = (0, exports.fromCache)(path);
-                    if (cached) {
-                        return {
-                            code: cached
-                        };
-                    }
-                    var syntactic = services.getSyntacticDiagnostics(path);
-                    if (syntactic.length > 0) {
-                        throw new Error(syntactic
-                            .map(function (_) {
-                            return typescript_1["default"].flattenDiagnosticMessageText(_.messageText, "\n");
-                        })
-                            .join("\n"));
-                    }
-                    var semantic = services.getSemanticDiagnostics(path);
-                    services.cleanupSemanticCache();
-                    if (semantic.length > 0) {
-                        throw new Error(semantic
-                            .map(function (_) {
-                            return typescript_1["default"].flattenDiagnosticMessageText(_.messageText, "\n");
-                        })
-                            .join("\n"));
-                    }
-                    if (babelConfigPath && fs_1["default"].existsSync(babelConfigPath)) {
-                        var result = babel.transformSync(getEmit(path), {
-                            filename: path,
-                            configFile: babelConfigPath,
-                            sourceMaps: "inline"
-                        });
-                        if (!(result === null || result === void 0 ? void 0 : result.code)) {
-                            throw new Error("Babel failed emit for file: ".concat(path));
-                        }
-                        code = (0, exports.toCache)(path, result.code);
-                    }
-                    else {
-                        code = (0, exports.toCache)(path, getEmit(path));
-                    }
-                }
-                return {
-                    code: code
-                };
+        transform: function (_, path) {
+            if (/\.tsx?/.test(path) && filter(path)) {
+                return (0, exports.getCompiled)(path);
             }
         }
     };
+    return __spreadArray([plugin], (0, plugin_react_1["default"])(options), true);
 }
 exports.tsPlugin = tsPlugin;

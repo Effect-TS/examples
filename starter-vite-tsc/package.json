@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf .cache && rm -rf node_modules/.vite",
+    "build-plugin": "tsc -p plugin-dev/tsconfig.json"
   },
   "dependencies": {
     "effect": "2.0.0-next.12",
@@ -16,7 +18,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.5",
     "@effect/language-service": "^0.0.13",
-    "@effect/vite-plugin": "file:./plugin-dev",
+    "@effect/vite-plugin": "./plugin-dev",
     "@rollup/pluginutils": "^5.0.2",
     "@types/babel__core": "^7.1.20",
     "@types/node": "^18.11.13",

@@ -3,7 +3,7 @@ import fs from "fs";
 import * as nodePath from "path";
 import ts from "typescript";
 import type * as V from "vite";
-import * as babel from "@babel/core";
+import reactPlugin, { Options } from "@vitejs/plugin-react";
 
 const configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
 
@@ -20,7 +20,6 @@ if (!fs.existsSync(cacheDir)) {
 
 const registry = ts.createDocumentRegistry();
 const files = new Set<string>();
-const babelConfigPath = nodePath.join(baseDir, "babel.config.js");
 
 let services: ts.LanguageService;
 
@@ -148,15 +147,47 @@ export const toCache = (fileName: string, content: string) => {
   return content;
 };
 
-function tsPlugin(options?: {
-  include?: Array<string>;
-  exclude?: Array<string>;
-}): V.Plugin {
-  const filter = createFilter(options?.include, options?.exclude);
+export const getCompiled = (path: string) => {
+  const cached = fromCache(path);
+  if (cached) {
+    return {
+      code: cached,
+    };
+  }
+
+  const syntactic = services.getSyntacticDiagnostics(path);
+
+  if (syntactic.length > 0) {
+    throw new Error(
+      syntactic
+        .map((_) => ts.flattenDiagnosticMessageText(_.messageText, "\n"))
+        .join("\n")
+    );
+  }
+
+  const semantic = services.getSemanticDiagnostics(path);
+  services.cleanupSemanticCache();
+
+  if (semantic.length > 0) {
+    throw new Error(
+      semantic
+        .map((_) => ts.flattenDiagnosticMessageText(_.messageText, "\n"))
+        .join("\n")
+    );
+  }
+
+  const code = toCache(path, getEmit(path));
 
   return {
+    code,
+  };
+};
+
+export function tsPlugin(options?: Options): V.PluginOption[] {
+  const filter = createFilter(options?.include, options?.exclude);
+  const plugin: V.PluginOption = {
     name: "ts-plugin",
-    // Vitest Specific Watch
+    enforce: "pre",
     configureServer(dev) {
       if (!services) {
         services = init();
@@ -182,7 +213,6 @@ function tsPlugin(options?: {
         }
       });
     },
-    // Rollup Generic Watch
     watchChange(path, change) {
       if (filter(path)) {
         if (/\.tsx?/.test(path)) {
@@ -203,56 +233,11 @@ function tsPlugin(options?: {
         }
       }
     },
-    transform(code, path) {
-      if (filter(path)) {
-        if (/\.tsx?/.test(path)) {
-          const cached = fromCache(path);
-          if (cached) {
-            return {
-              code: cached,
-            };
-          }
-          const syntactic = services.getSyntacticDiagnostics(path);
-          if (syntactic.length > 0) {
-            throw new Error(
-              syntactic
-                .map((_) =>
-                  ts.flattenDiagnosticMessageText(_.messageText, "\n")
-                )
-                .join("\n")
-            );
-          }
-          const semantic = services.getSemanticDiagnostics(path);
-          services.cleanupSemanticCache();
-          if (semantic.length > 0) {
-            throw new Error(
-              semantic
-                .map((_) =>
-                  ts.flattenDiagnosticMessageText(_.messageText, "\n")
-                )
-                .join("\n")
-            );
-          }
-          if (babelConfigPath && fs.existsSync(babelConfigPath)) {
-            const result = babel.transformSync(getEmit(path), {
-              filename: path,
-              configFile: babelConfigPath,
-              sourceMaps: "inline",
-            });
-            if (!result?.code) {
-              throw new Error(`Babel failed emit for file: ${path}`);
-            }
-            code = toCache(path, result.code);
-          } else {
-            code = toCache(path, getEmit(path));
-          }
-        }
-        return {
-          code,
-        };
+    transform(_, path) {
+      if (/\.tsx?/.test(path) && filter(path)) {
+        return getCompiled(path);
       }
     },
   };
+  return [plugin, ...reactPlugin(options)];
 }
-
-export { tsPlugin };
