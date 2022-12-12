@@ -1,7 +1,7 @@
 require("@remix-run/dev/dist/compiler/compileBrowser").createBrowserCompiler =
   require("./compiler/browser").createBrowserCompiler;
 
-require("@remix-run/dev/dist/compiler/compileBrowser").createServerCompiler =
+require("@remix-run/dev/dist/compiler/compilerServer").createServerCompiler =
   require("./compiler/server").createServerCompiler;
 
 const index = require("@remix-run/dev/dist/index.js");
