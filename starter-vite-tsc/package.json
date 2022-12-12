@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf .cache && rm -rf node_modules/.vite",
-    "build-plugin": "tsc -p plugin-dev/tsconfig.json"
+    "build-plugin": "tsc -p plugin-dev/tsconfig.json && yarn clean && yarn upgrade @effect/plugin-vite-react"
   },
   "dependencies": {
     "effect": "2.0.0-next.12",
@@ -25,6 +25,7 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^3.0.0",
+    "babel-plugin-annotate-pure-calls": "^0.4.0",
     "typescript": "https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz",
     "vite": "^4.0.0"
   }

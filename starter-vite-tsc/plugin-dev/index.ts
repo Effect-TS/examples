@@ -183,9 +183,7 @@ export const getCompiled = (path: string) => {
   };
 };
 
-export function effectPlugin(
-  options?: Pick<Options, "include" | "exclude">
-): V.PluginOption[] {
+export function effectPlugin(options?: Options): V.PluginOption[] {
   const filter = createFilter(options?.include, options?.exclude);
   const plugin: V.PluginOption = {
     name: "vite:typescript-effect",
