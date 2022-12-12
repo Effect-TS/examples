@@ -3,7 +3,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix-effect build",
-    "dev": "remix-effect dev"
+    "dev": "remix-effect dev",
+    "clean": "rm -rf .cache && rm -rf build"
   },
   "dependencies": {
     "@remix-run/express": "^1.8.1",
