@@ -1,4 +1,6 @@
 {
   "name": "@effect/remix-plugin",
-  "main": "./out/index.js"
+  "bin": {
+    "remix-effect": "out/index.js"
+  }
 }

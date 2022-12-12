@@ -2,6 +2,7 @@ import * as babel from "@babel/core";
 import * as nodePath from "path";
 import * as path from "path";
 import * as fs from "fs";
+import type * as esbuild from "esbuild";
 import ts from "typescript";
 
 const configPath = ts.findConfigFile("./", ts.sys.fileExists, "tsconfig.json");
@@ -137,7 +138,7 @@ export const toCache = (fileName: string, content: string) => {
   return content;
 };
 
-export const plugin = (_isBrowser: any, _config: any, _options: any) => {
+export const effectPlugin = (): esbuild.Plugin => {
   return {
     name: "effect-plugin",
     setup(build: any) {

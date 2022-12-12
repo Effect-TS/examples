@@ -1,5 +1,7 @@
-require("@remix-run/dev/dist/compiler/compileBrowser").createBrowserCompiler = require("./compiler/browser").createBrowserCompiler;
-require("@remix-run/dev/dist/compiler/compileBrowser").createServerCompiler = require("./compiler/server").createServerCompiler;
+require("@remix-run/dev/dist/compiler/compileBrowser").createBrowserCompiler =
+  require("./compiler/browser").createBrowserCompiler;
+require("@remix-run/dev/dist/compiler/compileBrowser").createServerCompiler =
+  require("./compiler/server").createServerCompiler;
 
 const index = require("@remix-run/dev/dist/index.js");
 const child = require("child_process");
@@ -14,7 +16,7 @@ cli.run().then(
   () => {
     const forked = child.exec(
       "cross-env NODE_ENV=development nodemon --require dotenv/config ./server.js --watch ./server.js",
-      (exit) => {
+      (exit: any) => {
         if (exit.code !== 0) {
           process.exit(exit.code);
         }
@@ -31,7 +33,7 @@ cli.run().then(
         forked.kill(0);
         process.exit(0);
       },
-      (error) => {
+      (error: any) => {
         forked.kill(1);
         // for expected errors we only show the message (if any), no stack trace
         if (error instanceof index.CliError) error = error.message;
@@ -40,10 +42,12 @@ cli.run().then(
       }
     );
   },
-  (error) => {
+  (error: any) => {
     // for expected errors we only show the message (if any), no stack trace
     if (error instanceof index.CliError) error = error.message;
     if (error) console.error(error);
     process.exit(1);
   }
 );
+
+export {};

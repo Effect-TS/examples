@@ -5,7 +5,8 @@
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "outDir": "out"
+    "outDir": "out",
+    "isolatedModules": false
   },
-  "include": ["./*.ts"]
+  "include": ["./src/**/*.ts"]
 }
