@@ -97,7 +97,7 @@ const getEmit = (path: string) => {
   program.emit(
     source,
     (file, content) => {
-      if (file.endsWith(".js")) {
+      if (file.endsWith(".js") || file.endsWith(".jsx")) {
         text = content;
       }
     },
@@ -185,13 +185,13 @@ export const getCompiled = (path: string) => {
 
 export function effectPlugin(options?: Options): V.PluginOption[] {
   const filter = createFilter(options?.include, options?.exclude);
+  if (!services) {
+    services = init();
+  }
   const plugin: V.PluginOption = {
     name: "vite:typescript-effect",
     enforce: "pre",
     configureServer(dev) {
-      if (!services) {
-        services = init();
-      }
       dev.watcher.on("all", (event, path) => {
         if (filter(path)) {
           if (/\.tsx?/.test(path)) {

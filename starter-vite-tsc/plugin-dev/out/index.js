@@ -109,7 +109,7 @@ var getEmit = function (path) {
     var source = program.getSourceFile(path);
     var text;
     program.emit(source, function (file, content) {
-        if (file.endsWith(".js")) {
+        if (file.endsWith(".js") || file.endsWith(".jsx")) {
             text = content;
         }
     }, void 0, void 0);
@@ -175,13 +175,13 @@ var getCompiled = function (path) {
 exports.getCompiled = getCompiled;
 function effectPlugin(options) {
     var filter = (0, pluginutils_1.createFilter)(options === null || options === void 0 ? void 0 : options.include, options === null || options === void 0 ? void 0 : options.exclude);
+    if (!services) {
+        services = init();
+    }
     var plugin = {
         name: "vite:typescript-effect",
         enforce: "pre",
         configureServer: function (dev) {
-            if (!services) {
-                services = init();
-            }
             dev.watcher.on("all", function (event, path) {
                 if (filter(path)) {
                     if (/\.tsx?/.test(path)) {
