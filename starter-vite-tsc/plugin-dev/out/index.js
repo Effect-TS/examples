@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.tsPlugin = exports.getCompiled = exports.toCache = exports.fromCache = void 0;
+exports.effectPlugin = exports.getCompiled = exports.toCache = exports.fromCache = void 0;
 var pluginutils_1 = require("@rollup/pluginutils");
 var fs_1 = __importDefault(require("fs"));
 var nodePath = __importStar(require("path"));
@@ -173,10 +173,10 @@ var getCompiled = function (path) {
     };
 };
 exports.getCompiled = getCompiled;
-function tsPlugin(options) {
+function effectPlugin(options) {
     var filter = (0, pluginutils_1.createFilter)(options === null || options === void 0 ? void 0 : options.include, options === null || options === void 0 ? void 0 : options.exclude);
     var plugin = {
-        name: "ts-plugin",
+        name: "vite:typescript-effect",
         enforce: "pre",
         configureServer: function (dev) {
             if (!services) {
@@ -231,4 +231,4 @@ function tsPlugin(options) {
     };
     return __spreadArray([plugin], (0, plugin_react_1["default"])(options), true);
 }
-exports.tsPlugin = tsPlugin;
+exports.effectPlugin = effectPlugin;

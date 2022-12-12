@@ -183,10 +183,12 @@ export const getCompiled = (path: string) => {
   };
 };
 
-export function tsPlugin(options?: Options): V.PluginOption[] {
+export function effectPlugin(
+  options?: Pick<Options, "include" | "exclude">
+): V.PluginOption[] {
   const filter = createFilter(options?.include, options?.exclude);
   const plugin: V.PluginOption = {
-    name: "ts-plugin",
+    name: "vite:typescript-effect",
     enforce: "pre",
     configureServer(dev) {
       if (!services) {
