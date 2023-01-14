@@ -1,2 +1,2 @@
-import "./debug.init.ts";
-import "./main.ts";
+import {} from "@/debug.init";
+import {} from "@/main";

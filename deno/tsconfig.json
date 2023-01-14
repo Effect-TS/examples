@@ -4,7 +4,8 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "npm:*": ["node_modules/*"]
+      "npm:*": ["node_modules/*"],
+      "@/*": ["./*.ts"]
     },
     "downlevelIteration": true,
     "module": "ES2022",

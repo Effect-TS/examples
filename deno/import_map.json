@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "@/lib": "./lib.ts",
+    "@/debug.init": "./debug.init.ts",
+    "@/debug": "./debug.ts",
+    "@/main": "./main.ts"
+  }
+}
