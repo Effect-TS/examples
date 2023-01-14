@@ -33,7 +33,6 @@ const main = pipe(
       Effect.onInterrupt(() => Effect.log(`interrupted push`)),
     )
   ),
-  Effect.scoped,
 );
 
 runMain(main);
