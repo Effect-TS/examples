@@ -1,5 +1,8 @@
 tasks:
-  - init: yarn install && brew install deno
+  - init: |
+      yarn install
+      curl -fsSL https://deno.land/x/install/install.sh | sh
+      ln -s /home/gitpod/.deno/bin/deno /bin/deno
 
 vscode:
   extensions: 
