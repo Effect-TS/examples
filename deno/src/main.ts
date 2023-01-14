@@ -4,19 +4,20 @@ const main = pipe(
   Effect.gen(function* ($) {
     const queue = yield* $(Queue.unbounded<number>());
 
-    yield* $(pipe(
-      Effect.gen(function* ($) {
-        yield* $(Effect.gen(function* ($) {
-          while (true) {
-            const n = yield* $(Queue.take(queue));
-            yield* $(Effect.log(`got: ${n}`));
-          }
-        }));
-      }),
-      Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
-      Effect.forkScoped,
-      Effect.repeatN(2),
-    ));
+    for (let i = 0; i < 3; i++) {
+      yield* $(pipe(
+        Effect.gen(function* ($) {
+          yield* $(Effect.gen(function* ($) {
+            while (true) {
+              const n = yield* $(Queue.take(queue));
+              yield* $(Effect.log(`got: ${n}`));
+            }
+          }));
+        }),
+        Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
+        Effect.forkScoped,
+      ));
+    }
 
     return queue;
   }),
