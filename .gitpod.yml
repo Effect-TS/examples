@@ -2,7 +2,7 @@ tasks:
   - init: |
       yarn install
       curl -fsSL https://deno.land/x/install/install.sh | sh
-      ln -s /home/gitpod/.deno/bin/deno /bin/deno
+      sudo ln -s /home/gitpod/.deno/bin/deno /bin/deno
 
 vscode:
   extensions: 
