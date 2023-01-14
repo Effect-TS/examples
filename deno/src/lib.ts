@@ -22,7 +22,7 @@ export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
 
   fiber.unsafeAddObserver((exit) => {
     if (!interrupt) {
-      if (Exit.isFailure(exit)) {
+      if (Exit.isFailure(exit) && !Cause.isInterruptedOnly(exit.cause)) {
         Deno.exit(1);
       } else {
         Deno.exit(0);
@@ -39,7 +39,7 @@ export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
         Effect.flatten,
         Effect.unsafeFork,
       ).unsafeAddObserver((exit) => {
-        if (Exit.isFailure(exit)) {
+        if (Exit.isFailure(exit) && !Cause.isInterruptedOnly(exit.cause)) {
           Deno.exit(1);
         } else {
           Deno.exit(0);
