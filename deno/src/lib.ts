@@ -3,7 +3,6 @@ import * as Effect from 'npm:@effect/io/Effect';
 import * as Fiber from 'npm:@effect/io/Fiber';
 import * as Exit from 'npm:@effect/io/Exit';
 import { pipe } from 'npm:@fp-ts/data/Function';
-import { millis } from 'npm:@fp-ts/data/Duration';
 
 export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
   let interrupt = false;
