@@ -6,14 +6,24 @@ const main = pipe(
 
     yield* $(pipe(
       Effect.gen(function* ($) {
-        let n = 0;
-        while (true) {
-          yield* $(Effect.sleep(Duration.millis(500)));
-          yield* $(Queue.offer(n++)(queue));
-        }
+        yield* $(Effect.gen(function* ($) {
+          while (true) {
+            const n = yield* $(Queue.take(queue));
+            yield* $(
+              Effect.fiberIdWith((id) =>
+                Effect.log(`got: ${n} (fiber #${id.id})`)
+              ),
+            );
+          }
+        }));
       }),
-      Effect.onInterrupt(() => Effect.log('interrupted push')),
+      Effect.onInterrupt(() =>
+        Effect.fiberIdWith((id) =>
+          Effect.log(`interrupted pull (fiber #${id.id})`)
+        )
+      ),
       Effect.forkScoped,
+      Effect.repeatN(2),
     ));
 
     return queue;
@@ -21,14 +31,17 @@ const main = pipe(
   Effect.flatMap((queue) =>
     pipe(
       Effect.gen(function* ($) {
-        yield* $(Effect.gen(function* ($) {
-          while (true) {
-            const n = yield* $(Queue.take(queue));
-            yield* $(Effect.log(`got: ${n}`));
-          }
-        }));
+        let n = 0;
+        while (true) {
+          yield* $(Effect.sleep(Duration.millis(500)));
+          yield* $(Queue.offer(n++)(queue));
+        }
       }),
-      Effect.onInterrupt(() => Effect.log('interrupted pull')),
+      Effect.onInterrupt(() =>
+        Effect.fiberIdWith((id) =>
+          Effect.log(`interrupted push (fiber #${id.id})`)
+        )
+      ),
     )
   ),
   Effect.scoped,
