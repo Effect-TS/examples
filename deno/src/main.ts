@@ -14,7 +14,7 @@ const main = Effect.gen(function* ($) {
         }));
       }),
       Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
-      Effect.forkScoped,
+      Effect.fork,
     ));
   }
 

@@ -1,15 +1,14 @@
 import * as Cause from 'npm:@effect/io/Cause';
 import * as Effect from 'npm:@effect/io/Effect';
 import * as Fiber from 'npm:@effect/io/Fiber';
-import * as Scope from 'npm:@effect/io/Scope';
 import * as Exit from 'npm:@effect/io/Exit';
 import { pipe } from 'npm:@fp-ts/data/Function';
 
-export const runMain = <E, A>(effect: Effect.Effect<Scope.Scope, E, A>) => {
+export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
   let interrupt = false;
 
   const fiber = pipe(
-    Effect.scoped(effect),
+    effect,
     Effect.matchCauseEffect(
       (cause) =>
         Cause.isInterruptedOnly(cause) ? Effect.unit() : pipe(
