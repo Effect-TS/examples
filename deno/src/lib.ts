@@ -18,6 +18,7 @@ export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
           : Effect.logErrorCause(cause),
       () => Effect.unit(),
     ),
+    Effect.traced(void 0),
     Effect.provideSomeLayer(
       Deno.env.get('LOGGER') === 'LOGFMT'
         ? Logger.logFmt
