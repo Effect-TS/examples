@@ -2,6 +2,7 @@ import * as Cause from 'npm:@effect/io/Cause';
 import * as Effect from 'npm:@effect/io/Effect';
 import * as Fiber from 'npm:@effect/io/Fiber';
 import * as Exit from 'npm:@effect/io/Exit';
+import * as Logger from 'npm:@effect/io/Logger';
 import { pipe } from 'npm:@fp-ts/data/Function';
 
 export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
@@ -16,6 +17,7 @@ export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
           : Effect.logErrorCause(cause),
       () => Effect.unit(),
     ),
+    Effect.provideSomeLayer(Logger.logFmt),
     Effect.unsafeFork,
   );
 
@@ -44,6 +46,7 @@ export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
               ))
               : Exit.succeed(exit.value),
         ),
+        Effect.provideSomeLayer(Logger.logFmt),
         Effect.unsafeFork,
       ).unsafeAddObserver((exit) => {
         if (Exit.isFailure(exit) && !Cause.isInterruptedOnly(exit.cause)) {

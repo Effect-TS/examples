@@ -18,6 +18,10 @@ const push = (queue: Queue.Queue<number>) =>
       while (true) {
         yield* $(Effect.sleep(Duration.millis(500)));
         yield* $(Queue.offer(n++)(queue));
+
+        if (n > 6) {
+          yield* $(Effect.die('boom'));
+        }
       }
     }),
     Effect.onInterrupt(() => Effect.log(`interrupted push`)),
