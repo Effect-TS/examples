@@ -13,7 +13,7 @@ const pull = (queue: Queue.Queue<number>) =>
     Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
   );
 
-const push = (queue: Queue.Queue<number>): Effect.Effect<never, never, never> =>
+const push = (queue: Queue.Queue<number>) =>
   pipe(
     Effect.gen(function* ($) {
       let n = 0;
