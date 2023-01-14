@@ -1,24 +1,20 @@
 import { Duration, Effect, pipe, Queue, runMain } from '@/lib';
 
-const main = Effect.gen(function* ($) {
-  const queue = yield* $(Queue.unbounded<number>());
+const pull = (queue: Queue.Queue<number>) =>
+  pipe(
+    Effect.gen(function* ($) {
+      yield* $(Effect.gen(function* ($) {
+        while (true) {
+          const n = yield* $(Queue.take(queue));
+          yield* $(Effect.log(`got: ${n}`));
+        }
+      }));
+    }),
+    Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
+  );
 
-  for (let i = 0; i < 3; i++) {
-    yield* $(pipe(
-      Effect.gen(function* ($) {
-        yield* $(Effect.gen(function* ($) {
-          while (true) {
-            const n = yield* $(Queue.take(queue));
-            yield* $(Effect.log(`got: ${n}`));
-          }
-        }));
-      }),
-      Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
-      Effect.fork,
-    ));
-  }
-
-  yield* $(pipe(
+const push = (queue: Queue.Queue<number>): Effect.Effect<never, never, never> =>
+  pipe(
     Effect.gen(function* ($) {
       let n = 0;
       while (true) {
@@ -27,7 +23,16 @@ const main = Effect.gen(function* ($) {
       }
     }),
     Effect.onInterrupt(() => Effect.log(`interrupted push`)),
-  ));
+  );
+
+const main = Effect.gen(function* ($) {
+  const queue = yield* $(Queue.unbounded<number>());
+
+  for (let i = 0; i < 3; i++) {
+    yield* $(Effect.fork(pull(queue)));
+  }
+
+  yield* $(push(queue));
 });
 
 runMain(main);
