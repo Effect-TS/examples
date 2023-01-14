@@ -3,12 +3,10 @@ import { Duration, Effect, pipe, Queue, runMain } from '@/lib';
 const pull = (queue: Queue.Queue<number>) =>
   pipe(
     Effect.gen(function* ($) {
-      yield* $(Effect.gen(function* ($) {
-        while (true) {
-          const n = yield* $(Queue.take(queue));
-          yield* $(Effect.log(`got: ${n}`));
-        }
-      }));
+      while (true) {
+        const n = yield* $(Queue.take(queue));
+        yield* $(Effect.log(`got: ${n}`));
+      }
     }),
     Effect.onInterrupt(() => Effect.log(`interrupted pull`)),
   );
