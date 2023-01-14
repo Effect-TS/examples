@@ -3,6 +3,7 @@ import * as Effect from 'npm:@effect/io/Effect';
 import * as Fiber from 'npm:@effect/io/Fiber';
 import * as Exit from 'npm:@effect/io/Exit';
 import * as Logger from 'npm:@effect/io/Logger';
+import * as Layer from 'npm:@effect/io/Layer';
 import { pipe } from 'npm:@fp-ts/data/Function';
 
 export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
@@ -17,7 +18,11 @@ export const runMain = <E, A>(effect: Effect.Effect<never, E, A>) => {
           : Effect.logErrorCause(cause),
       () => Effect.unit(),
     ),
-    Effect.provideSomeLayer(Logger.logFmt),
+    Effect.provideSomeLayer(
+      Deno.env.get('LOGGER') === 'LOGFMT'
+        ? Logger.logFmt
+        : Layer.environment<never>(),
+    ),
     Effect.unsafeFork,
   );
 
