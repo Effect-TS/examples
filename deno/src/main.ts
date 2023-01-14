@@ -32,7 +32,7 @@ const main = Effect.gen(function* ($) {
     yield* $(Effect.fork(pull(queue)));
   }
 
-  yield* $(push(queue));
+  return yield* $(push(queue));
 });
 
 runMain(main);
