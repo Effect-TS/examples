@@ -1,0 +1,17 @@
+lockfileVersion: 5.4
+
+specifiers:
+  typescript: https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz
+
+devDependencies:
+  typescript: '@cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz'
+
+packages:
+
+  '@cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz':
+    resolution: {tarball: https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz}
+    name: typescript
+    version: 5.0.0-tsplus.20221124
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
