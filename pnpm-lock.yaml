@@ -1,10 +1,13 @@
-lockfileVersion: 5.4
+lockfileVersion: '6.0'
 
-specifiers:
-  typescript: https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 devDependencies:
-  typescript: '@cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz'
+  typescript:
+    specifier: https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz
+    version: '@cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz'
 
 packages:
 
