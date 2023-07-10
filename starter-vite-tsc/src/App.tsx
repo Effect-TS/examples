@@ -24,7 +24,7 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <p>Trace in Effect: {(Effect.succeed(0) as any)["trace"]}</p>
+        // <p>Trace in Effect: {(Effect.succeed(0) as any)["trace"]}</p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
