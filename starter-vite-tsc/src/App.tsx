@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { Effect } from "effect/io";
+import { Effect } from "~/lib";
 
 function App() {
   const [count, setCount] = useState(0);

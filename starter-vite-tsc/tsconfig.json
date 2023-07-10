@@ -16,7 +16,10 @@
     "noEmit": true,
     "jsx": "preserve",
     "transformers": [{ "name": "@effect/language-service/transformer" }],
-    "tsPlusEnabled": false
+    "tsPlusEnabled": false,
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
