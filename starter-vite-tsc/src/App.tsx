@@ -10,9 +10,7 @@ const program = Effect.sync(() => {
 function App() {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    Effect.runSync(program);
-  }, []);
+  useEffect(() => () => Effect.runSync(program), []);
 
   return (
     <div className="App">
