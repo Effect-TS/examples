@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
+import { Effect } from "effect";
 import "./App.css";
-import { Effect } from "~/lib";
 
 const program = Effect.sync(() => {
   console.log("Hello, World!");
