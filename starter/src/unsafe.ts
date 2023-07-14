@@ -1,4 +1,4 @@
-import { Effect, pipe } from "~/lib";
+import { Effect, pipe } from "effect";
 import { program } from "~/program";
 import { NameServiceLive } from "~/services/name";
 

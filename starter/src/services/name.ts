@@ -1,4 +1,4 @@
-import { Effect, Layer, Context } from "~/lib";
+import { Effect, Layer, Context } from "effect";
 
 export interface NameService {
   getName: Effect.Effect<never, never, string>;
