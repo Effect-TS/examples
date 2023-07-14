@@ -5,6 +5,6 @@ import { NameServiceLive } from "~/services/name";
 pipe(
   program,
   Effect.provideLayer(NameServiceLive),
-  Effect.tapErrorCause(Effect.logErrorCause),
+  Effect.tapErrorCause(Effect.logCause({ level: "Error" })),
   Effect.runFork
 );
