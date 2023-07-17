@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/unsafe.ts"
+    "start": "ts-node -r tsconfig-paths/register src/index.ts"
   },
   "keywords": [],
   "author": "Michael Arnaldi",
@@ -15,9 +15,9 @@
     "prettier": "^2.8.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
-    "typescript": "^4.9.3"
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "effect": "2.0.0-next.16"
+    "effect": "2.0.0-next.17"
   }
 }
