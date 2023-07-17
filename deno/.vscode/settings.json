@@ -1,8 +1,0 @@
-{
-  "editor.formatOnSave": true,
-  "deno.enable": true,
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "editor.inlayHints.enabled": "off"
-  }
-}
