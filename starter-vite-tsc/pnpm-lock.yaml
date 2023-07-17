@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   effect:
-    specifier: 2.0.0-next.16
-    version: 2.0.0-next.16
+    specifier: 2.0.0-next.17
+    version: 2.0.0-next.17
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -47,8 +47,8 @@ devDependencies:
     specifier: ^0.4.0
     version: 0.4.0(@babel/core@7.22.9)
   typescript:
-    specifier: https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz
-    version: '@cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz'
+    specifier: 5.1.6
+    version: 5.1.6
   vite:
     specifier: ^4.4.4
     version: 4.4.4(@types/node@18.16.19)
@@ -281,14 +281,14 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@effect/data@0.14.3:
-    resolution: {integrity: sha512-n9/4OaChZ5OzVQ7eIIPzEsJ9d6hwqo45KZyO4OguiTm5xAVfBpULKt6EDk8RoVwwNd8s4CqnfTtudlZbb8AqoQ==}
+  /@effect/data@0.15.1:
+    resolution: {integrity: sha512-dYe3GL2Lq8M56Q+QvEOPRtpRovhy1QprlBRGIjaCRPZ8DbwRFQZSdPPOL+ZX6e7y3DPF0RW+DFLHYRMA6qGOCw==}
     dev: false
 
-  /@effect/io@0.32.2:
-    resolution: {integrity: sha512-NLDNAoAjlT3SoaiF2N4NkelOwZbNo11QEqmoR5u9tI3GDArJVBflMsqdRZhyzS61TMDXXmJDfmjovA6yPNQKvg==}
+  /@effect/io@0.33.0:
+    resolution: {integrity: sha512-CwEiAKLZG368t2lNti7u3sX2wi0SS5c+Z0Xb3QVE0fA0WoRidNqlVwzvjMyUqYW6Rtwn0vCqyhAsfK3YVze5FQ==}
     dependencies:
-      '@effect/data': 0.14.3
+      '@effect/data': 0.15.1
     dev: false
 
   /@effect/language-service@0.0.19:
@@ -698,11 +698,11 @@ packages:
       ms: 2.1.2
     dev: true
 
-  /effect@2.0.0-next.16:
-    resolution: {integrity: sha512-J+mLxtWI3xpaAjJL1nMpn3byX82HtCDT3j2vx/UZEKtN/7tfKF7Du6Vz00qMrBSZ3n6Siy6hEAvcylRuviLSHQ==}
+  /effect@2.0.0-next.17:
+    resolution: {integrity: sha512-OYYuZ497/zRlFSKThnyiTdi7ycyGIEWlWqJ9ILHW4P4BabIIL9MDif9V14UKFHJ8HuAVLDEI0Odk9HqnP//qRw==}
     dependencies:
-      '@effect/data': 0.14.3
-      '@effect/io': 0.32.2
+      '@effect/data': 0.15.1
+      '@effect/io': 0.33.0
     dev: false
 
   /electron-to-chromium@1.4.461:
@@ -901,6 +901,12 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /typescript@5.1.6:
+    resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
+
   /update-browserslist-db@1.0.11(browserslist@4.21.9):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}
     hasBin: true
@@ -950,12 +956,4 @@ packages:
 
   /yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
-    dev: true
-
-  '@cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz':
-    resolution: {tarball: https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz}
-    name: typescript
-    version: 5.0.0-tsplus.20221124
-    engines: {node: '>=4.2.0'}
-    hasBin: true
     dev: true
