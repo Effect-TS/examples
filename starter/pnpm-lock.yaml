@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   effect:
-    specifier: 2.0.0-next.17
-    version: 2.0.0-next.17
+    specifier: 2.0.0-next.19
+    version: 2.0.0-next.19
 
 devDependencies:
   '@effect/language-service':
@@ -38,14 +38,14 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
-  /@effect/data@0.15.1:
-    resolution: {integrity: sha512-dYe3GL2Lq8M56Q+QvEOPRtpRovhy1QprlBRGIjaCRPZ8DbwRFQZSdPPOL+ZX6e7y3DPF0RW+DFLHYRMA6qGOCw==}
+  /@effect/data@0.16.1:
+    resolution: {integrity: sha512-rIoLk+5xY1lakbzd7k5xbuPvfiR+BSQSrOyxX5Fo5oXWt1a29k31K/0Cq+9NtwqsAE7aNMlQtw6Z1d0Sxw1i9Q==}
     dev: false
 
-  /@effect/io@0.33.0:
-    resolution: {integrity: sha512-CwEiAKLZG368t2lNti7u3sX2wi0SS5c+Z0Xb3QVE0fA0WoRidNqlVwzvjMyUqYW6Rtwn0vCqyhAsfK3YVze5FQ==}
+  /@effect/io@0.35.1:
+    resolution: {integrity: sha512-kSYaYXSzBkDdtEgBOBZTOsF+7D9HRiMNwkDTGRARRow/5zXJVZxHxDAZJdA/3Am7irCD7yeDDsxsMVwqgfJdYg==}
     dependencies:
-      '@effect/data': 0.15.1
+      '@effect/data': 0.16.1
     dev: false
 
   /@effect/language-service@0.0.17:
@@ -125,11 +125,11 @@ packages:
     engines: {node: '>=0.3.1'}
     dev: true
 
-  /effect@2.0.0-next.17:
-    resolution: {integrity: sha512-OYYuZ497/zRlFSKThnyiTdi7ycyGIEWlWqJ9ILHW4P4BabIIL9MDif9V14UKFHJ8HuAVLDEI0Odk9HqnP//qRw==}
+  /effect@2.0.0-next.19:
+    resolution: {integrity: sha512-Zz6mnnu1xNWPzGs27r0tV7Tvruio5BYEgzChxqULJS/M35MRS02vC8lEURnvqNoAAEbViOUyjC5W9AGQ3fJ6LQ==}
     dependencies:
-      '@effect/data': 0.15.1
-      '@effect/io': 0.33.0
+      '@effect/data': 0.16.1
+      '@effect/io': 0.35.1
     dev: false
 
   /json5@2.2.3:
