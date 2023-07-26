@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import reactLogo from "./assets/react.svg";
-import { Effect } from "effect";
 import "./App.css";
-
-const program = Effect.sync(() => {
-  console.log("Hello, World!");
-});
+import { Effect } from "effect";
 
 function App() {
   const [count, setCount] = useState(0);
 
-  useEffect(() => () => Effect.runSync(program), []);
+  // Effect<never, never, void>
+  const myeffect = useMemo(
+    () => Effect.sync(() => setCount((current) => current + 1)),
+    [setCount],
+  );
+
+  const increment = useCallback(() => Effect.runSync(myeffect), [myeffect]);
 
   return (
     <div className="App">
@@ -24,9 +26,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={increment}>count is {count}</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
