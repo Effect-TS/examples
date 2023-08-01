@@ -2,11 +2,8 @@ import { Effect } from "effect";
 import { NameService } from "~/NameService";
 
 // Effect<NameService, never, void>
-export const program = NameService.pipe(
-  Effect.flatMap((service) => service.getName),
-  Effect.flatMap((name) =>
-    Effect.sync(() => {
-      console.log(`Hello ${name}!`);
-    }),
-  ),
-);
+export const program = Effect.gen(function* (_) {
+  const service = yield* _(NameService);
+  const name = yield* _(service.getName);
+  console.log(`Hello ${name}!`);
+});
