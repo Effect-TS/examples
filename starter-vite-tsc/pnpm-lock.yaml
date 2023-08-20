@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   effect:
-    specifier: 2.0.0-next.25
-    version: 2.0.0-next.25(@effect/data@0.17.1)(@effect/io@0.38.0)(@effect/match@0.32.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0)
+    specifier: 2.0.0-next.27
+    version: 2.0.0-next.27(@effect/data@0.17.1)(@effect/io@0.38.2)(@effect/match@0.33.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -285,8 +285,8 @@ packages:
     resolution: {integrity: sha512-QCYkLE5Y5Dm5Yax5R3GmW4ZIgTx7W+kSZ7yq5eqQ/mFWa8i4yxbLuu8cudqzdeZtRtTGZKlhDxfFfgVtMywXJg==}
     dev: false
 
-  /@effect/io@0.38.0(@effect/data@0.17.1):
-    resolution: {integrity: sha512-qlVC9ASxNC+L2NKX5qOV9672CE5wWizfwBSFaX2XLI7CC118WRvohCTIPQ52n50Bj5TmR20+na+U9C7e4VkqzA==}
+  /@effect/io@0.38.2(@effect/data@0.17.1):
+    resolution: {integrity: sha512-rnAXFo9BDLbY7DgQE1e8uP/sEniyVCsB7gNs+yXPu0XK9s4kaGinH6XgwYRDBuu7Fu1tQ1yd7JoAdEb7yutNRg==}
     peerDependencies:
       '@effect/data': ^0.17.1
     dependencies:
@@ -300,45 +300,32 @@ packages:
       '@fp-ts/data': 0.0.41
     dev: true
 
-  /@effect/match@0.32.0(@effect/data@0.17.1)(@effect/schema@0.33.0):
-    resolution: {integrity: sha512-04QfnIgCcMnnNbGxTv2xa9/7q1c5kgpsBodqTUZ8eX86A/EdE8Czz+JkVarG00/xE+nYhQLXOXCN9Zj+dtqVkQ==}
+  /@effect/match@0.33.0(@effect/data@0.17.1):
+    resolution: {integrity: sha512-xAxhWTEcLgtUZC8+II0DmOhcYP+8oR2GdVZMFitQVzXRKCIqXnevrUX1BZnZWjds8YcMWswrCVQ5hhlsnK/lCQ==}
     peerDependencies:
       '@effect/data': ^0.17.1
-      '@effect/schema': ^0.33.0
     dependencies:
       '@effect/data': 0.17.1
-      '@effect/schema': 0.33.0(@effect/data@0.17.1)(@effect/io@0.38.0)
     dev: false
 
-  /@effect/schema@0.33.0(@effect/data@0.17.1)(@effect/io@0.38.0):
-    resolution: {integrity: sha512-K/IDp8aZpqqy2IBydnRtjNF7Sg/qZjiR5t+OANDZ2yOmTHRgtvWM4fwYV5kGYzEBZaBZEqUGjzj4KOqbsQhCEw==}
-    peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
-    dependencies:
-      '@effect/data': 0.17.1
-      '@effect/io': 0.38.0(@effect/data@0.17.1)
-      fast-check: 3.12.0
-    dev: false
-
-  /@effect/stm@0.22.0(@effect/data@0.17.1)(@effect/io@0.38.0):
+  /@effect/stm@0.22.0(@effect/data@0.17.1)(@effect/io@0.38.2):
     resolution: {integrity: sha512-K+v05Iveg9h//xZbo/JekZE4mHln8QA7dpfl84L3VKQlUfiAZOiN4ABTyb41Ly+n+YywSSbeTdbOya0ccxx/rQ==}
     peerDependencies:
       '@effect/data': ^0.17.1
       '@effect/io': ^0.38.0
     dependencies:
       '@effect/data': 0.17.1
-      '@effect/io': 0.38.0(@effect/data@0.17.1)
+      '@effect/io': 0.38.2(@effect/data@0.17.1)
     dev: false
 
-  /@effect/stream@0.34.0(@effect/data@0.17.1)(@effect/io@0.38.0):
+  /@effect/stream@0.34.0(@effect/data@0.17.1)(@effect/io@0.38.2):
     resolution: {integrity: sha512-8eDDQ0JG+ctsstLH/Qo4ojBkcEIFtqpEsWZS6leAwY9gXVmEG54PMWXZiX6dTchgQXKmSnLkEh36leAq4piawQ==}
     peerDependencies:
       '@effect/data': ^0.17.1
       '@effect/io': ^0.38.0
     dependencies:
       '@effect/data': 0.17.1
-      '@effect/io': 0.38.0(@effect/data@0.17.1)
+      '@effect/io': 0.38.2(@effect/data@0.17.1)
     dev: false
 
   /@esbuild/android-arm64@0.18.12:
@@ -741,20 +728,20 @@ packages:
       ms: 2.1.2
     dev: true
 
-  /effect@2.0.0-next.25(@effect/data@0.17.1)(@effect/io@0.38.0)(@effect/match@0.32.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0):
-    resolution: {integrity: sha512-fnDdmTh769T2l7sKjwV1tODYhmTbFfTA8sXh9qncW6/Fr0qbXFF/bbG6GIlL3xv6PSWsCZZqdXZ6doJZsr1MWQ==}
+  /effect@2.0.0-next.27(@effect/data@0.17.1)(@effect/io@0.38.2)(@effect/match@0.33.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0):
+    resolution: {integrity: sha512-Z2hcIn7eTcBIC0m12JYvZlhymp6zFm8APaQvlr3scuU3pVcIugNCkl/LdSU790QM5jKCpDsoDle9FFZOD+EjFA==}
     peerDependencies:
       '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
-      '@effect/match': ^0.32.0
+      '@effect/io': ^0.38.2
+      '@effect/match': ^0.33.0
       '@effect/stm': ^0.22.0
       '@effect/stream': ^0.34.0
     dependencies:
       '@effect/data': 0.17.1
-      '@effect/io': 0.38.0(@effect/data@0.17.1)
-      '@effect/match': 0.32.0(@effect/data@0.17.1)(@effect/schema@0.33.0)
-      '@effect/stm': 0.22.0(@effect/data@0.17.1)(@effect/io@0.38.0)
-      '@effect/stream': 0.34.0(@effect/data@0.17.1)(@effect/io@0.38.0)
+      '@effect/io': 0.38.2(@effect/data@0.17.1)
+      '@effect/match': 0.33.0(@effect/data@0.17.1)
+      '@effect/stm': 0.22.0(@effect/data@0.17.1)(@effect/io@0.38.2)
+      '@effect/stream': 0.34.0(@effect/data@0.17.1)(@effect/io@0.38.2)
     dev: false
 
   /electron-to-chromium@1.4.461:
@@ -804,13 +791,6 @@ packages:
   /estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
     dev: true
-
-  /fast-check@3.12.0:
-    resolution: {integrity: sha512-SqahE9mlL3+lhjJ39joMLwcj6F+24hfZdf/tchlNO8sHcTdrUUdA5P/ZbSFZM9Xpzs36XaneGwE0FWepm/zyOA==}
-    engines: {node: '>=8.0.0'}
-    dependencies:
-      pure-rand: 6.0.2
-    dev: false
 
   /fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -901,10 +881,6 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
-
-  /pure-rand@6.0.2:
-    resolution: {integrity: sha512-6Yg0ekpKICSjPswYOuC5sku/TSWaRYlA0qsXqJgM/d/4pLPHPuTxK7Nbf7jFKzAeedUhR8C7K9Uv63FBsSo8xQ==}
-    dev: false
 
   /react-dom@18.2.0(react@18.2.0):
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
