@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   effect:
-    specifier: 2.0.0-next.27
-    version: 2.0.0-next.27(@effect/data@0.17.1)(@effect/io@0.38.2)(@effect/match@0.33.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0)
+    specifier: 2.0.0-next.30
+    version: 2.0.0-next.30(@effect/data@0.18.3)(@effect/io@0.39.1)(@effect/match@0.35.2)(@effect/stm@0.23.0)(@effect/stream@0.35.1)
 
 devDependencies:
   '@effect/language-service':
@@ -38,16 +38,16 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
-  /@effect/data@0.17.1:
-    resolution: {integrity: sha512-QCYkLE5Y5Dm5Yax5R3GmW4ZIgTx7W+kSZ7yq5eqQ/mFWa8i4yxbLuu8cudqzdeZtRtTGZKlhDxfFfgVtMywXJg==}
+  /@effect/data@0.18.3:
+    resolution: {integrity: sha512-xNG4CwxE758EK0v81EIPnKv9QeU/x9st1Doab/Fjf7sb9V3n55C85aBiKChpKgGD8pKCPHcjGydLsRHVUvzpwg==}
     dev: false
 
-  /@effect/io@0.38.2(@effect/data@0.17.1):
-    resolution: {integrity: sha512-rnAXFo9BDLbY7DgQE1e8uP/sEniyVCsB7gNs+yXPu0XK9s4kaGinH6XgwYRDBuu7Fu1tQ1yd7JoAdEb7yutNRg==}
+  /@effect/io@0.39.1(@effect/data@0.18.3):
+    resolution: {integrity: sha512-ISBX1EYsWdVBMOV3ZmEVtbMW8FyVwmK6K47rx8ztOjMBKS5tfhB4W8iRjyycObvvlolfpIcZuAAPrCW5Tty+4Q==}
     peerDependencies:
-      '@effect/data': ^0.17.1
+      '@effect/data': ^0.18.0
     dependencies:
-      '@effect/data': 0.17.1
+      '@effect/data': 0.18.3
     dev: false
 
   /@effect/language-service@0.0.17:
@@ -57,32 +57,32 @@ packages:
       '@fp-ts/data': 0.0.41
     dev: true
 
-  /@effect/match@0.33.0(@effect/data@0.17.1):
-    resolution: {integrity: sha512-xAxhWTEcLgtUZC8+II0DmOhcYP+8oR2GdVZMFitQVzXRKCIqXnevrUX1BZnZWjds8YcMWswrCVQ5hhlsnK/lCQ==}
+  /@effect/match@0.35.2(@effect/data@0.18.3):
+    resolution: {integrity: sha512-2zZhWIdejX3xqbjormykBveHZTB/DBr/u/XBj5Ln6u2ShbMvoUykgVEscQLN3CsQeHDS14Vvr1DOvH0qeMILZQ==}
     peerDependencies:
-      '@effect/data': ^0.17.1
+      '@effect/data': ^0.18.3
     dependencies:
-      '@effect/data': 0.17.1
+      '@effect/data': 0.18.3
     dev: false
 
-  /@effect/stm@0.22.0(@effect/data@0.17.1)(@effect/io@0.38.2):
-    resolution: {integrity: sha512-K+v05Iveg9h//xZbo/JekZE4mHln8QA7dpfl84L3VKQlUfiAZOiN4ABTyb41Ly+n+YywSSbeTdbOya0ccxx/rQ==}
+  /@effect/stm@0.23.0(@effect/data@0.18.3)(@effect/io@0.39.1):
+    resolution: {integrity: sha512-c8pXK5mN9ZCFwPvxNJRzxAWwwSWjkdxs1FlCh1mdyXSah0uSD+lkuvEKrcpJCJroMmMBPrxKJv5ascfzTbBE9A==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
+      '@effect/data': ^0.18.3
+      '@effect/io': ^0.39.0
     dependencies:
-      '@effect/data': 0.17.1
-      '@effect/io': 0.38.2(@effect/data@0.17.1)
+      '@effect/data': 0.18.3
+      '@effect/io': 0.39.1(@effect/data@0.18.3)
     dev: false
 
-  /@effect/stream@0.34.0(@effect/data@0.17.1)(@effect/io@0.38.2):
-    resolution: {integrity: sha512-8eDDQ0JG+ctsstLH/Qo4ojBkcEIFtqpEsWZS6leAwY9gXVmEG54PMWXZiX6dTchgQXKmSnLkEh36leAq4piawQ==}
+  /@effect/stream@0.35.1(@effect/data@0.18.3)(@effect/io@0.39.1):
+    resolution: {integrity: sha512-MPtZdEZ3U2vtQTg+jXm6Xg5i0p4wO+BC4KtXqV93KIajk7sLfjlLlRf7GqlUPZgMH+jSoOAPARjM+G3UsNhMvg==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.0
+      '@effect/data': ^0.18.3
+      '@effect/io': ^0.39.0
     dependencies:
-      '@effect/data': 0.17.1
-      '@effect/io': 0.38.2(@effect/data@0.17.1)
+      '@effect/data': 0.18.3
+      '@effect/io': 0.39.1(@effect/data@0.18.3)
     dev: false
 
   /@fp-ts/core@0.0.11:
@@ -155,20 +155,20 @@ packages:
     engines: {node: '>=0.3.1'}
     dev: true
 
-  /effect@2.0.0-next.27(@effect/data@0.17.1)(@effect/io@0.38.2)(@effect/match@0.33.0)(@effect/stm@0.22.0)(@effect/stream@0.34.0):
-    resolution: {integrity: sha512-Z2hcIn7eTcBIC0m12JYvZlhymp6zFm8APaQvlr3scuU3pVcIugNCkl/LdSU790QM5jKCpDsoDle9FFZOD+EjFA==}
+  /effect@2.0.0-next.30(@effect/data@0.18.3)(@effect/io@0.39.1)(@effect/match@0.35.2)(@effect/stm@0.23.0)(@effect/stream@0.35.1):
+    resolution: {integrity: sha512-7mCheLiy6x33e4qXLSFpQ9TCpj/+gPhPjLtBY9HODzH0sQw3B4sBUytoKWd+7DnRJRU7sdJbpPZnfDz+M1g3fw==}
     peerDependencies:
-      '@effect/data': ^0.17.1
-      '@effect/io': ^0.38.2
-      '@effect/match': ^0.33.0
-      '@effect/stm': ^0.22.0
-      '@effect/stream': ^0.34.0
+      '@effect/data': ^0.18.3
+      '@effect/io': ^0.39.0
+      '@effect/match': ^0.35.1
+      '@effect/stm': ^0.23.0
+      '@effect/stream': ^0.35.1
     dependencies:
-      '@effect/data': 0.17.1
-      '@effect/io': 0.38.2(@effect/data@0.17.1)
-      '@effect/match': 0.33.0(@effect/data@0.17.1)
-      '@effect/stm': 0.22.0(@effect/data@0.17.1)(@effect/io@0.38.2)
-      '@effect/stream': 0.34.0(@effect/data@0.17.1)(@effect/io@0.38.2)
+      '@effect/data': 0.18.3
+      '@effect/io': 0.39.1(@effect/data@0.18.3)
+      '@effect/match': 0.35.2(@effect/data@0.18.3)
+      '@effect/stm': 0.23.0(@effect/data@0.18.3)(@effect/io@0.39.1)
+      '@effect/stream': 0.35.1(@effect/data@0.18.3)(@effect/io@0.39.1)
     dev: false
 
   /json5@2.2.3:
