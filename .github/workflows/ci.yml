@@ -29,3 +29,28 @@ jobs:
         working-directory: starter-vite-tsc
       - run: pnpm build
         working-directory: starter-vite-tsc
+
+  node-scripts:
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - run: pnpm install
+        working-directory: node-scripts
+      - run: pnpm tsc
+        working-directory: node-scripts
+      - run: pnpm tsx src/fs-write-file.ts
+        working-directory: node-scripts
+      - run: pnpm tsx src/async-promises.ts
+        working-directory: node-scripts
