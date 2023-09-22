@@ -16,6 +16,7 @@
       {
         devShell = with pkgs; pkgs.mkShell {
           buildInputs = [
+            act
             nodejs_20
             corepack
           ];
