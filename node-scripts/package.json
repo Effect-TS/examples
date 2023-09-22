@@ -1,4 +1,15 @@
 {
   "name": "node-scripts",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev": "tsx --watch"
+  },
+  "dependencies": {
+    "effect": "2.0.0-next.34",
+    "@effect/platform-node": "^0.17.0",
+    "@effect/platform": "^0.16.1"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.10"
+  }
 }
