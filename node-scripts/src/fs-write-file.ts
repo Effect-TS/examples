@@ -6,6 +6,7 @@ import { Cause, Effect } from 'effect'
 const main = Effect.gen(function* ($) {
   const fs = yield* $(FS.FileSystem)
 
+  yield* $(fs.makeDirectory('output'))
   yield* $(fs.writeFileString('output/fs-write-file.txt', 'Hello World!'))
 
   console.log('Wrote file (output/fs-write-file.txt)')
