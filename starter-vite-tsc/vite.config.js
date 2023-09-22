@@ -1,3 +1,4 @@
+// @ts-check
 import { defineConfig } from "vite";
 import { effectPlugin } from "@effect/vite-plugin-react";
 

@@ -6,6 +6,6 @@
   "author": "Michael Arnaldi <arnaldimichael@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "https://cdn.jsdelivr.net/npm/@tsplus/installer@0.0.156/compiler/typescript.tgz"
+    "typescript": "^5.2.2"
   }
 }
