@@ -33,6 +33,9 @@ importers:
       '@types/node':
         specifier: ^18.11.11
         version: 18.16.19
+      tsx:
+        specifier: ^3.12.10
+        version: 3.12.10
 
   node-scripts:
     dependencies:
