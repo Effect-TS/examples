@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "strict": true,
+    "plugins": [{ "name": "@effect/language-service" }],
+  },
+  "include": ["src/**/*.ts"]
+}
