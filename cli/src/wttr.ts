@@ -54,24 +54,24 @@ const main = (argv: string[]) => Cli.run(cli, argv, ({ options, args }) => {
       Http.client.filterStatusOk,
       // Decode all responses using the `WttrResponseSchema` schema.
       Http.client.mapEffect(Http.response.schemaBodyJson(WttrResponseSchema)),
-    );
+    )
   
     // Create the weather request for the provided location or the current location if none was provided.
     const wttrRequest = Option.match(args, {
       onNone: () => Http.request.get('/'),
       onSome: (_) => Http.request.get(`/${encodeURIComponent(_)}`),
-    });
+    })
 
     // Send the request and wait for the response, then extract the `.weather` property from the parsed object.
-    const wttrResponse = yield* $(wttrClient(wttrRequest), Effect.map((_) => _.weather));
+    const wttrResponse = yield* $(wttrClient(wttrRequest), Effect.map((_) => _.weather))
   
     // TODO: Pretty print the weather.
-    yield* $(Effect.log(wttrResponse));
-  });
+    yield* $(Effect.log(wttrResponse))
+  })
 })
 
 // Obtain the command line arguments and invoke the main function.
-const program = Effect.sync(() => process.argv.slice(2)).pipe(Effect.flatMap((_) => main(_)));
+const program = Effect.sync(() => process.argv.slice(2)).pipe(Effect.flatMap((_) => main(_)))
 
 // Provide the required layers (a.k.a. dependency injection) to the program.
 const runnable = program.pipe(
