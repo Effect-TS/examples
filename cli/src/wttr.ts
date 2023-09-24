@@ -32,7 +32,7 @@ const cli = Cli.make({
     // Accept 0 or 1 arguments for the location and convert it to a `Option<string>`.
     args: Args.between(Args.text({ name: 'location' }), 0, 1).pipe(Args.map(Option.fromIterable)),
     options: Options.all({
-      // Allow the user to override the default `wttr.in` service url.
+      // Allow the user to override the default `wttr.in` service with the `--url` option.
       url: Options.withDefault(Options.text('url'), 'https://wttr.in'),
     }),
   })
@@ -50,17 +50,20 @@ const main = (argv: string[]) => Cli.run(cli, argv, ({ options, args }) => {
       Http.client.mapRequest(Http.request.prependUrl(options.url)),
       // Tell the wttr.in service to return json.
       Http.client.mapRequest(Http.request.appendUrlParam('format', 'j1')),
-      // Only accept status responses with a `2xx` status code. Fail otherwise.
+      // Only accept responses with a `2xx` status code. Fail otherwise.
       Http.client.filterStatusOk,
       // Decode all responses using the `WttrResponseSchema` schema.
       Http.client.mapEffect(Http.response.schemaBodyJson(WttrResponseSchema)),
     );
   
-    // Request the weather for the provided location or the current location if none was provided.
-    const wttrResponse = yield* $(Option.match(args, {
+    // Create the weather request for the provided location or the current location if none was provided.
+    const wttrRequest = Option.match(args, {
       onNone: () => Http.request.get('/'),
       onSome: (_) => Http.request.get(`/${encodeURIComponent(_)}`),
-    }).pipe(wttrClient, Effect.map(_ => _.weather)));
+    });
+
+    // Send the request and wait for the response, then extract the `.weather` property from the parsed object.
+    const wttrResponse = yield* $(wttrClient(wttrRequest), Effect.map((_) => _.weather));
   
     // TODO: Pretty print the weather.
     yield* $(Effect.log(wttrResponse));
