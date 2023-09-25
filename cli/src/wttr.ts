@@ -5,19 +5,18 @@ import * as Command from '@effect/cli/Command'
 import * as Cli from '@effect/cli/CliApp'
 import * as Options from '@effect/cli/Options'
 import * as Args from '@effect/cli/Args'
-import * as Console from '@effect/cli/Console'
 import * as Schema from '@effect/schema/Schema'
 
 const WttrWeatherSchema = Schema.struct({
-  date: Schema.dateFromString(Schema.string),
-  avgtempC: Schema.numberFromString(Schema.string),
-  avgtempF: Schema.numberFromString(Schema.string),
-  maxtempC: Schema.numberFromString(Schema.string),
-  maxtempF: Schema.numberFromString(Schema.string),
-  mintempC: Schema.numberFromString(Schema.string),
-  mintempF: Schema.numberFromString(Schema.string),
-  sunHour: Schema.numberFromString(Schema.string),
-  uvIndex: Schema.numberFromString(Schema.string),
+  date: Schema.Date,
+  avgtempC: Schema.NumberFromString,
+  avgtempF: Schema.NumberFromString,
+  maxtempC: Schema.NumberFromString,
+  maxtempF: Schema.NumberFromString,
+  mintempC: Schema.NumberFromString,
+  mintempF: Schema.NumberFromString,
+  sunHour: Schema.NumberFromString,
+  uvIndex: Schema.NumberFromString,
 })
 
 const WttrResponseSchema = Schema.struct({ weather: Schema.array(WttrWeatherSchema) })
@@ -70,11 +69,9 @@ const main = Cli.run(cli, process.argv.slice(2), ({ options, args }) =>
   }),
 )
 
-// Run the program and pretty print any errors.
-Node.runMain(
-  main.pipe(
-    // Provide the required layers (a.k.a. dependency injection) to the program.
-    Effect.provideSomeLayer(Layer.mergeAll(Console.layer, Http.client.layer)),
-    Effect.tapErrorCause(Effect.logError),
-  ),
-)
+Node.runMain(main.pipe(
+  // Provide the required layers (a.k.a. dependency injection).
+  Effect.provideLayer(Http.client.layer),
+  // Log any errors that occur during execution.
+  Effect.tapErrorCause(Effect.logError),
+))

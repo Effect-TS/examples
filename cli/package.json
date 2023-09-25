@@ -5,8 +5,7 @@
     "dev": "tsx --watch"
   },
   "dependencies": {
-    "@effect/cli": "^0.12.0",
-    "@effect/platform": "^0.16.1",
+    "@effect/cli": "^0.13.0",
     "@effect/platform-node": "^0.17.0",
     "@effect/schema": "^0.36.5",
     "effect": "2.0.0-next.34"
