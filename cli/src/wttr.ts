@@ -1,4 +1,4 @@
-import { Effect, Option, Layer } from 'effect'
+import { Effect, Option } from 'effect'
 import * as Http from '@effect/platform-node/HttpClient'
 import * as Node from '@effect/platform-node/Runtime'
 import * as Command from '@effect/cli/Command'
