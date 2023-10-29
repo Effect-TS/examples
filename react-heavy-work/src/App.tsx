@@ -1,4 +1,4 @@
-import { Effect } from "effect/io";
+import { Effect } from "effect";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const DATE_BLOCK = 1_000;
@@ -25,7 +25,7 @@ function App() {
     if (!running.isRunning) {
       running.isRunning = true;
 
-      Effect.unsafeFork(
+      Effect.runFork(
         Effect.gen(function* ($) {
           yield* $(Effect.log("process started"));
 
@@ -36,13 +36,13 @@ function App() {
               yield* $(Effect.log(`generated ${counter * DATE_BLOCK} dates`));
             }
             yield* $(
-              Effect.blocking(
+              // Effect.blocking(
                 Effect.sync(() => {
                   for (let i = 0; i < DATE_BLOCK; i++) {
                     new Date();
                   }
                 })
-              )
+              // )
             );
             counter++;
           }

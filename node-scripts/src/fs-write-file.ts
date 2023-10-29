@@ -12,4 +12,4 @@ const main = Effect.gen(function* ($) {
   console.log('Wrote file (output/fs-write-file.txt)')
 })
 
-Node.runMain(main.pipe(Effect.provideSomeLayer(NodeContext.layer), Effect.tapErrorCause(Effect.log)))
+Node.runMain(main.pipe(Effect.provide(NodeContext.layer), Effect.tapErrorCause(Effect.log)))
