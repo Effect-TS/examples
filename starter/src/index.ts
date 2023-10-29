@@ -7,6 +7,6 @@ import { NameServiceLive } from "~/NameService";
  */
 
 // Effect<never, never, void>
-const main = Effect.provideLayer(program, NameServiceLive);
+const main = Effect.provide(program, NameServiceLive);
 
 Effect.runFork(main);

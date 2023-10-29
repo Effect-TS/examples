@@ -71,7 +71,7 @@ const main = Cli.run(cli, process.argv.slice(2), ({ options, args }) =>
 
 Node.runMain(main.pipe(
   // Provide the required layers (a.k.a. dependency injection).
-  Effect.provideLayer(Http.client.layer),
+  Effect.provide(Http.client.layer),
   // Log any errors that occur during execution.
   Effect.tapErrorCause(Effect.logError),
 ))
