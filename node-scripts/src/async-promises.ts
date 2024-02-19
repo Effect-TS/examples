@@ -1,4 +1,4 @@
-import * as Node from '@effect/platform-node/Runtime'
+import { runMain } from '@effect/platform-node/NodeRuntime'
 import { Duration, Effect } from 'effect'
 import { TaggedClass } from 'effect/Data'
 
@@ -48,4 +48,4 @@ const main = Effect.gen(function* ($) {
   console.log('Got result 3:', result3)
 })
 
-Node.runMain(main.pipe(Effect.tapErrorCause(Effect.log)))
+runMain(main.pipe(Effect.tapErrorCause(Effect.log)))

@@ -1,11 +1,11 @@
 import { Effect, Layer, Context } from "effect";
 
 export interface NameService {
-  readonly getName: Effect.Effect<never, never, string>;
+  readonly getName: Effect.Effect<string>;
 }
 
 // Tag<NameService>
-export const NameService = Context.Tag<NameService>();
+export const NameService = Context.GenericTag<NameService>('@services/NameService');
 
 // Layer<never, never, NameService>
 export const NameServiceLive = Layer.succeed(

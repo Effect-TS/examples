@@ -37,14 +37,14 @@ importers:
   node-scripts:
     dependencies:
       '@effect/platform':
-        specifier: ^0.26.2
-        version: 0.26.2(@effect/schema@0.46.2)(effect@2.0.0-next.52)
+        specifier: 0.45.4
+        version: 0.45.4(@effect/schema@0.62.8)(effect@2.3.7)
       '@effect/platform-node':
-        specifier: ^0.27.4
-        version: 0.27.4(@effect/schema@0.46.2)(effect@2.0.0-next.52)
+        specifier: 0.44.5
+        version: 0.44.5(@effect/platform@0.45.4)(effect@2.3.7)
       effect:
-        specifier: 2.0.0-next.52
-        version: 2.0.0-next.52
+        specifier: 2.3.7
+        version: 2.3.7
     devDependencies:
       tsx:
         specifier: ^3.14.0
@@ -56,8 +56,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
       effect:
-        specifier: 2.0.0-next.52
-        version: 2.0.0-next.52
+        specifier: 2.3.7
+        version: 2.3.7
       main-thread-scheduling:
         specifier: ^8.0.0
         version: 8.0.0
@@ -99,12 +99,12 @@ importers:
   starter:
     dependencies:
       effect:
-        specifier: 2.0.0-next.52
-        version: 2.0.0-next.52
+        specifier: 2.3.7
+        version: 2.3.7
     devDependencies:
       '@effect/language-service':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.1.0
+        version: 0.1.0
       '@types/node':
         specifier: ^20.8.9
         version: 20.8.9
@@ -139,8 +139,8 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       effect:
-        specifier: 2.0.0-next.52
-        version: 2.0.0-next.52
+        specifier: 2.3.7
+        version: 2.3.7
       express:
         specifier: ^4.18.2
         version: 4.18.2
@@ -188,8 +188,8 @@ importers:
   starter-vite-tsc:
     dependencies:
       effect:
-        specifier: 2.0.0-next.52
-        version: 2.0.0-next.52
+        specifier: 2.3.7
+        version: 2.3.7
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -198,8 +198,8 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@effect/language-service':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.1.0
+        version: 0.1.0
       '@effect/vite-plugin-react':
         specifier: ^0.0.6
         version: 0.0.6(@vitejs/plugin-react@4.1.0)(babel-plugin-annotate-pure-calls@0.4.0)(typescript@5.2.2)(vite@4.5.0)
@@ -684,9 +684,20 @@ packages:
       effect: 2.0.0-next.52
     dev: false
 
-  /@effect/language-service@0.0.21:
-    resolution: {integrity: sha512-e8vfKbjnbYiyneBincEFS0tzXluopGK77OkVFbPRtUbNDS5tJfb+jiwOQEiqASDsadcZmd+9J9+Q6v/z7GuN2g==}
+  /@effect/language-service@0.1.0:
+    resolution: {integrity: sha512-BnlM8LlaqCAYgdRfxlbR7gXGh/FD1scL1fPgNVJEPoOM08od1jtJz+iKhwfaud8TPnnhZR+TED2h5ynjanLeCQ==}
     dev: true
+
+  /@effect/platform-node-shared@0.1.12(@effect/platform@0.45.4)(effect@2.3.7):
+    resolution: {integrity: sha512-lTdkvf+apmfq8pda+sC8kdTshWN9xeDgybHnsdMK2Ri5c5ORvvvVZlEdC7rbVeAs+iulM7IXLMq9wfmKGH4IHg==}
+    peerDependencies:
+      '@effect/platform': ^0.45.4
+      effect: ^2.3.7
+    dependencies:
+      '@effect/platform': 0.45.4(@effect/schema@0.62.8)(effect@2.3.7)
+      effect: 2.3.7
+      multipasta: 0.1.21
+    dev: false
 
   /@effect/platform-node@0.27.4(@effect/schema@0.46.2)(effect@2.0.0-next.52):
     resolution: {integrity: sha512-tXn7cZ4bQDMmngbsudI/6l+LPXGT6Im++YeRtkY6DkYOcmaSQL5OaK+N2Lb1jdujaDdDLyvOkTdTkluV91mRWA==}
@@ -702,6 +713,18 @@ packages:
       - '@effect/schema'
     dev: false
 
+  /@effect/platform-node@0.44.5(@effect/platform@0.45.4)(effect@2.3.7):
+    resolution: {integrity: sha512-zWIy1AhALVLcnhrhWyrniCduTRiQ/qyfT0TGWFnYbJJsnCScMWKcEWDxbf4D/DhhNIXJPx3aQSpnqrZGLJNQWg==}
+    peerDependencies:
+      '@effect/platform': ^0.45.4
+      effect: ^2.3.7
+    dependencies:
+      '@effect/platform': 0.45.4(@effect/schema@0.62.8)(effect@2.3.7)
+      '@effect/platform-node-shared': 0.1.12(@effect/platform@0.45.4)(effect@2.3.7)
+      effect: 2.3.7
+      mime: 3.0.0
+    dev: false
+
   /@effect/platform@0.26.2(@effect/schema@0.46.2)(effect@2.0.0-next.52):
     resolution: {integrity: sha512-eQif6w4f9IjdhbJtRw4fA3itgANPVzdRtpq5P8z6NupJbJ9EMq/Sfc8yyyypy1A8tfoIRgTxtVN6R7ZvbY1+vg==}
     peerDependencies:
@@ -711,6 +734,19 @@ packages:
       '@effect/schema': 0.46.2(effect@2.0.0-next.52)(fast-check@3.13.2)
       effect: 2.0.0-next.52
       find-my-way: 7.7.0
+      path-browserify: 1.0.1
+    dev: false
+
+  /@effect/platform@0.45.4(@effect/schema@0.62.8)(effect@2.3.7):
+    resolution: {integrity: sha512-LJ72oJZ1+228SHj5bNgQ/8U0doHADQhy+qJwpo4VnjRHjwwD1ObatLTRuQP9aALRasf/28vIKZbmIAkaC2+o5g==}
+    peerDependencies:
+      '@effect/schema': ^0.62.8
+      effect: ^2.3.7
+    dependencies:
+      '@effect/schema': 0.62.8(effect@2.3.7)(fast-check@3.13.2)
+      effect: 2.3.7
+      find-my-way-ts: 0.1.1
+      multipasta: 0.1.21
       path-browserify: 1.0.1
     dev: false
 
@@ -745,6 +781,16 @@ packages:
       fast-check: 3.13.2
     dev: false
 
+  /@effect/schema@0.62.8(effect@2.3.7)(fast-check@3.13.2):
+    resolution: {integrity: sha512-YlJlE8GPd/egQ+3msrHcDVipApMMVnb4Ln88pMyjnCS8jEaHja72vbv0j/ViCNOSWpGlraV39ME+SNVDuS8ePg==}
+    peerDependencies:
+      effect: ^2.3.7
+      fast-check: ^3.13.2
+    dependencies:
+      effect: 2.3.7
+      fast-check: 3.13.2
+    dev: false
+
   /@effect/typeclass@0.13.1(effect@2.0.0-next.52):
     resolution: {integrity: sha512-8dRe8Rn7Fb/UT8h+bVYYiQWvRdV0gfSDQJCd8p5mE0pPltDxioCY0uyJyVWkrU+Q1xT4aSNHQGdB+gBsVNf0hw==}
     peerDependencies:
@@ -763,7 +809,7 @@ packages:
     dependencies:
       '@vitejs/plugin-react': 4.1.0(vite@4.5.0)
       babel-plugin-annotate-pure-calls: 0.4.0(@babel/core@7.23.2)
-      effect: 2.0.0-next.52
+      effect: 2.3.7
       typescript: 5.2.2
       vite: 4.5.0
     dev: true
@@ -2830,6 +2876,10 @@ packages:
 
   /effect@2.0.0-next.52:
     resolution: {integrity: sha512-6VmmfS6xyOZsJRT0hcEsMx03HxXSeG/VmcniDvVw0nzBudlu+4qUvj8GBGYVFVgJfKcISSRey0tzfO9HXIzApg==}
+    dev: false
+
+  /effect@2.3.7:
+    resolution: {integrity: sha512-hFiMy3mX7h0AlCjzZjZCnVlJD6SBePBmkg9IKUAiEEzmH68z0ZBVtiwNhukmaEWxgDSG20lxA1M4Bi1yR3pkhQ==}
 
   /electron-to-chromium@1.4.527:
     resolution: {integrity: sha512-EafxEiEDzk2aLrdbtVczylHflHdHkNrpGNHIgDyA63sUQLQVS2ayj2hPw3RsVB42qkwURH+T2OxV7kGPUuYszA==}
@@ -3716,6 +3766,12 @@ packages:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
+
+  /find-my-way-ts@0.1.1:
+    resolution: {integrity: sha512-nXUdq29JRQ1tYa1/n+DHTVChMARJHz+gi7sDZibwQukzHP7Hrr6s+sxKbaIM8xB3LzhSBJy5yLb0JhIUmHmOiA==}
+    dependencies:
+      fast-querystring: 1.1.2
+    dev: false
 
   /find-my-way@7.7.0:
     resolution: {integrity: sha512-+SrHpvQ52Q6W9f3wJoJBbAQULJuNEEQwBvlvYwACDhBTLOTMiQ0HYWh4+vC3OivGP2ENcTI1oKlFA2OepJNjhQ==}
@@ -5253,6 +5309,10 @@ packages:
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  /multipasta@0.1.21:
+    resolution: {integrity: sha512-HpF9156uifsQu1L8KKW1EqXIt3DacHJTzQ+JSm6IShkcyyf+krOWzfOgT3OLHzesM40hbs6/QW5CJWSEdDPQag==}
+    dev: false
 
   /mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}

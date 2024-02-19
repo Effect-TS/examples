@@ -1,5 +1,5 @@
 import * as FS from '@effect/platform/FileSystem'
-import * as Node from '@effect/platform-node/Runtime'
+import { runMain } from '@effect/platform-node/NodeRuntime'
 import * as NodeContext from '@effect/platform-node/NodeContext'
 import { Effect } from 'effect'
 
@@ -12,4 +12,4 @@ const main = Effect.gen(function* ($) {
   console.log('Wrote file (output/fs-write-file.txt)')
 })
 
-Node.runMain(main.pipe(Effect.provide(NodeContext.layer), Effect.tapErrorCause(Effect.log)))
+runMain(main.pipe(Effect.provide(NodeContext.layer), Effect.tapErrorCause(Effect.log)))
