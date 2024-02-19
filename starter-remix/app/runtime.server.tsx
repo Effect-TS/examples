@@ -1,22 +1,19 @@
-import { Effect, Layer, Scope, Exit } from "effect/io";
-import { pipe, Context } from "effect/data";
+import { pipe, Context, Effect, Layer, Scope, Exit, Runtime } from "effect";
 import type {
   LoaderFunction,
   DataFunctionArgs as RemixDataFunctionArgs,
 } from "@remix-run/node";
 import { appLayer } from "~/layer/main.server";
 
-const appRuntime = <R, E, A>(layer: Layer.Layer<R, E, A>) =>
+const appRuntime = <A, E, R>(layer: Layer.Layer<A, E, R>) =>
   Effect.gen(function* ($) {
     const scope = yield* $(Scope.make());
     const env = yield* $(Layer.buildWithScope(scope)(layer));
-    const runtime = yield* $(
-      pipe(Effect.runtime<A>(), Effect.provideEnvironment(env))
-    );
+    const runtime = yield* $(pipe(Effect.runtime<A>(), Effect.provide(env)));
 
     return {
       runtime,
-      clean: Scope.close(Exit.unit())(scope),
+      clean: Scope.close(scope, Exit.unit),
     };
   });
 
@@ -34,11 +31,11 @@ if (existing) {
 
 const runtime = (
   existing ? (existing as () => Promise<void>)() : Promise.resolve()
-).then(() => Effect.unsafeRunPromise(appRuntime(appLayer)));
+).then(() => Effect.runPromise(appRuntime(appLayer)));
 
 const cleanup = Object.assign(
   () =>
-    Effect.unsafeRunPromise(
+    Effect.runPromise(
       pipe(
         Effect.promise(() => runtime),
         Effect.flatMap((_) => _.clean)
@@ -49,25 +46,25 @@ const cleanup = Object.assign(
 
 process.on("beforeExit", cleanup);
 
-export const LoaderArgs = Context.Tag<RemixDataFunctionArgs>();
+export const LoaderArgs = Context.GenericTag<RemixDataFunctionArgs>(
+  "@remix/RemixDataFunctionArgs"
+);
 
-export const makeLoader = <E, A>(
+export const makeLoader = <A, E>(
   self: Effect.Effect<
+    A,
+    E,
     typeof appLayer extends Layer.Layer<any, any, infer R>
       ? R | RemixDataFunctionArgs
-      : RemixDataFunctionArgs,
-    E,
-    A
+      : RemixDataFunctionArgs
   >
 ): LoaderFunction => {
   return (data) =>
     runtime.then((_) =>
-      _.runtime.unsafeRunPromise(
-        pipe(self, Effect.provideService(LoaderArgs)(data))
+      Runtime.runPromise(_.runtime)(
+        Effect.provideService(LoaderArgs, data)(self)
       )
     );
 };
 
-export const requestURL = Effect.serviceWith(LoaderArgs)(
-  (_) => new URL(_.request.url)
-);
+export const requestURL = Effect.map(LoaderArgs, (_) => new URL(_.request.url));

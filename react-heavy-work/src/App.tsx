@@ -37,11 +37,11 @@ function App() {
             }
             yield* $(
               // Effect.blocking(
-                Effect.sync(() => {
-                  for (let i = 0; i < DATE_BLOCK; i++) {
-                    new Date();
-                  }
-                })
+              Effect.sync(() => {
+                for (let i = 0; i < DATE_BLOCK; i++) {
+                  new Date();
+                }
+              })
               // )
             );
             counter++;

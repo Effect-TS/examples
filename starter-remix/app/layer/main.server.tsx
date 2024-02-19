@@ -1,3 +1,3 @@
-import { Layer } from "effect/io";
+import { Layer } from "effect";
 
-export const appLayer = Layer.environment<never>();
+export const appLayer = Layer.context<never>();

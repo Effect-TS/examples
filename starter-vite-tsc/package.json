@@ -8,12 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "effect": "2.0.0-next.52",
+    "effect": "2.3.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@effect/language-service": "^0.0.21",
+    "@effect/language-service": "^0.1.0",
     "@effect/vite-plugin-react": "^0.0.6",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",

@@ -1,4 +1,4 @@
-import { Effect } from "effect/io";
+import { Effect } from "effect";
 import { makeLoader, requestURL } from "~/runtime.server";
 
 export const loader = makeLoader(
