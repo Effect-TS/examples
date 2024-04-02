@@ -1,0 +1,3 @@
+tasks:
+  - name: Install Packages
+    init: pnpm install

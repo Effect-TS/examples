@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  # Grafana
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: grafana
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - ./infra/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./infra/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./infra/grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./infra/grafana/dashboards:/etc/dashboards
+    ports:
+      - 30001:3000
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./infra/prometheus/prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - 9090:9090
+
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yml"]
+    volumes:
+      - ./infra/tempo/tempo.yaml:/etc/tempo.yml
+      - ./tempo-data:/tmp/tempo
+    ports:
+      - "14268:14268" # jaeger ingest
+      - "3200:3200" # tempo
+      - "9095:9095" # tempo grpc
+      - "4317:4317" # otlp grpc
+      - "4318:4318" # otlp http
+      - "9411:9411" # zipkin

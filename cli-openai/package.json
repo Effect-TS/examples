@@ -1,0 +1,78 @@
+{
+  "name": "@effect/openai",
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@8.12.1",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "description": "An OpenAI client written with Effect",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/effect-ts/openai.git"
+  },
+  "author": "Maxwell Brown<maxwellbrown1990@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/effect-ts/openai/issues"
+  },
+  "homepage": "https://github.com/effect-ts/openai",
+  "scripts": {
+    "prepare": "pnpm clean && pnpm build",
+    "update-version": "changeset version && pnpm install --no-frozen-lockfile && node ./scripts/version.mjs",
+    "lint": "eslint src test",
+    "lint-fix": "eslint src test --fix",
+    "coverage": "vitest run --coverage",
+    "check": "tsc -b tsconfig.json",
+    "test": "vitest",
+    "clean": "rimraf dist coverage .tsbuildinfo",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@effect/cli": "^0.34.1",
+    "@effect/experimental": "^0.9.18",
+    "@effect/opentelemetry": "^0.31.10",
+    "@effect/platform": "^0.46.1",
+    "@effect/platform-node": "^0.44.9",
+    "@effect/schema": "^0.63.0",
+    "@opentelemetry/exporter-prometheus": "^0.48.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.48.0",
+    "@opentelemetry/sdk-trace-base": "^1.21.0",
+    "@opentelemetry/sdk-trace-node": "^1.21.0",
+    "@sqlfx/sql": "^0.45.0",
+    "@sqlfx/sqlite": "^0.45.0",
+    "better-sqlite3": "^9.4.3",
+    "effect": "2.4.0",
+    "openai": "^4.28.0",
+    "sqlite-vss": "^0.1.2",
+    "tiktoken-node": "^0.0.7"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
+    "@effect/codemod": "^0.0.6",
+    "@effect/eslint-plugin": "^0.1.2",
+    "@effect/language-service": "^0.1.0",
+    "@types/node": "^20.11.19",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
+    "@vitest/coverage-v8": "^1.3.1",
+    "eslint": "^8.56.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-codegen": "^0.23.0",
+    "eslint-plugin-deprecation": "^2.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "eslint-plugin-sort-destructure-keys": "^1.5.0",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vitest": "^1.3.1"
+  }
+}
