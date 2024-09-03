@@ -1,0 +1,7 @@
+.direnv/
+node_modules/
+dist/
+/data/
+.env
+*.tsbuildinfo
+.DS_Store
