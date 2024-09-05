@@ -4,6 +4,9 @@
   "type": "module",
   "license": "MIT",
   "description": "Create Effect-powered applications with a single command",
+  "bin": {
+    "create-effect-app": "./dist/bin.cjs"
+  },
   "engines": {
     "node": ">=20.14.0"
   },
