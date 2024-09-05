@@ -35,10 +35,6 @@ const command = Command.make("create-effect-app", { example, projectName }).pipe
   Command.withHandler(({ example, projectName }) =>
     Effect.gen(function*() {
       const projectPath = yield* resolveProjectPath(projectName)
-      yield* Effect.logInfo(AnsiDoc.hsep([
-        AnsiDoc.text("Creating a new Effect application in"),
-        AnsiDoc.text(projectPath).pipe(AnsiDoc.annotate(Ansi.green))
-      ]))
       return yield* Option.match(example, {
         onNone: () => createTemplate(projectPath),
         onSome: (example) => createExample(projectPath, example)
@@ -79,6 +75,11 @@ function resolveProjectPath(projectName: Option.Option<string>) {
 function createExample(projectPath: string, example: string) {
   return Effect.gen(function*() {
     const fs = yield* FileSystem.FileSystem
+
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Creating a new Effect application in"),
+      AnsiDoc.text(projectPath).pipe(AnsiDoc.annotate(Ansi.green))
+    ]))
 
     // Create the project path
     yield* fs.makeDirectory(projectPath)
@@ -123,6 +124,11 @@ function createTemplate(projectPath: string) {
         }
       ]
     })
+
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Creating a new Effect project in"),
+      AnsiDoc.text(projectPath).pipe(AnsiDoc.annotate(Ansi.green))
+    ]))
 
     // Create the project directory
     yield* fs.makeDirectory(projectPath)
