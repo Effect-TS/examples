@@ -1,0 +1,1 @@
+# Template Effect CLI Application

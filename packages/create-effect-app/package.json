@@ -5,7 +5,7 @@
   "license": "MIT",
   "description": "Create Effect-powered applications with a single command",
   "engines": {
-    "node": ">=20.16.0"
+    "node": ">=20.14.0"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,11 @@
     "check": "tsc -b tsconfig.json"
   },
   "devDependencies": {
-    "@effect/cli": "^0.42.0",
+    "@effect/cli": "^0.42.2",
     "@effect/platform": "^0.63.0",
     "@effect/platform-node": "^0.58.0",
-    "effect": "^3.7.0",
+    "effect": "^3.7.2",
+    "tar": "^7.4.3",
     "tsup": "^8.2.4"
   }
 }
