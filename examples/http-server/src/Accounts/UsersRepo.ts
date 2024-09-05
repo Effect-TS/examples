@@ -1,28 +1,28 @@
 import { Model, SqlClient, SqlSchema } from "@effect/sql"
 import { Effect, Layer, pipe } from "effect"
-import { User } from "../Domain/User.js"
-import { SqlLive } from "../Sql.js"
 import { AccessToken } from "../Domain/AccessToken.js"
+import { User } from "../Domain/User.js"
 import { makeTestLayer } from "../lib/Layer.js"
+import { SqlLive } from "../Sql.js"
 
-export const make = Effect.gen(function* () {
+export const make = Effect.gen(function*() {
   const sql = yield* SqlClient.SqlClient
   const repo = yield* Model.makeRepository(User, {
     tableName: "users",
     spanPrefix: "UsersRepo",
-    idColumn: "id",
+    idColumn: "id"
   })
 
   const findByAccessTokenSchema = SqlSchema.findOne({
     Request: AccessToken,
     Result: User,
-    execute: (key) => sql`select * from users where accessToken = ${key}`,
+    execute: (key) => sql`select * from users where accessToken = ${key}`
   })
   const findByAccessToken = (apiKey: AccessToken) =>
     pipe(
       findByAccessTokenSchema(apiKey),
       Effect.orDie,
-      Effect.withSpan("UsersRepo.findByAccessToken"),
+      Effect.withSpan("UsersRepo.findByAccessToken")
     )
 
   return { ...repo, findByAccessToken } as const

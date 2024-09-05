@@ -11,7 +11,7 @@
     "check": "pnpm --recursive --parallel run check",
     "lint": "eslint \"**/{src,test,examples,scripts}/**/*.{ts,mjs}\"",
     "lint-fix": "pnpm lint --fix",
-    "changeset-version": "changeset version && node ./scripts/version.mjs",
+    "changeset-version": "changeset version && node ./scripts/version.mjs && node ./scripts/examples.mjs",
     "changeset-publish": "pnpm build && TEST_DIST= pnpm vitest && changeset publish"
   },
   "devDependencies": {
@@ -23,7 +23,7 @@
     "@eslint/compat": "^1.1.1",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.9.1",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "@typescript-eslint/eslint-plugin": "^8.4.0",
     "@typescript-eslint/parser": "^8.4.0",
     "effect": "^3.7.2",

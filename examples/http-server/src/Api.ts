@@ -7,5 +7,5 @@ export class Api extends HttpApi.empty.pipe(
   HttpApi.addGroup(AccountsApi),
   HttpApi.addGroup(GroupsApi),
   HttpApi.addGroup(PeopleApi),
-  OpenApi.annotate({ title: "Groups API" }),
+  OpenApi.annotate({ title: "Groups API" })
 ) {}

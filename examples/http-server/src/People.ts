@@ -1,10 +1,10 @@
 import { Effect, Layer, pipe } from "effect"
-import { PeopleRepo } from "./People/Repo.js"
+import type { GroupId } from "./Domain/Group.js"
 import { Person } from "./Domain/Person.js"
 import { policyRequire } from "./Domain/Policy.js"
-import { GroupId } from "./Domain/Group.js"
+import type { PeopleRepo } from "./People/Repo.js"
 
-const make = Effect.gen(function* () {
+const make = Effect.gen(function*() {
   const repo = yield* PeopleRepo
 
   const create = (groupId: GroupId, person: typeof Person.jsonCreate.Type) =>
@@ -12,11 +12,11 @@ const make = Effect.gen(function* () {
       repo.insert(
         Person.insert.make({
           ...person,
-          groupId,
-        }),
+          groupId
+        })
       ),
       Effect.withSpan("People.create", { attributes: { person, groupId } }),
-      policyRequire("Person", "create"),
+      policyRequire("Person", "create")
     )
 
   return { create } as const

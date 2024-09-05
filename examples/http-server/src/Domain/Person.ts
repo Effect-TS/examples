@@ -12,5 +12,5 @@ export class Person extends Model.Class<Person>("Person")({
   lastName: Schema.NonEmptyTrimmedString,
   dateOfBirth: Model.FieldOption(Model.Date),
   createdAt: Model.DateTimeInsert,
-  updatedAt: Model.DateTimeUpdate,
+  updatedAt: Model.DateTimeUpdate
 }) {}

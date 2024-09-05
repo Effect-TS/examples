@@ -3,10 +3,15 @@ import * as Command from "@effect/cli/Command"
 import * as Options from "@effect/cli/Options"
 import * as Prompt from "@effect/cli/Prompt"
 import * as FileSystem from "@effect/platform/FileSystem"
+import * as Path from "@effect/platform/Path"
+import * as Ansi from "@effect/printer-ansi/Ansi"
+import * as AnsiDoc from "@effect/printer-ansi/AnsiDoc"
 import * as Effect from "effect/Effect"
 import * as Option from "effect/Option"
-import type { TemplateOptions } from "./Domain.js"
+import * as Glob from "fast-glob"
+import type { ProjectType, TemplateOptions } from "./Domain.js"
 import { GitHub } from "./GitHub.js"
+import * as InternalExamples from "./internal/examples.js"
 import * as InternalVersion from "./internal/version.js"
 import { validateProjectName } from "./Utils.js"
 
@@ -20,18 +25,18 @@ const projectName = Prompt.text({
     })
 })
 
-const projectType = Prompt.select<"basic" | "monorepo" | "cli">({
-  message: "What type of project should be created?",
+const projectType = Prompt.select<ProjectType>({
+  message: "What project template should be used?",
   choices: [
     {
-      title: "Basic Package",
+      title: "Basic",
       value: "basic",
       description: "A project containing a single package"
     },
     {
-      title: "Multi Package",
+      title: "Monorepo",
       value: "monorepo",
-      description: "A project containing multiple packages or applications"
+      description: "A project containing multiple packages"
     },
     {
       title: "CLI Application",
@@ -46,7 +51,7 @@ const prompt: Prompt.Prompt<TemplateOptions> = Prompt.all({
   projectType
 })
 
-const example = Options.text("example").pipe(
+const example = Options.choice("example", InternalExamples.examples).pipe(
   Options.withAlias("e"),
   Options.withDescription(
     "The name of an official Effect example to use to bootstrap the application"
@@ -66,15 +71,18 @@ const command = Command.make("create-effect-app", { example, directory }).pipe(
   Command.withDescription("Create an Effect application from an example or a template repository"),
   Command.withHandler(({ directory, example }) =>
     Effect.gen(function*() {
-      const fs = yield* FileSystem.FileSystem
-      yield* fs.makeDirectory(directory)
+      const path = yield* Path.Path
+      const absolutePath = path.resolve(directory)
+      yield* Effect.logInfo(AnsiDoc.hsep([
+        AnsiDoc.text("Creating a new Effect application in"),
+        AnsiDoc.text(absolutePath).pipe(AnsiDoc.annotate(Ansi.green))
+      ]))
       return yield* Option.match(example, {
-        onNone: () => Effect.orDie(Effect.asVoid(prompt)),
-        onSome: (example) => createExample(directory, example)
+        onNone: () => createTemplate(absolutePath),
+        onSome: (example) => createExample(absolutePath, example)
       })
     })
-  ),
-  Command.provide(GitHub.Live)
+  )
 )
 
 export const cli = Command.run(command, {
@@ -84,21 +92,93 @@ export const cli = Command.run(command, {
 
 function createExample(directory: string, example: string) {
   return Effect.gen(function*() {
-    // TODO: logging
+    const fs = yield* FileSystem.FileSystem
+
+    // Create the project directory
+    yield* fs.makeDirectory(directory)
+
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Initializing example project:"),
+      AnsiDoc.text(example).pipe(AnsiDoc.annotate(Ansi.magenta))
+    ]))
+
+    // Download the example project from GitHub
     yield* GitHub.downloadExample(directory, example)
+
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Success!").pipe(AnsiDoc.annotate(Ansi.green)),
+      AnsiDoc.text(`Effect example application was initialized in ${directory}`)
+    ]))
   })
 }
 
 function createTemplate(directory: string) {
   return Effect.gen(function*() {
-    // TODO: logging
-    const options = yield* prompt
+    const fs = yield* FileSystem.FileSystem
+
+    // Prompt user for options
+    const options = yield* Prompt.run(prompt)
+
+    // Create the project directory
+    yield* fs.makeDirectory(directory)
+
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Initializing project with template:"),
+      AnsiDoc.text(options.projectType).pipe(AnsiDoc.annotate(Ansi.magenta))
+    ]))
+
+    // Download the template project from GitHub
     yield* GitHub.downloadTemplate(directory, options)
+
+    // Replace the template project name with the user-provided project name
+    yield* replaceProjectName(directory, options)
+
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Success!").pipe(AnsiDoc.annotate(Ansi.green)),
+      AnsiDoc.text(`Effect template project was initialized in ${directory}`)
+    ]))
   })
 }
 
-// packages/*/package.json
-// tsconfig.base.json
-// tsconfig.build.json
-// tsconfig.json
-// vitest.shared.ts
+function replaceProjectName(directory: string, options: TemplateOptions) {
+  return Effect.gen(function*() {
+    const fs = yield* FileSystem.FileSystem
+    const path = yield* Path.Path
+
+    switch (options.projectType) {
+      case "basic":
+      case "cli": {
+        return yield* Effect.forEach(
+          ["package.json", "vitest.config.ts"],
+          (file) => {
+            const filePath = path.join(directory, file)
+            return fs.readFileString(filePath).pipe(
+              Effect.map((contents) => contents.replaceAll(`@template/${options.projectType}`, options.projectName)),
+              Effect.flatMap((contents) => fs.writeFileString(filePath, contents))
+            )
+          },
+          { concurrency: 8, discard: true }
+        )
+      }
+      case "monorepo": {
+        return yield* Effect.forEach(
+          Glob.sync([
+            "packages/*/package.json",
+            "tsconfig.base.json",
+            "tsconfig.build.json",
+            "tsconfig.json",
+            "vitest.shared.ts"
+          ]),
+          (file) => {
+            const filePath = path.join(directory, file)
+            return fs.readFileString(filePath).pipe(
+              Effect.map((contents) => contents.replaceAll(`@template`, options.projectName)),
+              Effect.flatMap((contents) => fs.writeFileString(filePath, contents))
+            )
+          },
+          { concurrency: 8, discard: true }
+        )
+      }
+    }
+  })
+}

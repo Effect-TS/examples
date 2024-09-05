@@ -11,11 +11,11 @@ import { DateTime, Effect, Layer, pipe, Redacted } from "effect"
 
 describe("Accounts", () => {
   it.effect("createUser", () =>
-    Effect.gen(function* () {
+    Effect.gen(function*() {
       const accounts = yield* Accounts
       const user = yield* pipe(
         accounts.createUser({ email: Email.make("test@example.com") }),
-        withSystemActor,
+        withSystemActor
       )
       assert.strictEqual(user.id, 1)
       assert.strictEqual(user.accountId, 123)
@@ -34,10 +34,10 @@ describe("Accounts", () => {
                       ...account,
                       id: AccountId.make(123),
                       createdAt: now,
-                      updatedAt: now,
-                    }),
-                ),
-            }),
+                      updatedAt: now
+                    })
+                )
+            })
           ),
           Layer.provide(
             makeTestLayer(UsersRepo)({
@@ -49,13 +49,12 @@ describe("Accounts", () => {
                       ...user,
                       id: UserId.make(1),
                       createdAt: now,
-                      updatedAt: now,
-                    }),
-                ),
-            }),
-          ),
-        ),
-      ),
-    ),
-  )
+                      updatedAt: now
+                    })
+                )
+            })
+          )
+        )
+      )
+    ))
 })

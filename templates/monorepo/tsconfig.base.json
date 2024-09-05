@@ -37,9 +37,15 @@
     "removeComments": false,
     "plugins": [{ "name": "@effect/language-service" }],
     "paths": {
-      "@effect/cli": ["./packages/cli/src/index.js"],
-      "@effect/cli/*": ["./packages/cli/src/*.js"],
-      "@effect/cli/test/*": ["./packages/cli/test/*.js"]
+      "@template/cli": ["./packages/cli/src/index.js"],
+      "@template/cli/*": ["./packages/cli/src/*.js"],
+      "@template/cli/test/*": ["./packages/cli/test/*.js"],
+      "@template/domain": ["./packages/domain/src/index.js"],
+      "@template/domain/*": ["./packages/domain/src/*.js"],
+      "@template/domain/test/*": ["./packages/domain/test/*.js"],
+      "@template/server": ["./packages/server/src/index.js"],
+      "@template/server/*": ["./packages/server/src/*.js"],
+      "@template/server/test/*": ["./packages/server/test/*.js"]
     }
   }
 }

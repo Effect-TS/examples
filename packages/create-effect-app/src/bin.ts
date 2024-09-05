@@ -5,15 +5,24 @@ import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient"
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
+import * as Logger from "effect/Logger"
+import * as LogLevel from "effect/LogLevel"
 import { cli } from "./Cli.js"
+import { GitHub } from "./GitHub.js"
+import { AnsiDocLogger } from "./Logger.js"
 
-const MainLive = Layer.mergeAll(
-  NodeContext.layer,
-  NodeHttpClient.layerUndici
+const MainLive = GitHub.Live.pipe(
+  Layer.provideMerge(Layer.mergeAll(
+    Logger.replace(Logger.defaultLogger, AnsiDocLogger),
+    Logger.minimumLogLevel(LogLevel.Info),
+    NodeContext.layer,
+    NodeHttpClient.layerUndici
+  ))
 )
 
 cli(process.argv).pipe(
   Effect.provide(MainLive),
-  NodeRuntime.runMain
-  // NodeRuntime.runMain({ disableErrorReporting: true })
+  NodeRuntime.runMain({
+    disablePrettyLogger: true
+  })
 )

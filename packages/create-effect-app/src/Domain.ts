@@ -1,4 +1,6 @@
+export type ProjectType = "basic" | "monorepo" | "cli"
+
 export interface TemplateOptions {
   readonly projectName: string
-  readonly projectType: "basic" | "monorepo" | "cli"
+  readonly projectType: ProjectType
 }

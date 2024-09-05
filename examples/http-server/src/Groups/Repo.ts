@@ -1,12 +1,13 @@
 import { Model } from "@effect/sql"
-import { Context, Effect, Layer } from "effect"
+import type { Effect } from "effect"
+import { Context, Layer } from "effect"
 import { Group } from "../Domain/Group.js"
 import { SqlLive } from "../Sql.js"
 
 const make = Model.makeRepository(Group, {
   tableName: "groups",
   spanPrefix: "GroupsRepo",
-  idColumn: "id",
+  idColumn: "id"
 })
 
 export class GroupsRepo extends Context.Tag("Groups/Repo")<
