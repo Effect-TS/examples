@@ -1,1 +1,1 @@
-# Template Effect CLI Application
+# Effect CLI Application Template
