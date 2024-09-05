@@ -34,7 +34,6 @@
     "@effect/printer": "^0.35.2",
     "@effect/printer-ansi": "^0.35.2",
     "effect": "^3.7.2",
-    "fast-glob": "^3.3.2",
     "tar": "^7.4.3",
     "tsup": "^8.2.4"
   }

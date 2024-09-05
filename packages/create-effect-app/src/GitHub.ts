@@ -7,7 +7,7 @@ import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
 import * as Stream from "effect/Stream"
 import * as Tar from "tar"
-import type { TemplateOptions } from "./Domain.js"
+import type { TemplateType } from "./Domain.js"
 
 export class TarExtractionError extends Data.TaggedError("TarExtractionError")<{
   readonly cause: unknown
@@ -36,15 +36,15 @@ export const make = Effect.gen(function*() {
         }), (cause) => new TarExtractionError({ cause, directory })))
     )
 
-  const downloadTemplate = (directory: string, options: TemplateOptions) =>
+  const downloadTemplate = (directory: string, template: TemplateType) =>
     HttpClientRequest.get("/Effect-TS/examples/tar.gz/feat/examples").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
           cwd: directory,
-          strip: 2 + options.projectType.split("/").length,
-          filter: (path) => path.includes(`examples-feat-examples/templates/${options.projectType}`)
+          strip: 2 + template.split("/").length,
+          filter: (path) => path.includes(`examples-feat-examples/templates/${template}`)
         }), (cause) => new TarExtractionError({ cause, directory })))
     )
 

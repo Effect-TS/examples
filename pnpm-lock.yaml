@@ -109,9 +109,6 @@ importers:
       effect:
         specifier: ^3.7.2
         version: 3.7.2
-      fast-glob:
-        specifier: ^3.3.2
-        version: 3.3.2
       tar:
         specifier: ^7.4.3
         version: 7.4.3
