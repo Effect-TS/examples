@@ -1,5 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "include": [],
-  "references": [] 
+  "references": [
+    { "path": "packages/create-effect-app" }
+  ]
 }
