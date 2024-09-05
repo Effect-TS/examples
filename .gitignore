@@ -3,4 +3,6 @@
 build/
 dist/
 node_modules/
+scratchpad/*
+!scratchpad/tsconfig.json
 *.tsbuildinfo
