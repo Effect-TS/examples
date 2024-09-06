@@ -25,26 +25,26 @@ export const make = Effect.gen(function*() {
   )
 
   const downloadExample = (directory: string, example: string) =>
-    HttpClientRequest.get("/Effect-TS/examples/tar.gz/feat/examples").pipe(
+    HttpClientRequest.get("/Effect-TS/examples/tar.gz/main").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
           cwd: directory,
           strip: 2 + example.split("/").length,
-          filter: (path) => path.includes(`examples-feat-examples/examples/${example}`)
+          filter: (path) => path.includes(`examples-main/examples/${example}`)
         }), (cause) => new TarExtractionError({ cause, directory })))
     )
 
   const downloadTemplate = (directory: string, template: TemplateType) =>
-    HttpClientRequest.get("/Effect-TS/examples/tar.gz/feat/examples").pipe(
+    HttpClientRequest.get("/Effect-TS/examples/tar.gz/main").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
           cwd: directory,
           strip: 2 + template.split("/").length,
-          filter: (path) => path.includes(`examples-feat-examples/templates/${template}`)
+          filter: (path) => path.includes(`examples-main/templates/${template}`)
         }), (cause) => new TarExtractionError({ cause, directory })))
     )
 
