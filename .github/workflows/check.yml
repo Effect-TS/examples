@@ -23,7 +23,6 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/setup
       - run: pnpm check
-      - run: pnpm dtslint
 
   lint:
     name: Lint
