@@ -3,8 +3,7 @@
   "type": "module",
   "packageManager": "pnpm@9.9.0",
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "scripts": {
     "build": "pnpm --recursive --parallel run build",

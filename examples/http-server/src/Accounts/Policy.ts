@@ -1,7 +1,8 @@
 import { Effect, Layer } from "effect"
-import type { policy } from "../Domain/Policy.js"
+import { policy } from "../Domain/Policy.js"
 import type { UserId } from "../Domain/User.js"
 
+// eslint-disable-next-line require-yield
 const make = Effect.gen(function*() {
   const canUpdate = (toUpdate: UserId) => policy("User", "update", (actor) => Effect.succeed(actor.id === toUpdate))
 
