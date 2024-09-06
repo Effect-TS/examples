@@ -1,7 +1,8 @@
 import { Effect, Layer } from "effect"
 import type { Group } from "../Domain/Group.js"
-import type { policy } from "../Domain/Policy.js"
+import { policy } from "../Domain/Policy.js"
 
+// eslint-disable-next-line require-yield
 const make = Effect.gen(function*() {
   const canCreate = (_group: typeof Group.jsonCreate.Type) =>
     policy("Group", "create", (_actor) => Effect.succeed(true))
