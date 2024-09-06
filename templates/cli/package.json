@@ -1,0 +1,54 @@
+{
+  "name": "@template/cli",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "packageManager": "pnpm@9.9.0",
+  "scripts": {
+    "build": "tsup && pnpm copy-package-json",
+    "build:ts": "tsup",
+    "clean": "rimraf dist/*",
+    "check": "tsc -b tsconfig.json",
+    "lint": "eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "coverage": "vitest run --coverage",
+    "test": "vitest run",
+    "copy-package-json": "tsx scripts/copy-package-json.ts"
+  },
+  "devDependencies": {
+    "@effect/cli": "0.42.2",
+    "@effect/eslint-plugin": "^0.2.0",
+    "@effect/language-service": "^0.1.0",
+    "@effect/platform": "^0.63.2",
+    "@effect/platform-node": "^0.58.2",
+    "@eslint/compat": "^1.1.1",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.9.1",
+    "@types/node": "^22.5.4",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "@vitest/coverage-v8": "^2.0.5",
+    "effect": "3.7.2",
+    "eslint": "^9.9.1",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-codegen": "0.28.0",
+    "eslint-plugin-deprecation": "^3.0.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-destructure-keys": "^2.0.0",
+    "glob": "^11.0.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3",
+    "vitest": "^2.0.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "vitest": "^2.0.5"
+    }
+  }
+}

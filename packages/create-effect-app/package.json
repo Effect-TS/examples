@@ -1,0 +1,40 @@
+{
+  "name": "create-effect-app",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "Create Effect-powered applications with a single command",
+  "bin": {
+    "create-effect-app": "./dist/bin.cjs"
+  },
+  "engines": {
+    "node": ">=20.14.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Effect-TS/examples.git",
+    "directory": "packages/create-effect-app"
+  },
+  "bugs": {
+    "url": "https://github.com/Effect-TS/examples/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsup && tsx scripts/copy-package-json.ts",
+    "check": "tsc -b tsconfig.json"
+  },
+  "devDependencies": {
+    "@effect/cli": "^0.42.2",
+    "@effect/platform": "^0.63.2",
+    "@effect/platform-node": "^0.58.2",
+    "@effect/printer": "^0.35.2",
+    "@effect/printer-ansi": "^0.35.2",
+    "effect": "^3.7.2",
+    "tar": "^7.4.3",
+    "tsup": "^8.2.4"
+  }
+}

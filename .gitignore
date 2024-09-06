@@ -1,2 +1,9 @@
-node_modules/
+.DS_Store
 .direnv
+build/
+dist/
+node_modules/
+scratchpad/*
+!scratchpad/tsconfig.json
+examples/*/pnpm-lock.yaml
+*.tsbuildinfo

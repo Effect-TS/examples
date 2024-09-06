@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "exactOptionalPropertyTypes": true,
+    "target": "ES2021",
+    "noEmit": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es6"],
+    "sourceMap": false,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "stripInternal": true,
+    "skipLibCheck": true,
+    "types": ["vitest/globals"],
+    "plugins": [{ "name": "@effect/language-service" }]
+  },
+  "include": ["./src", "./public", "./test"]
+}

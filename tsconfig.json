@@ -1,10 +1,7 @@
 {
-  "compilerOptions": {
-    "noEmit": true,
-    "module": "CommonJS",
-    "strict": true,
-    "downlevelIteration": true,
-    "plugins": [{ "name": "@effect/language-service" }]
-  },
-  "include": ["src/**/*.ts"]
+  "extends": "./tsconfig.base.json",
+  "include": [],
+  "references": [
+    { "path": "packages/create-effect-app" }
+  ]
 }
