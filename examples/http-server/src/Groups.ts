@@ -1,5 +1,5 @@
 import { SqlClient } from "@effect/sql"
-import { Cause, Effect, Layer, Option, pipe } from "effect"
+import { Effect, Layer, Option, pipe } from "effect"
 import type { AccountId } from "./Domain/Account.js"
 import type { GroupId } from "./Domain/Group.js"
 import { Group, GroupNotFound } from "./Domain/Group.js"
