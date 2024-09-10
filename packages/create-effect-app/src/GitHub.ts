@@ -25,26 +25,26 @@ export const make = Effect.gen(function*() {
   )
 
   const downloadExample = (config: ExampleConfig) =>
-    HttpClientRequest.get("/Effect-TS/examples/tar.gz/chore/enhance-templates").pipe(
+    HttpClientRequest.get("/Effect-TS/examples/tar.gz/main").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
           cwd: config.projectName,
           strip: 2 + config.projectType.example.split("/").length,
-          filter: (path) => path.includes(`examples-chore-enhance-templates/examples/${config.projectType.example}`)
+          filter: (path) => path.includes(`examples-main/examples/${config.projectType.example}`)
         }), (cause) => new TarExtractionError({ cause, directory: config.projectName })))
     )
 
   const downloadTemplate = (config: TemplateConfig) =>
-    HttpClientRequest.get("/Effect-TS/examples/tar.gz/chore/enhance-templates").pipe(
+    HttpClientRequest.get("/Effect-TS/examples/tar.gz/main").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
           cwd: config.projectName,
           strip: 2 + config.projectType.template.split("/").length,
-          filter: (path) => path.includes(`examples-chore-enhance-templates/templates/${config.projectType.template}`)
+          filter: (path) => path.includes(`examples-main/templates/${config.projectType.template}`)
         }), (cause) => new TarExtractionError({ cause, directory: config.projectName })))
     )
 
