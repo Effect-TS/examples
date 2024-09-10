@@ -322,7 +322,7 @@ function createTemplate(config: TemplateConfig) {
     if (config.projectType.withChangesets) {
       yield* Effect.logInfo(AnsiDoc.hsep([
         AnsiDoc.text("Make sure to update the Changesets configuration file"),
-        AnsiDoc.text("with your target GitHub repository for Changesets changelogs:"),
+        AnsiDoc.text("with your target GitHub repository for changelog links:"),
         AnsiDoc.hardLine,
         AnsiDoc.text(path.join(config.projectName, ".changeset", "config.json")).pipe(
           AnsiDoc.annotate(Ansi.magenta),
