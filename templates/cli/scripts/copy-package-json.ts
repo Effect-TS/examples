@@ -1,44 +1,32 @@
-import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
-import * as FileSystem from "@effect/platform/FileSystem"
-import { Effect, pipe } from "effect"
-import * as path from "node:path"
+import { FileSystem, Path } from "@effect/platform"
+import { NodeContext } from "@effect/platform-node"
+import { Effect } from "effect"
 
-const read = pipe(
-  FileSystem.FileSystem,
-  Effect.flatMap((fileSystem) => fileSystem.readFileString("package.json")),
-  Effect.map((_) => JSON.parse(_)),
-  Effect.map((json) => ({
+const program = Effect.gen(function*() {
+  const fs = yield* FileSystem.FileSystem
+  const path = yield* Path.Path
+  yield* Effect.log("[Build] Copying package.json ...")
+  const json: any = yield* fs.readFileString("package.json").pipe(Effect.map(JSON.parse))
+  const pkg = {
     name: json.name,
     version: json.version,
+    type: json.type,
     description: json.description,
-    bin: {
-      "effect-codemod": "main.js"
-    },
+    main: "bin.cjs",
+    bin: "bin.cjs",
     engines: json.engines,
+    dependencies: json.dependencies,
+    peerDependencies: json.peerDependencies,
     repository: json.repository,
     author: json.author,
     license: json.license,
     bugs: json.bugs,
     homepage: json.homepage,
     tags: json.tags,
-    keywords: json.keywords,
-    dependencies: json.dependencies
-  }))
-)
+    keywords: json.keywords
+  }
+  yield* fs.writeFileString(path.join("dist", "package.json"), JSON.stringify(pkg, null, 2))
+  yield* Effect.log("[Build] Build completed.")
+}).pipe(Effect.provide(NodeContext.layer))
 
-const pathTo = path.join("dist", "package.json")
-
-const write = (pkg: object) =>
-  pipe(
-    FileSystem.FileSystem,
-    Effect.flatMap((fileSystem) => fileSystem.writeFileString(pathTo, JSON.stringify(pkg, null, 2)))
-  )
-
-const program = pipe(
-  Effect.sync(() => console.log(`copying package.json to ${pathTo}...`)),
-  Effect.flatMap(() => read),
-  Effect.flatMap(write),
-  Effect.provide(NodeFileSystem.layer)
-)
-
-Effect.runPromise(program)
+Effect.runPromise(program).catch(console.error)
