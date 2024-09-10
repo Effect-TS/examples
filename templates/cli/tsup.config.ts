@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-  entry: ["src/main.ts"],
+  entry: ["src/bin.ts"],
   clean: true,
   publicDir: true,
   treeshake: "smallest",

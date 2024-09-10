@@ -1,0 +1,5 @@
+/** @internal */
+export type Template = TEMPLATE_TYPE
+
+/** @internal */
+export const templates = TEMPLATE_VALUES as const

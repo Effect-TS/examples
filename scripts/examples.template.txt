@@ -1,2 +1,5 @@
 /** @internal */
-export const examples = EXAMPLES as const
+export type Example = EXAMPLE_TYPE
+
+/** @internal */
+export const examples = EXAMPLE_VALUES as const

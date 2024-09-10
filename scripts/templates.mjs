@@ -22,9 +22,9 @@ async function main() {
     "arrowFunction.useParentheses": "force"
   })
 
-  const template = await Fs.readFile("./scripts/examples.template.txt")
+  const template = await Fs.readFile("./scripts/templates.template.txt")
     .then((buffer) => buffer.toString("utf8"))
-  const examples = await Fs.readdir("./examples", { withFileTypes: true })
+  const templates = await Fs.readdir("./templates", { withFileTypes: true })
     .then((entries) =>
       entries
         .filter((entry) => entry.isDirectory())
@@ -32,12 +32,12 @@ async function main() {
     )
 
   await Fs.writeFile(
-    "./packages/create-effect-app/src/internal/examples.ts",
+    "./packages/create-effect-app/src/internal/templates.ts",
     tsFormatter.formatText({
       filePath: "file.ts",
       fileText: template
-        .replace("EXAMPLE_VALUES", JSON.stringify(examples))
-        .replace("EXAMPLE_TYPE", examples.map(JSON.stringify).join(" | "))
+        .replace("TEMPLATE_VALUES", JSON.stringify(templates))
+        .replace("TEMPLATE_TYPE", templates.map(JSON.stringify).join(" | "))
     })
   )
 }

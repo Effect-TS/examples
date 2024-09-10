@@ -2,6 +2,7 @@
   "name": "@template/basic",
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@9.10.0"
   "scripts": {
     "codegen": "build-utils prepare-v2",
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
@@ -33,7 +34,7 @@
     "@babel/plugin-transform-export-namespace-from": "^7.24.7",
     "@babel/plugin-transform-modules-commonjs": "^7.24.8",
     "@changesets/changelog-github": "^0.5.0",
-    "@changesets/cli": "^2.27.7",
+    "@changesets/cli": "2.27.7",
     "@edge-runtime/vm": "^4.0.0",
     "@effect/build-utils": "^0.7.7",
     "@effect/docgen": "^0.4.4",

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import * as HelpDoc from "@effect/cli/HelpDoc"
-import * as ValidationError from "@effect/cli/ValidationError"
+import * as CliConfig from "@effect/cli/CliConfig"
 import * as NodeContext from "@effect/platform-node/NodeContext"
 import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient"
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
@@ -19,16 +18,13 @@ const MainLive = GitHub.Live.pipe(
   Layer.provideMerge(Layer.mergeAll(
     Logger.replace(Logger.defaultLogger, AnsiDocLogger),
     Logger.minimumLogLevel(LogLevel.Info),
+    CliConfig.layer({ showBuiltIns: false }),
     NodeContext.layer,
     NodeHttpClient.layerUndici
   ))
 )
 
 cli(process.argv).pipe(
-  Effect.catchIf(
-    ValidationError.isValidationError,
-    (error) => Effect.logError(HelpDoc.toAnsiDoc(error.error))
-  ),
   Effect.catchTags({
     QuitException: () =>
       Effect.logError(AnsiDoc.cat(
@@ -45,6 +41,7 @@ cli(process.argv).pipe(
   Effect.orDie,
   Effect.provide(MainLive),
   NodeRuntime.runMain({
-    disablePrettyLogger: true
+    disablePrettyLogger: true,
+    disableErrorReporting: true
   })
 )

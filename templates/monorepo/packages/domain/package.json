@@ -2,7 +2,6 @@
   "name": "@template/domain",
   "version": "0.0.0",
   "type": "module",
-  "private": true,
   "scripts": {
     "codegen": "build-utils prepare-v2",
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
@@ -13,15 +12,10 @@
     "test": "vitest",
     "coverage": "vitest --coverage"
   },
-  "devDependencies": {
-    "@effect/platform": "workspace:^",
-    "@effect/platform-node": "workspace:^",
-    "@effect/printer": "workspace:^",
-    "@effect/printer-ansi": "workspace:^",
-    "@effect/schema": "workspace:^",
-    "@types/ini": "^4.1.1",
-    "@types/node": "^20.14.10",
-    "effect": "workspace:^"
+  "dependencies": {
+    "@effect/schema": "latest",
+    "@effect/sql": "latest",
+    "effect": "latest"
   },
   "effect": {
     "generateExports": {

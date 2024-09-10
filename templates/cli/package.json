@@ -1,6 +1,7 @@
 {
   "name": "@template/cli",
   "version": "0.0.0",
+  "bin": "./dist/bin.cjs",
   "publishConfig": {
     "access": "public",
     "directory": "dist"
