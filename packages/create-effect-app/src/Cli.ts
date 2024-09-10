@@ -299,7 +299,9 @@ function createTemplate(config: TemplateConfig) {
     // Handle user preferences for GitHub workflows
     if (!config.projectType.withWorkflows) {
       // Remove the .github directory
-      yield* fs.remove(path.join(config.projectName, ".github"))
+      yield* fs.remove(path.join(config.projectName, ".github"), {
+        recursive: true
+      })
     }
 
     // Write out the updated package.json
