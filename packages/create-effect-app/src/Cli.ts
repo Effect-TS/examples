@@ -138,7 +138,7 @@ function resolveProjectName(config: RawConfig) {
       Prompt.text({
         message: "What is your project named?",
         default: "effect-app"
-      })
+      }).pipe(Effect.flatMap((name) => Path.Path.pipe(Effect.map((path) => path.resolve(name)))))
   })
 }
 
@@ -271,6 +271,8 @@ function createTemplate(config: TemplateConfig) {
     // Handle user preferences for ESLint
     if (!config.projectType.withESLint) {
       // Remove eslint.config.mjs
+      yield* fs.remove(path.join(config.projectName, "eslint.config.mjs"))
+      // Remove eslint dependencies
       const eslintDeps = Array.filter(
         Object.keys(packageJson["devDependencies"]),
         (key) => key.includes("eslint")
@@ -312,16 +314,19 @@ function createTemplate(config: TemplateConfig) {
 
     yield* Effect.logInfo(AnsiDoc.hsep([
       AnsiDoc.text("Success!").pipe(AnsiDoc.annotate(Ansi.green)),
-      AnsiDoc.text(`Effect template project was initialized in ${config.projectName}`)
+      AnsiDoc.text(`Effect template project was initialized in:`),
+      AnsiDoc.hardLine,
+      AnsiDoc.indent(AnsiDoc.text(config.projectName).pipe(AnsiDoc.annotate(Ansi.magenta)), 2)
     ]))
 
     if (config.projectType.withChangesets) {
       yield* Effect.logInfo(AnsiDoc.hsep([
         AnsiDoc.text("Make sure to update the Changesets configuration file"),
-        AnsiDoc.text("with your target GitHub repository for Changesets changelogs"),
+        AnsiDoc.text("with your target GitHub repository for Changesets changelogs:"),
         AnsiDoc.hardLine,
         AnsiDoc.text(path.join(config.projectName, ".changeset", "config.json")).pipe(
-          AnsiDoc.annotate(Ansi.magenta)
+          AnsiDoc.annotate(Ansi.magenta),
+          AnsiDoc.indent(2)
         )
       ]))
     }
