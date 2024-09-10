@@ -7,7 +7,7 @@ import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
 import * as Stream from "effect/Stream"
 import * as Tar from "tar"
-import type { TemplateType } from "./Domain.js"
+import type { ExampleConfig, TemplateConfig } from "./Cli.js"
 
 export class TarExtractionError extends Data.TaggedError("TarExtractionError")<{
   readonly cause: unknown
@@ -24,28 +24,28 @@ export const make = Effect.gen(function*() {
     HttpClient.mapRequest(HttpClientRequest.prependUrl(codeloadBaseUrl))
   )
 
-  const downloadExample = (directory: string, example: string) =>
-    HttpClientRequest.get("/Effect-TS/examples/tar.gz/main").pipe(
+  const downloadExample = (config: ExampleConfig) =>
+    HttpClientRequest.get("/Effect-TS/examples/tar.gz/chore/enhance-templates").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
-          cwd: directory,
-          strip: 2 + example.split("/").length,
-          filter: (path) => path.includes(`examples-main/examples/${example}`)
-        }), (cause) => new TarExtractionError({ cause, directory })))
+          cwd: config.projectName,
+          strip: 2 + config.projectType.example.split("/").length,
+          filter: (path) => path.includes(`examples-chore-enhance-templates/examples/${config.projectType.example}`)
+        }), (cause) => new TarExtractionError({ cause, directory: config.projectName })))
     )
 
-  const downloadTemplate = (directory: string, template: TemplateType) =>
-    HttpClientRequest.get("/Effect-TS/examples/tar.gz/main").pipe(
+  const downloadTemplate = (config: TemplateConfig) =>
+    HttpClientRequest.get("/Effect-TS/examples/tar.gz/chore/enhance-templates").pipe(
       codeloadClient,
       HttpClientResponse.stream,
       Stream.run(NodeSink.fromWritable(() =>
         Tar.extract({
-          cwd: directory,
-          strip: 2 + template.split("/").length,
-          filter: (path) => path.includes(`examples-main/templates/${template}`)
-        }), (cause) => new TarExtractionError({ cause, directory })))
+          cwd: config.projectName,
+          strip: 2 + config.projectType.template.split("/").length,
+          filter: (path) => path.includes(`examples-chore-enhance-templates/templates/${config.projectType.template}`)
+        }), (cause) => new TarExtractionError({ cause, directory: config.projectName })))
     )
 
   return {
