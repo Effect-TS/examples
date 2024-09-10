@@ -118,6 +118,9 @@ importers:
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(postcss@8.4.45)(tsx@4.19.0)(typescript@5.5.4)(yaml@2.5.1)
+      yaml:
+        specifier: ^2.5.1
+        version: 2.5.1
     publishDirectory: dist
 
 packages:

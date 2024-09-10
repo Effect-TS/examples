@@ -44,10 +44,7 @@ export const make = Effect.gen(function*() {
         Tar.extract({
           cwd: config.projectName,
           strip: 2 + config.projectType.template.split("/").length,
-          filter: (path) => {
-            console.log(path)
-            return path.includes(`examples-chore-enhance-templates/templates/${config.projectType.template}`)
-          }
+          filter: (path) => path.includes(`examples-chore-enhance-templates/templates/${config.projectType.template}`)
         }), (cause) => new TarExtractionError({ cause, directory: config.projectName })))
     )
 

@@ -10,6 +10,7 @@ import * as Array from "effect/Array"
 import * as Effect from "effect/Effect"
 import * as Match from "effect/Match"
 import * as Option from "effect/Option"
+import * as Yaml from "yaml"
 import { ProjectType } from "./Domain.js"
 import { GitHub } from "./GitHub.js"
 import type { Example } from "./internal/examples.js"
@@ -51,10 +52,6 @@ const withNixFlake = Options.boolean("flake").pipe(
   Options.withDescription("Initialize project with a Nix flake")
 )
 
-const withMadge = Options.boolean("madge").pipe(
-  Options.withDescription("Initialize project with Madge")
-)
-
 const withPrettier = Options.boolean("prettier").pipe(
   Options.withDescription("Initialize project with Prettier")
 )
@@ -76,7 +73,6 @@ const projectType: Options.Options<Option.Option<ProjectType>> = Options.all({
       template: templateType,
       withChangesets,
       withNixFlake,
-      withMadge,
       withPrettier,
       withESLint,
       withWorkflows
@@ -215,7 +211,7 @@ function createTemplate(config: TemplateConfig) {
     // Handle user preferences for changesets
     if (!config.projectType.withChangesets) {
       // Remove the .changesets directory
-      yield* fs.remove(path.join(config.projectName, ".changesets"), {
+      yield* fs.remove(path.join(config.projectName, ".changeset"), {
         recursive: true
       })
       // Remove patches for changesets
@@ -228,7 +224,7 @@ function createTemplate(config: TemplateConfig) {
         Object.keys(packageJson["pnpm"]["patchedDependencies"]),
         (key) => key.includes("changeset")
       )
-      for (const patch in depsToRemove) {
+      for (const patch of depsToRemove) {
         delete packageJson["pnpm"]["patchedDependencies"][patch]
       }
       // Remove scripts for changesets
@@ -249,6 +245,7 @@ function createTemplate(config: TemplateConfig) {
       }
       // If git workflows are enabled, remove changesets related workflows
       if (config.projectType.withWorkflows) {
+        yield* fs.remove(path.join(config.projectName, ".github", "workflows", "release.yml"))
       }
     }
 
@@ -260,26 +257,11 @@ function createTemplate(config: TemplateConfig) {
       )
     }
 
-    // Handle user preferences for Madge
-    if (!config.projectType.withMadge) {
-      // Remove the madge configuration file
-      yield* fs.remove(path.join(config.projectName, ".madgerc"))
-      // Remove the madge dependency
-      delete packageJson["devDependencies"]["madge"]
-      // Remove circular script if monorepo
-      if (config.projectType.template === "monorepo") {
-        yield* fs.remove(path.join(config.projectName, "scripts", "circular.js"))
-      }
-      if (config.projectType.withWorkflows) {
-        // If git workflows are enabled, remove madge check workflows
-      }
-    }
-
     // Handle user preferences for Prettier
     if (!config.projectType.withPrettier) {
       // Remove prettier configuration files
       yield* Effect.forEach(
-        [".prettierignore", ".prettierc.json"],
+        [".prettierignore", ".prettierrc.json"],
         (file) => fs.remove(path.join(config.projectName, file))
       )
       // Remove prettier from dependencies
@@ -306,6 +288,11 @@ function createTemplate(config: TemplateConfig) {
       }
       // If git workflows are enabled, remove lint workflows
       if (config.projectType.withWorkflows) {
+        const checkWorkflowPath = path.join(config.projectName, ".github", "workflows", "check.yml")
+        const checkWorkflow = yield* fs.readFileString(checkWorkflowPath)
+        const checkYaml = Yaml.parse(checkWorkflow)
+        delete checkYaml["jobs"]["lint"]
+        yield* fs.writeFileString(checkWorkflowPath, Yaml.stringify(checkYaml, undefined, 2))
       }
     }
 
@@ -315,10 +302,27 @@ function createTemplate(config: TemplateConfig) {
       yield* fs.remove(path.join(config.projectName, ".github"))
     }
 
+    // Write out the updated package.json
+    yield* fs.writeFileString(
+      path.join(config.projectName, "package.json"),
+      JSON.stringify(packageJson, undefined, 2)
+    )
+
     yield* Effect.logInfo(AnsiDoc.hsep([
       AnsiDoc.text("Success!").pipe(AnsiDoc.annotate(Ansi.green)),
       AnsiDoc.text(`Effect template project was initialized in ${config.projectName}`)
     ]))
+
+    if (config.projectType.withChangesets) {
+      yield* Effect.logInfo(AnsiDoc.hsep([
+        AnsiDoc.text("Make sure to update the Changesets configuration file"),
+        AnsiDoc.text("with your target GitHub repository for Changesets changelogs"),
+        AnsiDoc.hardLine,
+        AnsiDoc.text(path.join(config.projectName, ".changeset", "config.json")).pipe(
+          AnsiDoc.annotate(Ansi.magenta)
+        )
+      ]))
+    }
   })
 }
 
@@ -382,11 +386,6 @@ const getUserInput = Prompt.select<"example" | "template">({
           message: "Initialize project with a Nix flake?",
           initial: true
         }),
-        withMadge: Prompt.toggle({
-          message: "Initialize project with Madge?",
-          initial: true
-        }),
-
         withPrettier: Prompt.toggle({
           message: "Initialize project with Prettier?",
           initial: true
