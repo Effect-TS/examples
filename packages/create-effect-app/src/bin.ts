@@ -6,8 +6,6 @@ import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient"
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as Ansi from "@effect/printer-ansi/Ansi"
 import * as AnsiDoc from "@effect/printer-ansi/AnsiDoc"
-import * as Cause from "effect/Cause"
-import * as Console from "effect/Console"
 import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
 import * as Logger from "effect/Logger"
@@ -41,7 +39,6 @@ cli(process.argv).pipe(
       )
   }),
   Effect.orDie,
-  Effect.tapErrorCause((cause) => Console.log(Cause.pretty(cause))),
   Effect.provide(MainLive),
   NodeRuntime.runMain({
     disablePrettyLogger: true,
