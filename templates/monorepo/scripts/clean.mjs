@@ -3,17 +3,9 @@ import * as Fs from "node:fs"
 
 const dirs = [".", ...Glob.sync("packages/*/")]
 dirs.forEach((pkg) => {
-  const files = [".tsbuildinfo", "docs", "build", "dist", "coverage"]
+  const files = [".tsbuildinfo", "build", "dist", "coverage"]
 
   files.forEach((file) => {
-    if (pkg === "." && file === "docs") {
-      return
-    }
-
     Fs.rmSync(`${pkg}/${file}`, { recursive: true, force: true }, () => {})
   })
-})
-
-Glob.sync("docs/*/").forEach((dir) => {
-  Fs.rmSync(dir, { recursive: true, force: true }, () => {})
 })
