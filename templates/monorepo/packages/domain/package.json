@@ -13,6 +13,7 @@
     "coverage": "vitest --coverage"
   },
   "dependencies": {
+    "@effect/platform": "^0.64.0",
     "@effect/schema": "latest",
     "@effect/sql": "latest",
     "effect": "latest"
