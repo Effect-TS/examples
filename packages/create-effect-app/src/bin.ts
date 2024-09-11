@@ -30,13 +30,7 @@ cli(process.argv).pipe(
       Effect.logError(AnsiDoc.cat(
         AnsiDoc.hardLine,
         AnsiDoc.text("Exiting...").pipe(AnsiDoc.annotate(Ansi.red))
-      )),
-    TarExtractionError: (error) =>
-      Effect.logError(
-        AnsiDoc.text(
-          `Error extracting the TAR archive to ${error.directory}`
-        ).pipe(AnsiDoc.annotate(Ansi.red))
-      )
+      ))
   }),
   Effect.orDie,
   Effect.provide(MainLive),
