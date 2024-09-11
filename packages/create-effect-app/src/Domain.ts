@@ -10,7 +10,6 @@ export type ProjectType = Data.TaggedEnum<{
     readonly template: Template
     readonly withChangesets: boolean
     readonly withNixFlake: boolean
-    readonly withPrettier: boolean
     readonly withESLint: boolean
     readonly withWorkflows: boolean
   }

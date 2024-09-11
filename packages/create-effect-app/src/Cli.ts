@@ -52,10 +52,6 @@ const withNixFlake = Options.boolean("flake").pipe(
   Options.withDescription("Initialize project with a Nix flake")
 )
 
-const withPrettier = Options.boolean("prettier").pipe(
-  Options.withDescription("Initialize project with Prettier")
-)
-
 const withESLint = Options.boolean("eslint").pipe(
   Options.withDescription("Initialize project with ESLint")
 )
@@ -73,7 +69,6 @@ const projectType: Options.Options<Option.Option<ProjectType>> = Options.all({
       template: templateType,
       withChangesets,
       withNixFlake,
-      withPrettier,
       withESLint,
       withWorkflows
     }).pipe(Options.map(ProjectType.Template))
@@ -257,17 +252,6 @@ function createTemplate(config: TemplateConfig) {
       )
     }
 
-    // Handle user preferences for Prettier
-    if (!config.projectType.withPrettier) {
-      // Remove prettier configuration files
-      yield* Effect.forEach(
-        [".prettierignore", ".prettierrc.json"],
-        (file) => fs.remove(path.join(config.projectName, file))
-      )
-      // Remove prettier from dependencies
-      delete packageJson["devDependencies"]["prettier"]
-    }
-
     // Handle user preferences for ESLint
     if (!config.projectType.withESLint) {
       // Remove eslint.config.mjs
@@ -391,10 +375,6 @@ const getUserInput = Prompt.select<"example" | "template">({
         }),
         withNixFlake: Prompt.toggle({
           message: "Initialize project with a Nix flake?",
-          initial: true
-        }),
-        withPrettier: Prompt.toggle({
-          message: "Initialize project with Prettier?",
           initial: true
         }),
         withESLint: Prompt.toggle({
