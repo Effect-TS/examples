@@ -12,6 +12,13 @@
     "test": "vitest",
     "coverage": "vitest --coverage"
   },
+  "dependencies": {
+    "@effect/cli": "latest",
+    "@effect/platform": "latest",
+    "@effect/platform-node": "latest",
+    "@template/domain": "workspace:^",
+    "effect": "latest"
+  },
   "effect": {
     "generateExports": {
       "include": [

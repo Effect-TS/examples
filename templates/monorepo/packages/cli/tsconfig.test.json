@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "include": ["test"],
   "references": [
-    { "path": "tsconfig.src.json" }
+    { "path": "tsconfig.src.json" },
+    { "path": "../domain" } 
   ],
   "compilerOptions": {
     "types": ["node"],
