@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "REPLACE_ME"
+      "repo": "<PLACEHOLDER>"
     }
   ],
   "commit": false,

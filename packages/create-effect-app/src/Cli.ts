@@ -8,6 +8,7 @@ import * as Ansi from "@effect/printer-ansi/Ansi"
 import * as AnsiDoc from "@effect/printer-ansi/AnsiDoc"
 import * as Array from "effect/Array"
 import * as Effect from "effect/Effect"
+import { pipe } from "effect/Function"
 import * as Match from "effect/Match"
 import * as Option from "effect/Option"
 import * as Yaml from "yaml"
@@ -152,8 +153,8 @@ function createExample(config: ExampleConfig) {
     const fs = yield* FileSystem.FileSystem
 
     yield* Effect.logInfo(AnsiDoc.hsep([
-      AnsiDoc.text("Creating a new Effect application in"),
-      AnsiDoc.text(config.projectName).pipe(AnsiDoc.annotate(Ansi.green))
+      AnsiDoc.text("Creating a new Effect application in: "),
+      AnsiDoc.text(config.projectName).pipe(AnsiDoc.annotate(Ansi.magenta))
     ]))
 
     // Create the project path
@@ -169,7 +170,8 @@ function createExample(config: ExampleConfig) {
 
     yield* Effect.logInfo(AnsiDoc.hsep([
       AnsiDoc.text("Success!").pipe(AnsiDoc.annotate(Ansi.green)),
-      AnsiDoc.text(`Effect example application was initialized in ${config.projectName}`)
+      AnsiDoc.text("Effect example application was initialized in: "),
+      AnsiDoc.text(config.projectName).pipe(AnsiDoc.annotate(Ansi.cyan))
     ]))
   })
 }
@@ -299,21 +301,34 @@ function createTemplate(config: TemplateConfig) {
     yield* Effect.logInfo(AnsiDoc.hsep([
       AnsiDoc.text("Success!").pipe(AnsiDoc.annotate(Ansi.green)),
       AnsiDoc.text(`Effect template project was initialized in:`),
-      AnsiDoc.hardLine,
-      AnsiDoc.indent(AnsiDoc.text(config.projectName).pipe(AnsiDoc.annotate(Ansi.magenta)), 2)
+      AnsiDoc.text(config.projectName).pipe(AnsiDoc.annotate(Ansi.cyan))
     ]))
 
+    yield* Effect.logInfo(AnsiDoc.hsep([
+      AnsiDoc.text("Take a look at the template's"),
+      AnsiDoc.text("README.md").pipe(AnsiDoc.annotate(Ansi.cyan)),
+      AnsiDoc.text("for more information")
+    ]))
+
+    const filesToCheck = []
+    filesToCheck.push(path.join(config.projectName, "LICENSE"))
     if (config.projectType.withChangesets) {
-      yield* Effect.logInfo(AnsiDoc.hsep([
-        AnsiDoc.text("Make sure to update the Changesets configuration file"),
-        AnsiDoc.text("with your target GitHub repository for changelog links:"),
-        AnsiDoc.hardLine,
-        AnsiDoc.text(path.join(config.projectName, ".changeset", "config.json")).pipe(
-          AnsiDoc.annotate(Ansi.magenta),
-          AnsiDoc.indent(2)
-        )
-      ]))
+      filesToCheck.push(path.join(config.projectName, ".changeset", "config.json"))
     }
+
+    yield* Effect.logInfo(AnsiDoc.cats([
+      AnsiDoc.hsep([
+        AnsiDoc.text("Make sure to replace any"),
+        AnsiDoc.text("<PLACEHOLDER>").pipe(AnsiDoc.annotate(Ansi.cyan)),
+        AnsiDoc.text("entries in the following files:")
+      ]),
+      pipe(
+        filesToCheck,
+        Array.map((file) => AnsiDoc.catWithSpace(AnsiDoc.char("-"), AnsiDoc.text(file))),
+        AnsiDoc.vsep,
+        AnsiDoc.indent(2)
+      )
+    ]))
   })
 }
 
