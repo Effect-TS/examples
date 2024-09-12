@@ -1,5 +1,11 @@
 # create-effect-app
 
+## 0.0.2
+
+### Patch Changes
+
+- [#38](https://github.com/Effect-TS/examples/pull/38) [`9f8160a`](https://github.com/Effect-TS/examples/commit/9f8160ac3a6b4714634d1a167881c47edc1ea2b9) Thanks @IMax153! - bump version
+
 ## 0.0.1
 
 ### Patch Changes
