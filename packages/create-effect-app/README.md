@@ -47,7 +47,7 @@ Create Effect App
 
 USAGE
 
-$ create-effect-app [(-t, --template basic | cli | monorepo) [--changesets] [--flake] [--prettier] [--eslint] [--workflows]] [<project-name>]
+$ create-effect-app [(-t, --template basic | cli | monorepo) [--changesets] [--flake] [--eslint] [--workflows]] [<project-name>]
 
 $ create-effect-app [(-e, --example http-server)] [<project-name>]
 
@@ -92,14 +92,6 @@ OPTIONS
   A true or false value.
 
   Initialize project with a Nix flake
-
-  This setting is optional.
-
---prettier
-
-  A true or false value.
-
-  Initialize project with Prettier
 
   This setting is optional.
 
