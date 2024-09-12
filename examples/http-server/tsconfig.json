@@ -3,7 +3,7 @@
     "composite": true,
     "incremental": true
   },
-  "include": [],
+  "files": [],
   "references": [
     { "path": "./tsconfig.src.json" },
     { "path": "./tsconfig.test.json" }

@@ -1,16 +1,16 @@
-import { HttpApiSchema } from "@effect/platform"
 import { Schema } from "@effect/schema"
 import { Model } from "@effect/sql"
 import { Context } from "effect"
 import { AccessToken } from "./AccessToken.js"
 import { Account, AccountId } from "./Account.js"
 import { Email } from "./Email.js"
+import { HttpApiSchema } from "@effect/platform"
 
 export const UserId = Schema.Number.pipe(Schema.brand("UserId"))
 export type UserId = typeof UserId.Type
 
 export const UserIdFromString = Schema.NumberFromString.pipe(
-  Schema.compose(UserId)
+  Schema.compose(UserId),
 )
 
 export class User extends Model.Class<User>("User")({
@@ -19,15 +19,15 @@ export class User extends Model.Class<User>("User")({
   email: Email,
   accessToken: Model.Sensitive(AccessToken),
   createdAt: Model.DateTimeInsert,
-  updatedAt: Model.DateTimeUpdate
+  updatedAt: Model.DateTimeUpdate,
 }) {}
 
 export class UserWithSensitive extends Model.Class<UserWithSensitive>(
-  "UserWithSensitive"
+  "UserWithSensitive",
 )({
   ...Model.fields(User),
   accessToken: AccessToken,
-  account: Account
+  account: Account,
 }) {}
 
 export class CurrentUser extends Context.Tag("Domain/User/CurrentUser")<
@@ -38,5 +38,5 @@ export class CurrentUser extends Context.Tag("Domain/User/CurrentUser")<
 export class UserNotFound extends Schema.TaggedError<UserNotFound>()(
   "UserNotFound",
   { id: UserId },
-  HttpApiSchema.annotations({ status: 404 })
+  HttpApiSchema.annotations({ status: 404 }),
 ) {}

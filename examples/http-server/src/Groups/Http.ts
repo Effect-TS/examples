@@ -8,7 +8,7 @@ import { Groups } from "../Groups.js"
 import { GroupsPolicy } from "./Policy.js"
 
 export const HttpGroupsLive = HttpApiBuilder.group(Api, "groups", (handlers) =>
-  Effect.gen(function*() {
+  Effect.gen(function* () {
     const groups = yield* Groups
     const policy = yield* GroupsPolicy
     const accounts = yield* Accounts
@@ -17,18 +17,22 @@ export const HttpGroupsLive = HttpApiBuilder.group(Api, "groups", (handlers) =>
       HttpApiBuilder.handle("create", ({ payload }) =>
         CurrentUser.pipe(
           Effect.flatMap((user) => groups.create(user.accountId, payload)),
-          policyUse(policy.canCreate(payload))
-        )),
-      HttpApiBuilder.handle("update", ({ path, payload }) =>
+          policyUse(policy.canCreate(payload)),
+        ),
+      ),
+      HttpApiBuilder.handle("update", ({ payload, path }) =>
         groups.with(path.id, (group) =>
           pipe(
             groups.update(group, payload),
-            policyUse(policy.canUpdate(group))
-          ))),
-      accounts.httpSecurity
+            policyUse(policy.canUpdate(group)),
+          ),
+        ),
+      ),
+      accounts.httpSecurity,
     )
-  })).pipe(
-    Layer.provide(Accounts.Live),
-    Layer.provide(Groups.Live),
-    Layer.provide(GroupsPolicy.Live)
-  )
+  }),
+).pipe(
+  Layer.provide(Accounts.Live),
+  Layer.provide(Groups.Live),
+  Layer.provide(GroupsPolicy.Live),
+)
