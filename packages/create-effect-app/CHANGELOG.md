@@ -1,5 +1,11 @@
 # create-effect-app
 
+## 0.0.3
+
+### Patch Changes
+
+- [#40](https://github.com/Effect-TS/examples/pull/40) [`2250f2c`](https://github.com/Effect-TS/examples/commit/2250f2cd44691ec94c2da8bcb2adb37711bc1a1d) Thanks @IMax153! - improve logging during project initialization
+
 ## 0.0.2
 
 ### Patch Changes
