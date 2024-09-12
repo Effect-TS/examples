@@ -1,13 +1,13 @@
+import { HttpApiSchema } from "@effect/platform"
 import { Schema } from "@effect/schema"
 import { Model } from "@effect/sql"
 import { AccountId } from "./Account.js"
-import { HttpApiSchema } from "@effect/platform"
 
 export const GroupId = Schema.Number.pipe(Schema.brand("GroupId"))
 export type GroupId = typeof GroupId.Type
 
 export const GroupIdFromString = Schema.NumberFromString.pipe(
-  Schema.compose(GroupId),
+  Schema.compose(GroupId)
 )
 
 export class Group extends Model.Class<Group>("Group")({
@@ -15,11 +15,11 @@ export class Group extends Model.Class<Group>("Group")({
   ownerId: Model.GeneratedByApp(AccountId),
   name: Schema.NonEmptyTrimmedString,
   createdAt: Model.DateTimeInsert,
-  updatedAt: Model.DateTimeUpdate,
+  updatedAt: Model.DateTimeUpdate
 }) {}
 
 export class GroupNotFound extends Schema.TaggedError<GroupNotFound>()(
   "GroupNotFound",
   { id: GroupId },
-  HttpApiSchema.annotations({ status: 404 }),
+  HttpApiSchema.annotations({ status: 404 })
 ) {}

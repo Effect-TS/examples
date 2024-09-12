@@ -6,7 +6,7 @@ export const PersonId = Schema.Number.pipe(Schema.brand("PersonId"))
 export type PersonId = typeof PersonId.Type
 
 export const PersonIdFromString = Schema.NumberFromString.pipe(
-  Schema.compose(PersonId),
+  Schema.compose(PersonId)
 )
 
 export class Person extends Model.Class<Person>("Person")({
@@ -16,9 +16,9 @@ export class Person extends Model.Class<Person>("Person")({
   lastName: Schema.NonEmptyTrimmedString,
   dateOfBirth: Model.FieldOption(Model.Date),
   createdAt: Model.DateTimeInsert,
-  updatedAt: Model.DateTimeUpdate,
+  updatedAt: Model.DateTimeUpdate
 }) {}
 
 export class PersonNotFound extends Schema.TaggedError<PersonNotFound>()("PersonNotFound", {
-  id: PersonId,
+  id: PersonId
 }) {}

@@ -1,7 +1,8 @@
 import { Context, Effect, Layer } from "effect"
 import * as Api from "uuid"
 
-const make = Effect.gen(function* () {
+// eslint-disable-next-line require-yield
+const make = Effect.gen(function*() {
   const generate = Effect.sync(() => Api.v7())
   return { generate } as const
 })
@@ -12,6 +13,6 @@ export class Uuid extends Context.Tag("Uuid")<
 >() {
   static Live = Layer.effect(Uuid, make)
   static Test = Layer.succeed(Uuid, {
-    generate: Effect.succeed("test-uuid"),
+    generate: Effect.succeed("test-uuid")
   })
 }
