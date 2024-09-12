@@ -2,6 +2,7 @@ import { HttpApiBuilder } from "@effect/platform"
 import { Effect, Layer, pipe } from "effect"
 import { Accounts } from "../Accounts.js"
 import { Api } from "../Api.js"
+import { PersonNotFound } from "../Domain/Person.js"
 import { policyUse } from "../Domain/Policy.js"
 import { Groups } from "../Groups.js"
 import { People } from "../People.js"
@@ -19,8 +20,15 @@ export const HttpPeopleLive = HttpApiBuilder.group(Api, "people", (handlers) =>
         groups.with(path.groupId, (group) =>
           pipe(
             people.create(group.id, payload),
-            policyUse(policy.canCreate(group, payload))
+            policyUse(policy.canCreate(group.id, payload))
           ))),
+      HttpApiBuilder.handle("findById", ({ path }) =>
+        pipe(
+          people.findById(path.id),
+          Effect.flatten,
+          Effect.mapError(() => new PersonNotFound({ id: path.id })),
+          policyUse(policy.canRead(path.id))
+        )),
       accounts.httpSecurity
     )
   })).pipe(

@@ -7,6 +7,8 @@
     "access": "public",
     "directory": "dist"
   },
+  "description": "An Effect CLI application",
+  "license": "MIT",
   "scripts": {
     "build": "tsup && pnpm copy-package-json",
     "build:ts": "tsup",
@@ -34,34 +36,21 @@
     "@types/node": "^22.5.2",
     "@typescript-eslint/eslint-plugin": "^8.4.0",
     "@typescript-eslint/parser": "^8.4.0",
-    "@vitest/browser": "^2.0.5",
-    "@vitest/coverage-v8": "^2.0.5",
-    "@vitest/expect": "^2.0.5",
-    "@vitest/web-worker": "^2.0.5",
     "effect": "latest",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-codegen": "0.28.0",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
-    "fast-check": "^3.21.0",
-    "glob": "^11.0.0",
-    "playwright": "^1.46.0",
-    "rimraf": "^6.0.1",
     "tsup": "^8.2.4",
     "typescript": "^5.6.2",
-    "vite": "^5.4.3",
     "vitest": "^2.0.5"
   },
   "pnpm": {
-    "overrides": {
-      "vitest": "^2.0.5"
-    },
     "patchedDependencies": {
-      "@changesets/get-github-info@0.6.0": "patches/@changesets__get-github-info@0.6.0.patch",
-      "@changesets/assemble-release-plan@6.0.4": "patches/@changesets__assemble-release-plan@6.0.4.patch"
+      "@changesets/get-github-info@0.6.0": "patches/@changesets__get-github-info@0.6.0.patch"
     }
   }
 }

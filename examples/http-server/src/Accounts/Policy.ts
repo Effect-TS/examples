@@ -1,5 +1,5 @@
 import { Effect, Layer } from "effect"
-import { policy } from "../Domain/Policy.js"
+import type { policy } from "../Domain/Policy.js"
 import type { UserId } from "../Domain/User.js"
 
 // eslint-disable-next-line require-yield

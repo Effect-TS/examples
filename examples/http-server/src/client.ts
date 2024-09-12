@@ -10,7 +10,7 @@ Effect.gen(function*() {
   })
   const user = yield* client.accounts.createUser({
     payload: {
-      email: Email.make("joe@example.com")
+      email: Email.make("john.bloggs@example.com")
     }
   })
   console.log(user)

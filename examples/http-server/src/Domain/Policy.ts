@@ -1,6 +1,6 @@
 import { HttpApiSchema } from "@effect/platform"
 import { Schema } from "@effect/schema"
-import { Effect } from "effect"
+import { Effect, Predicate } from "effect"
 import type { User } from "../Domain/User.js"
 import { CurrentUser, UserId } from "../Domain/User.js"
 
@@ -15,6 +15,30 @@ export class Unauthorized extends Schema.TaggedError<Unauthorized>()(
 ) {
   get message() {
     return `Actor (${this.actorId}) is not authorized to perform action "${this.action}" on entity "${this.entity}"`
+  }
+
+  static is(u: unknown): u is Unauthorized {
+    return Predicate.isTagged(u, "Unauthorized")
+  }
+
+  static refail(entity: string, action: string) {
+    return <A, E, R>(
+      effect: Effect.Effect<A, E, R>
+    ): Effect.Effect<A, Unauthorized, CurrentUser | R> =>
+      Effect.catchIf(
+        effect,
+        (e) => !Unauthorized.is(e),
+        () =>
+          Effect.flatMap(
+            CurrentUser,
+            (actor) =>
+              new Unauthorized({
+                actorId: actor.id,
+                entity,
+                action
+              })
+          )
+      ) as any
   }
 }
 

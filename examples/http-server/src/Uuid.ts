@@ -11,7 +11,7 @@ export class Uuid extends Context.Tag("Uuid")<
   Uuid,
   Effect.Effect.Success<typeof make>
 >() {
-  static Live = Layer.succeed(Uuid, make)
+  static Live = Layer.effect(Uuid, make)
   static Test = Layer.succeed(Uuid, {
     generate: Effect.succeed("test-uuid")
   })
