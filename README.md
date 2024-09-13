@@ -6,7 +6,7 @@ The easiest way to get started with Effect is by using `create-effect-app`.
 
 This CLI tool enables you to quickly bootstrap a project with Effect, with everything pre-configured for you. 
 
-You can create a new project using one of our project templates or by using one of the [official Effect examples](./examples). 
+You can create a new project using one of our [project templates](./templates) or by using one of the [official Effect examples](./examples). 
 
 See [the documentation](./packages/create-effect-app/README.md) for more information.
 
@@ -44,7 +44,7 @@ For more information, see the template [README](./templates/basic/README.md).
 
 ### Monorepo
 
-The `monorepo` template is meant to serve as the foundation for building a multiple packages or applications with Effect. 
+The `monorepo` template is meant to serve as the foundation for building multiple packages or applications with Effect. 
 
 The template features everything included with the `basic` template in addition to:
 
