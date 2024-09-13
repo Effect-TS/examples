@@ -1,7 +1,7 @@
 import * as NodeSdk from "@effect/opentelemetry/NodeSdk"
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base"
-import { Config, Effect, Layer, Redacted } from "effect"
+import { Config, Effect, Layer, Option, Redacted } from "effect"
 
 export const TracingLive = Layer.unwrapEffect(
   Effect.gen(function*() {
@@ -10,11 +10,11 @@ export const TracingLive = Layer.unwrapEffect(
       Config.string("HONEYCOMB_DATASET"),
       "stremio-effect"
     )
-    if (apiKey._tag === "None") {
+    if (Option.isNone(apiKey)) {
       const endpoint = yield* Config.option(
         Config.string("OTEL_EXPORTER_OTLP_ENDPOINT")
       )
-      if (endpoint._tag === "None") {
+      if (Option.isNone(endpoint)) {
         return Layer.empty
       }
       return NodeSdk.layer(() => ({
