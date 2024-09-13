@@ -58,7 +58,7 @@ The `cli` template is meant to serve as the foundation for building a command-li
 
 The template features everything included with the `basic` template, except with a different build pipeline:
 
-- Pre-configured build pipeline is via `tsup` to support bundling to a single file
+- Pre-configured build pipeline is via [`tsup`](https://github.com/egoist/tsup) to support bundling to a single file
 
 For more information, see the template [README](./templates/cli/README.md).
 
