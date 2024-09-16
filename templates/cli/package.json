@@ -7,7 +7,7 @@
   "description": "A basic Effect CLI application",
   "repository": {
     "type": "git",
-    "url": "<REPLACE_ME>"
+    "url": "<PLACEHOLDER>"
   },
   "publishConfig": {
     "access": "public",
