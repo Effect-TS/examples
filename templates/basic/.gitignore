@@ -10,3 +10,4 @@ scratchpad/*
 !scratchpad/tsconfig.json
 .direnv/
 .idea/
+.env*
