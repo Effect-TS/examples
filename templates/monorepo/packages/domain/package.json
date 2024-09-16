@@ -3,6 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
+  "description": "The domain template",
+  "repository": {
+    "type": "git",
+    "url": "<PLACEHOLDER>",
+    "directory": "packages/domain"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
   "scripts": {
     "codegen": "build-utils prepare-v2",
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
@@ -14,7 +24,7 @@
     "coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@effect/platform": "^0.64.0",
+    "@effect/platform": "latest",
     "@effect/schema": "latest",
     "@effect/sql": "latest",
     "effect": "latest"

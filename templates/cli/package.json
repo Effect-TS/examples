@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@9.10.0",
+  "license": "MIT",
+  "description": "A basic Effect CLI application",
+  "repository": {
+    "type": "git",
+    "url": "<REPLACE_ME>"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "dist"
   },
-  "description": "An Effect CLI application",
-  "license": "MIT",
   "scripts": {
     "build": "tsup && pnpm copy-package-json",
     "build:ts": "tsup",
@@ -30,6 +34,7 @@
     "@effect/language-service": "^0.1.0",
     "@effect/platform": "latest",
     "@effect/platform-node": "latest",
+    "@effect/vitest": "latest",
     "@eslint/compat": "1.1.1",
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.10.0",
@@ -45,6 +50,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "tsup": "^8.2.4",
+    "tsx": "^4.19.1",
     "typescript": "^5.6.2",
     "vitest": "^2.0.5"
   },

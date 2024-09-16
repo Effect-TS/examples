@@ -6,7 +6,7 @@ import { fileURLToPath } from "url"
 import { makeTestLayer } from "./lib/Layer.js"
 
 const ClientLive = SqliteClient.layer({
-  filename: Config.succeed("data/db.sqlite")
+  filename: Config.succeed("db.sqlite")
 })
 
 const MigratorLive = SqliteMigrator.layer({

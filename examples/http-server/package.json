@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "packageManager": "pnpm@9.7.0",
+  "packageManager": "pnpm@9.10.0",
   "devDependencies": {
     "@effect/language-service": "^0.1.0",
     "@effect/vitest": "^0.9.1",

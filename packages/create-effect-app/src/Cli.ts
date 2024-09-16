@@ -311,9 +311,19 @@ function createTemplate(config: TemplateConfig) {
     ]))
 
     const filesToCheck = []
-    filesToCheck.push(path.join(config.projectName, "LICENSE"))
     if (config.projectType.withChangesets) {
       filesToCheck.push(path.join(config.projectName, ".changeset", "config.json"))
+    }
+    if (config.projectType.template === "monorepo") {
+      filesToCheck.push(path.join(config.projectName, "packages", "cli", "package.json"))
+      filesToCheck.push(path.join(config.projectName, "packages", "domain", "package.json"))
+      filesToCheck.push(path.join(config.projectName, "packages", "server", "package.json"))
+      filesToCheck.push(path.join(config.projectName, "packages", "cli", "LICENSE"))
+      filesToCheck.push(path.join(config.projectName, "packages", "domain", "LICENSE"))
+      filesToCheck.push(path.join(config.projectName, "packages", "server", "LICENSE"))
+    } else {
+      filesToCheck.push(path.join(config.projectName, "package.json"))
+      filesToCheck.push(path.join(config.projectName, "LICENSE"))
     }
 
     yield* Effect.logInfo(AnsiDoc.cats([
