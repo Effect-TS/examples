@@ -3,6 +3,12 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
+  "description": "The server template",
+  "repository": {
+    "type": "git",
+    "url": "<PLACEHOLDER>",
+    "directory": "packages/server"
+  },
   "scripts": {
     "codegen": "build-utils prepare-v2",
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",

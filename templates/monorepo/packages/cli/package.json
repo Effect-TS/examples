@@ -3,6 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
+  "description": "The CLI template",
+  "repository": {
+    "type": "git",
+    "url": "<PLACEHOLDER>",
+    "directory": "packages/cli"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
   "scripts": {
     "codegen": "build-utils prepare-v2",
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
@@ -14,6 +24,13 @@
     "coverage": "vitest --coverage"
   },
   "dependencies": {
+    "@effect/cli": "latest",
+    "@effect/platform": "latest",
+    "@effect/platform-node": "latest",
+    "@template/domain": "workspace:^",
+    "effect": "latest"
+  },
+  "devDependencies": {
     "@effect/cli": "latest",
     "@effect/platform": "latest",
     "@effect/platform-node": "latest",
