@@ -1,5 +1,11 @@
 # create-effect-app
 
+## 0.0.4
+
+### Patch Changes
+
+- [#47](https://github.com/Effect-TS/examples/pull/47) [`ce33c87`](https://github.com/Effect-TS/examples/commit/ce33c87c4534eeb6825d479bc113c917f8af6a3f) Thanks @IMax153! - Fix errors with package.json scripts in templates and examples
+
 ## 0.0.3
 
 ### Patch Changes
