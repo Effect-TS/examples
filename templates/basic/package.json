@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@9.10.0",
+  "license": "MIT",
+  "description": "A basic Effect package",
+  "repository": {
+    "type": "git",
+    "url": "<PLACEHOLDER>"
+  },
   "publishConfig": {
     "access": "public",
     "directory": "dist"
   },
-  "description": "A basic Effect package",
-  "license": "MIT",
   "scripts": {
     "codegen": "build-utils prepare-v2",
     "build": "pnpm build-esm && pnpm build-annotate && pnpm build-cjs && build-utils pack-v2",
@@ -34,10 +38,9 @@
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.8",
     "@effect/build-utils": "^0.7.7",
-    "@effect/docgen": "^0.4.4",
-    "@effect/dtslint": "^0.1.0",
     "@effect/eslint-plugin": "^0.2.0",
     "@effect/language-service": "^0.1.0",
+    "@effect/vitest": "latest",
     "@eslint/compat": "1.1.1",
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.10.0",

@@ -315,6 +315,13 @@ function createTemplate(config: TemplateConfig) {
     if (config.projectType.withChangesets) {
       filesToCheck.push(path.join(config.projectName, ".changeset", "config.json"))
     }
+    if (config.projectType.template === "monorepo") {
+      filesToCheck.push(path.join(config.projectName, "packages", "cli", "package.json"))
+      filesToCheck.push(path.join(config.projectName, "packages", "domain", "package.json"))
+      filesToCheck.push(path.join(config.projectName, "packages", "server", "package.json"))
+    } else {
+      filesToCheck.push(path.join(config.projectName, "package.json"))
+    }
 
     yield* Effect.logInfo(AnsiDoc.cats([
       AnsiDoc.hsep([
