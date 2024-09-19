@@ -61,8 +61,14 @@ jobs:
           mv ${{ matrix.example }}/* .
           rm -rf examples
           ls -lah
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.14.0
       - name: Install dependencies
-        uses: ./.github/actions/setup
+        run: pnpm install
       - run: pnpm lint
       - run: pnpm check
       - run: pnpm test
@@ -88,8 +94,14 @@ jobs:
           mv ${{ matrix.template }}/* .
           rm -rf templates
           ls -lah
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.14.0
       - name: Install dependencies
-        uses: ./.github/actions/setup
+        run: pnpm install
       - run: pnpm lint
       - run: pnpm check
       - run: pnpm build
