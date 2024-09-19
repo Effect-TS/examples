@@ -55,7 +55,7 @@ jobs:
           sparse-checkout: ${{ matrix.example }}
           sparse-checkout-cone-mode: false
       - name: Move files to root
-        run:
+        run: |
           ls -lah
           shopt -s dotglob
           mv ${{ matrix.example }}/* .
@@ -82,7 +82,7 @@ jobs:
           sparse-checkout: ${{ matrix.template }}
           sparse-checkout-cone-mode: false
       - name: Move files to root
-        run:
+        run: |
           ls -lah
           shopt -s dotglob
           mv ${{ matrix.template }}/* .
