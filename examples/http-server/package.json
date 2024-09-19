@@ -4,7 +4,10 @@
   "type": "module",
   "description": "",
   "scripts": {
+    "check": "tsc -b tsconfig.json",
     "dev": "tsx --env-file=.env --watch src/main.ts",
+    "lint": "eslint \"**/{src,test,examples,scripts,dtslint}/**/*.{ts,mjs}\"",
+    "lint-fix": "pnpm lint --fix",
     "test": "vitest"
   },
   "keywords": [],
@@ -29,10 +32,22 @@
     "@effect/schema": "^0.72.1",
     "@effect/sql": "^0.10.1",
     "@effect/sql-sqlite-node": "^0.10.1",
+    "@eslint/compat": "1.1.1",
+    "@eslint/eslintrc": "3.1.0",
+    "@eslint/js": "9.10.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
     "@opentelemetry/sdk-trace-base": "^1.26.0",
     "@opentelemetry/sdk-trace-node": "^1.26.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
     "effect": "^3.7.1",
+    "eslint": "^9.10.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-codegen": "^0.28.0",
+    "eslint-plugin-deprecation": "^3.0.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "uuid": "^10.0.0"
   }
 }
