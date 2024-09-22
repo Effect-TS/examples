@@ -249,7 +249,7 @@ function createTemplate(config: TemplateConfig) {
     // Handle user preferences for Nix flakes
     if (!config.projectType.withNixFlake) {
       yield* Effect.forEach(
-        [".envrc", "flake.lock", "flake.nix"],
+        [".envrc", "flake.nix"],
         (file) => fs.remove(path.join(config.projectName, file))
       )
     }
