@@ -210,12 +210,14 @@ function createTemplate(config: TemplateConfig) {
       // Remove the .changesets directory
       yield* fs.remove(path.join(config.projectName, ".changeset"), {
         recursive: true
-      })
+      }).pipe(Effect.ignore)
       // Remove patches for changesets
       const patches = yield* fs.readDirectory(path.join(config.projectName, "patches")).pipe(
         Effect.map(Array.filter((file) => file.includes("changeset")))
       )
-      yield* Effect.forEach(patches, (patch) => fs.remove(path.join(config.projectName, "patches", patch)))
+      yield* Effect.forEach(patches, (patch) => fs.remove(path.join(config.projectName, "patches", patch))).pipe(
+        Effect.ignore
+      )
       // Remove patched dependencies for changesets
       const depsToRemove = Array.filter(
         Object.keys(packageJson["pnpm"]["patchedDependencies"]),
@@ -242,22 +244,22 @@ function createTemplate(config: TemplateConfig) {
       }
       // If git workflows are enabled, remove changesets related workflows
       if (config.projectType.withWorkflows) {
-        yield* fs.remove(path.join(config.projectName, ".github", "workflows", "release.yml"))
+        yield* fs.remove(path.join(config.projectName, ".github", "workflows", "release.yml")).pipe(Effect.ignore)
       }
     }
 
     // Handle user preferences for Nix flakes
     if (!config.projectType.withNixFlake) {
       yield* Effect.forEach(
-        [".envrc", "flake.lock", "flake.nix"],
+        [".envrc", "flake.nix"],
         (file) => fs.remove(path.join(config.projectName, file))
-      )
+      ).pipe(Effect.ignore)
     }
 
     // Handle user preferences for ESLint
     if (!config.projectType.withESLint) {
       // Remove eslint.config.mjs
-      yield* fs.remove(path.join(config.projectName, "eslint.config.mjs"))
+      yield* fs.remove(path.join(config.projectName, "eslint.config.mjs")).pipe(Effect.ignore)
       // Remove eslint dependencies
       const eslintDeps = Array.filter(
         Object.keys(packageJson["devDependencies"]),
@@ -289,7 +291,7 @@ function createTemplate(config: TemplateConfig) {
       // Remove the .github directory
       yield* fs.remove(path.join(config.projectName, ".github"), {
         recursive: true
-      })
+      }).pipe(Effect.ignore)
     }
 
     // Write out the updated package.json
