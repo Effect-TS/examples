@@ -1,5 +1,11 @@
 # create-effect-app
 
+## 0.0.5
+
+### Patch Changes
+
+- [#52](https://github.com/Effect-TS/examples/pull/52) [`5f92083`](https://github.com/Effect-TS/examples/commit/5f92083aba3fb78b4a88cc763b782dbd2ef22701) Thanks @tatchi! - Removes potential leftover files
+
 ## 0.0.4
 
 ### Patch Changes
