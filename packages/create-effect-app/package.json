@@ -28,14 +28,14 @@
     "check": "tsc -b tsconfig.json"
   },
   "devDependencies": {
-    "@effect/cli": "^0.43.2",
-    "@effect/platform": "^0.64.0",
-    "@effect/platform-node": "^0.59.0",
-    "@effect/printer": "^0.35.2",
-    "@effect/printer-ansi": "^0.35.2",
-    "effect": "^3.7.2",
+    "@effect/cli": "^0.48.12",
+    "@effect/platform": "^0.69.12",
+    "@effect/platform-node": "^0.64.13",
+    "@effect/printer": "^0.38.7",
+    "@effect/printer-ansi": "^0.38.7",
+    "effect": "^3.10.7",
     "tar": "^7.4.3",
-    "tsup": "^8.2.4",
-    "yaml": "^2.5.1"
+    "tsup": "^8.3.5",
+    "yaml": "^2.6.0"
   }
 }
