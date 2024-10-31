@@ -1,5 +1,11 @@
 # create-effect-app
 
+## 0.0.6
+
+### Patch Changes
+
+- [#56](https://github.com/Effect-TS/examples/pull/56) [`543b51c`](https://github.com/Effect-TS/examples/commit/543b51c262337925eaa0cb66785ca8614b09f59a) Thanks @IMax153! - update to latest effect
+
 ## 0.0.5
 
 ### Patch Changes
