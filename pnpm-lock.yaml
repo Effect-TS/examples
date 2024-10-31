@@ -89,7 +89,7 @@ importers:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@22.8.5)
       vitest:
-        specifier: ^2.1.4
+        specifier: ^2.0.5
         version: 2.1.4(@types/node@22.8.5)
 
   packages/create-effect-app:
