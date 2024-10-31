@@ -5,7 +5,7 @@ import { Effect, Layer } from "effect"
 import { cli } from "./Cli.js"
 import { TodosClient } from "./TodosClient.js"
 
-const MainLive = TodosClient.Live.pipe(
+const MainLive = TodosClient.Default.pipe(
   Layer.provide(NodeHttpClient.layerUndici),
   Layer.merge(NodeContext.layer)
 )
