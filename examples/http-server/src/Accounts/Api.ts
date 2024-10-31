@@ -15,7 +15,7 @@ export class Authentication extends HttpApiMiddleware.Tag<Authentication>()(
       })
     }
   }
-) { }
+) {}
 
 export class AccountsApi extends HttpApiGroup.make("accounts")
   .add(
@@ -45,4 +45,4 @@ export class AccountsApi extends HttpApiGroup.make("accounts")
   )
   .annotate(OpenApi.Title, "Accounts")
   .annotate(OpenApi.Description, "Manage user accounts")
-{ }
+{}

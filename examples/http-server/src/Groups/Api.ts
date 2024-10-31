@@ -20,4 +20,4 @@ export class GroupsApi extends HttpApiGroup.make("groups")
   .prefix("/groups")
   .annotate(OpenApi.Title, "Groups")
   .annotate(OpenApi.Description, "Manage groups")
-{ }
+{}

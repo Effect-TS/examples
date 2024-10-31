@@ -10,4 +10,4 @@ export class GroupsRepo extends Effect.Service<GroupsRepo>()("Groups/Repo", {
     idColumn: "id"
   }),
   dependencies: [SqlLive]
-}) { }
+}) {}

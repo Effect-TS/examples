@@ -22,4 +22,4 @@ export class PeopleApi extends HttpApiGroup.make("people")
   .middleware(Authentication)
   .annotate(OpenApi.Title, "People")
   .annotate(OpenApi.Description, "Manage people")
-{ }
+{}

@@ -17,4 +17,4 @@ export class AccountsPolicy extends Effect.Service<AccountsPolicy>()(
       return { canUpdate, canRead, canReadSensitive } as const
     })
   }
-) { }
+) {}

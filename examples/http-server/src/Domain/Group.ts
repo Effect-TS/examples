@@ -16,10 +16,10 @@ export class Group extends Model.Class<Group>("Group")({
   name: Schema.NonEmptyTrimmedString,
   createdAt: Model.DateTimeInsert,
   updatedAt: Model.DateTimeUpdate
-}) { }
+}) {}
 
 export class GroupNotFound extends Schema.TaggedError<GroupNotFound>()(
   "GroupNotFound",
   { id: GroupId },
   HttpApiSchema.annotations({ status: 404 })
-) { }
+) {}

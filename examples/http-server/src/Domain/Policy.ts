@@ -77,24 +77,24 @@ export const policy = <Entity extends string, Action extends string, E, R>(
 export const policyCompose = <Actor extends AuthorizedActor<any, any>, E, R>(
   that: Effect.Effect<Actor, E, R>
 ) =>
-  <Actor2 extends AuthorizedActor<any, any>, E2, R2>(
-    self: Effect.Effect<Actor2, E2, R2>
-  ): Effect.Effect<Actor | Actor2, E | Unauthorized, R | CurrentUser> => Effect.zipRight(self, that) as any
+<Actor2 extends AuthorizedActor<any, any>, E2, R2>(
+  self: Effect.Effect<Actor2, E2, R2>
+): Effect.Effect<Actor | Actor2, E | Unauthorized, R | CurrentUser> => Effect.zipRight(self, that) as any
 
 export const policyUse = <Actor extends AuthorizedActor<any, any>, E, R>(
   policy: Effect.Effect<Actor, E, R>
 ) =>
-  <A, E2, R2>(
-    effect: Effect.Effect<A, E2, R2>
-  ): Effect.Effect<A, E | E2, Exclude<R2, Actor> | R> => policy.pipe(Effect.zipRight(effect)) as any
+<A, E2, R2>(
+  effect: Effect.Effect<A, E2, R2>
+): Effect.Effect<A, E | E2, Exclude<R2, Actor> | R> => policy.pipe(Effect.zipRight(effect)) as any
 
 export const policyRequire = <Entity extends string, Action extends string>(
   _entity: Entity,
   _action: Action
 ) =>
-  <A, E, R>(
-    effect: Effect.Effect<A, E, R>
-  ): Effect.Effect<A, E, R | AuthorizedActor<Entity, Action>> => effect
+<A, E, R>(
+  effect: Effect.Effect<A, E, R>
+): Effect.Effect<A, E, R | AuthorizedActor<Entity, Action>> => effect
 
 export const withSystemActor = <A, E, R>(
   effect: Effect.Effect<A, E, R>

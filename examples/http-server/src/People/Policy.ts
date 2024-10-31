@@ -50,4 +50,4 @@ export class PeoplePolicy extends Effect.Service<PeoplePolicy>()(
     }),
     dependencies: [GroupsPolicy.Default, Groups.Default, People.Default]
   }
-) { }
+) {}

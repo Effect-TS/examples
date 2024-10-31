@@ -52,4 +52,4 @@ export class People extends Effect.Service<People>()("People", {
     return { create, findById, with: with_ } as const
   }),
   dependencies: [SqlLive, PeopleRepo.Default]
-}) { }
+}) {}

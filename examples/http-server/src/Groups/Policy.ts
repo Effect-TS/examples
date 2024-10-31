@@ -16,4 +16,4 @@ export class GroupsPolicy extends Effect.Service<GroupsPolicy>()(
       return { canCreate, canUpdate } as const
     })
   }
-) { }
+) {}

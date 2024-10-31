@@ -10,4 +10,4 @@ export class PeopleRepo extends Effect.Service<PeopleRepo>()("People/Repo", {
     idColumn: "id"
   }),
   dependencies: [SqlLive]
-}) { }
+}) {}

@@ -17,11 +17,11 @@ export class Person extends Model.Class<Person>("Person")({
   dateOfBirth: Model.FieldOption(Model.Date),
   createdAt: Model.DateTimeInsert,
   updatedAt: Model.DateTimeUpdate
-}) { }
+}) {}
 
 export class PersonNotFound extends Schema.TaggedError<PersonNotFound>()(
   "PersonNotFound",
   {
     id: PersonId
   }
-) { }
+) {}

@@ -8,4 +8,4 @@ export class Api extends HttpApi.empty
   .add(GroupsApi)
   .add(PeopleApi)
   .annotate(OpenApi.Title, "Groups API")
-{ }
+{}
