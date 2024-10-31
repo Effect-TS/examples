@@ -1,20 +1,20 @@
 import * as NodeSdk from "@effect/opentelemetry/NodeSdk"
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base"
-import { Config, Effect, Layer, Option, Redacted } from "effect"
+import { Config, Effect, Layer, Redacted } from "effect"
 
 export const TracingLive = Layer.unwrapEffect(
   Effect.gen(function*() {
     const apiKey = yield* Config.option(Config.redacted("HONEYCOMB_API_KEY"))
     const dataset = yield* Config.withDefault(
       Config.string("HONEYCOMB_DATASET"),
-      "my-effect-app"
+      "effect-http-play"
     )
-    if (Option.isNone(apiKey)) {
+    if (apiKey._tag === "None") {
       const endpoint = yield* Config.option(
         Config.string("OTEL_EXPORTER_OTLP_ENDPOINT")
       )
-      if (Option.isNone(endpoint)) {
+      if (endpoint._tag === "None") {
         return Layer.empty
       }
       return NodeSdk.layer(() => ({

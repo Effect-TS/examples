@@ -1,5 +1,5 @@
-import { Schema } from "@effect/schema"
 import { Model } from "@effect/sql"
+import { Schema } from "effect"
 import { GroupId } from "./Group.js"
 
 export const PersonId = Schema.Number.pipe(Schema.brand("PersonId"))
@@ -17,8 +17,11 @@ export class Person extends Model.Class<Person>("Person")({
   dateOfBirth: Model.FieldOption(Model.Date),
   createdAt: Model.DateTimeInsert,
   updatedAt: Model.DateTimeUpdate
-}) {}
+}) { }
 
-export class PersonNotFound extends Schema.TaggedError<PersonNotFound>()("PersonNotFound", {
-  id: PersonId
-}) {}
+export class PersonNotFound extends Schema.TaggedError<PersonNotFound>()(
+  "PersonNotFound",
+  {
+    id: PersonId
+  }
+) { }

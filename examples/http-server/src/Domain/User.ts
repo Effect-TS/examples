@@ -1,7 +1,6 @@
 import { HttpApiSchema } from "@effect/platform"
-import { Schema } from "@effect/schema"
 import { Model } from "@effect/sql"
-import { Context } from "effect"
+import { Context, Schema } from "effect"
 import { AccessToken } from "./AccessToken.js"
 import { Account, AccountId } from "./Account.js"
 import { Email } from "./Email.js"
@@ -20,7 +19,7 @@ export class User extends Model.Class<User>("User")({
   accessToken: Model.Sensitive(AccessToken),
   createdAt: Model.DateTimeInsert,
   updatedAt: Model.DateTimeUpdate
-}) {}
+}) { }
 
 export class UserWithSensitive extends Model.Class<UserWithSensitive>(
   "UserWithSensitive"
@@ -28,15 +27,15 @@ export class UserWithSensitive extends Model.Class<UserWithSensitive>(
   ...Model.fields(User),
   accessToken: AccessToken,
   account: Account
-}) {}
+}) { }
 
 export class CurrentUser extends Context.Tag("Domain/User/CurrentUser")<
   CurrentUser,
   User
->() {}
+>() { }
 
 export class UserNotFound extends Schema.TaggedError<UserNotFound>()(
   "UserNotFound",
   { id: UserId },
   HttpApiSchema.annotations({ status: 404 })
-) {}
+) { }

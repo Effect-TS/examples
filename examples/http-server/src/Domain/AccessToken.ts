@@ -1,5 +1,4 @@
-import { Schema } from "@effect/schema"
-import { Redacted } from "effect"
+import { Redacted, Schema } from "effect"
 
 export const AccessTokenString = Schema.String.pipe(Schema.brand("AccessToken"))
 export const AccessToken = Schema.Redacted(AccessTokenString)
