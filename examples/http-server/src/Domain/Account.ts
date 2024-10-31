@@ -1,5 +1,5 @@
-import { Schema } from "@effect/schema"
 import { Model } from "@effect/sql"
+import { Schema } from "effect"
 
 export const AccountId = Schema.Number.pipe(Schema.brand("AccountId"))
 export type AccountId = typeof AccountId.Type

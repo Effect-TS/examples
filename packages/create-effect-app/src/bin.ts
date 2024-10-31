@@ -14,7 +14,7 @@ import { cli } from "./Cli.js"
 import { GitHub } from "./GitHub.js"
 import { AnsiDocLogger } from "./Logger.js"
 
-const MainLive = GitHub.Live.pipe(
+const MainLive = GitHub.Default.pipe(
   Layer.provideMerge(Layer.mergeAll(
     Logger.replace(Logger.defaultLogger, AnsiDocLogger),
     Logger.minimumLogLevel(LogLevel.Info),
