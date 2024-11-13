@@ -110,7 +110,6 @@ export default [
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/no-array-constructor": "off",
-      "@typescript-eslint/no-deprecated": "error",
       "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/no-namespace": "off",
 
