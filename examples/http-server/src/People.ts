@@ -4,7 +4,7 @@ import type { GroupId } from "./Domain/Group.js"
 import type { PersonId } from "./Domain/Person.js"
 import { Person, PersonNotFound } from "./Domain/Person.js"
 import { policyRequire } from "./Domain/Policy.js"
-import type { PeopleRepo } from "./People/Repo.js"
+import { PeopleRepo } from "./People/Repo.js"
 import { SqlLive } from "./Sql.js"
 
 export class People extends Effect.Service<People>()("People", {
