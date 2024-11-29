@@ -1,7 +1,8 @@
 .direnv/
 node_modules/
 dist/
-/data/
+/data/*
+!.gitkeep
 .env
 *.tsbuildinfo
 .DS_Store
