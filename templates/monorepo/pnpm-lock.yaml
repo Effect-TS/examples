@@ -8,9 +8,9 @@ overrides:
   vitest: ^2.0.5
 
 patchedDependencies:
-  '@changesets/assemble-release-plan@6.0.4':
+  '@changesets/assemble-release-plan@6.0.5':
     hash: 24lrjmuuj4fjvhh2j4kmmfxqca
-    path: patches/@changesets__assemble-release-plan@6.0.4.patch
+    path: patches/@changesets__assemble-release-plan@6.0.5.patch
   '@changesets/get-github-info@0.6.0':
     hash: 4nwpuevfciovsbhi25hd4g5r7y
     path: patches/@changesets__get-github-info@0.6.0.patch
@@ -3032,7 +3032,7 @@ snapshots:
       resolve-from: 5.0.0
       semver: 7.6.3
 
-  '@changesets/assemble-release-plan@6.0.4(patch_hash=24lrjmuuj4fjvhh2j4kmmfxqca)':
+  '@changesets/assemble-release-plan@6.0.4':
     dependencies:
       '@changesets/errors': 0.2.0
       '@changesets/get-dependents-graph': 2.1.2
@@ -3056,7 +3056,7 @@ snapshots:
   '@changesets/cli@2.27.8':
     dependencies:
       '@changesets/apply-release-plan': 7.0.5
-      '@changesets/assemble-release-plan': 6.0.4(patch_hash=24lrjmuuj4fjvhh2j4kmmfxqca)
+      '@changesets/assemble-release-plan': 6.0.4
       '@changesets/changelog-git': 0.2.0
       '@changesets/config': 3.0.3
       '@changesets/errors': 0.2.0
@@ -3116,7 +3116,7 @@ snapshots:
 
   '@changesets/get-release-plan@4.0.4':
     dependencies:
-      '@changesets/assemble-release-plan': 6.0.4(patch_hash=24lrjmuuj4fjvhh2j4kmmfxqca)
+      '@changesets/assemble-release-plan': 6.0.4
       '@changesets/config': 3.0.3
       '@changesets/pre': 2.0.1
       '@changesets/read': 0.6.1
