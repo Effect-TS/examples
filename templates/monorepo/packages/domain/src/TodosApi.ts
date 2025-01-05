@@ -45,4 +45,4 @@ export class TodosApiGroup extends HttpApiGroup.make("todos")
   )
 {}
 
-export class TodosApi extends HttpApi.empty.add(TodosApiGroup) {}
+export class TodosApi extends HttpApi.make("api").add(TodosApiGroup) {}
