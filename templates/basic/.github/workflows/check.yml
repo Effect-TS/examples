@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/setup
       - run: pnpm codegen
       - name: Check source state
-        run: git add packages/*/src && git diff-index --cached HEAD --exit-code packages/*/src
+        run: git add src && git diff-index --cached HEAD --exit-code src
 
   types:
     name: Types
