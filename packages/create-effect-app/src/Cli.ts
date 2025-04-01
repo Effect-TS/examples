@@ -41,7 +41,7 @@ const exampleType = Options.choice("example", examples).pipe(
 const templateType = Options.choice("template", templates).pipe(
   Options.withAlias("t"),
   Options.withDescription(
-    "The name of an official Effect example to use to bootstrap the application"
+    "The name of an official Effect template to use to bootstrap the application"
   )
 )
 
@@ -363,7 +363,7 @@ const getUserInput = Prompt.select<"example" | "template">({
     case "example": {
       return Prompt.all({
         example: Prompt.select<Example>({
-          message: "What project template should be used?",
+          message: "What project example should be used?",
           choices: [
             {
               title: "HTTP Server",
