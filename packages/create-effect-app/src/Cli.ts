@@ -363,7 +363,7 @@ const getUserInput = Prompt.select<"example" | "template">({
     case "example": {
       return Prompt.all({
         example: Prompt.select<Example>({
-          message: "What project template should be used?",
+          message: "What project example should be used?",
           choices: [
             {
               title: "HTTP Server",
