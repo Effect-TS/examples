@@ -1,5 +1,11 @@
 # create-effect-app
 
+## 0.0.7
+
+### Patch Changes
+
+- [#68](https://github.com/Effect-TS/examples/pull/68) [`d88d803`](https://github.com/Effect-TS/examples/commit/d88d8030518b9283bba9940b3e7b77c92475a0e3) Thanks @akoenig! - Fixes a typo in the description of the `template` option of ⁠`create-effect-app`.
+
 ## 0.0.6
 
 ### Patch Changes
