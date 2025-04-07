@@ -1,7 +1,7 @@
 import { Effect, pipe } from "effect"
 import type { GroupId } from "../Domain/Group.js"
 import type { Person, PersonId } from "../Domain/Person.js"
-import type { policy, policyCompose, Unauthorized } from "../Domain/Policy.js"
+import { policy, policyCompose, Unauthorized } from "../Domain/Policy.js"
 import { Groups } from "../Groups.js"
 import { GroupsPolicy } from "../Groups/Policy.js"
 import { People } from "../People.js"
