@@ -29,11 +29,11 @@ importers:
         specifier: ^0.4.1
         version: 0.4.1
       '@effect/eslint-plugin':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.3.2
+        version: 0.3.2
       '@effect/language-service':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: latest
+        version: 0.10.2
       '@effect/vitest':
         specifier: ^0.13.14
         version: 0.13.14(effect@3.10.14)(vitest@2.1.4(@types/node@22.8.5))
@@ -271,11 +271,11 @@ packages:
       '@effect/printer-ansi': ^0.38.14
       effect: ^3.10.14
 
-  '@effect/eslint-plugin@0.2.0':
-    resolution: {integrity: sha512-PC/hEDGctYGYIjZyhM6kbD4FyHxLgoYNoQNjGkCXcFEzi71vQc3PJKe2JnCgzcUDvr/Nc2qgTVU4ONYwjHzQGA==}
+  '@effect/eslint-plugin@0.3.2':
+    resolution: {integrity: sha512-c4Vs9t3r54A4Zpl+wo8+PGzZz3JWYsip41H+UrebRLjQ2Hk/ap63IeCgN/HWcYtxtyhRopjp7gW9nOQ2Snbl+g==}
 
-  '@effect/language-service@0.2.0':
-    resolution: {integrity: sha512-DoK41yKGyQv79o0ca8gxEogMlt+IphXkdCXwgenbQjH1BXKD7tJAr0+VsDhblycQcvQ39f1l9NZN9CBqjM9ALA==}
+  '@effect/language-service@0.10.2':
+    resolution: {integrity: sha512-7G0dDnLjUz7hgVTjVNlynkqawkLQf4jPvWWI5ArMtnmC3+nVw5YNdWKlsn9lH03JT9RoczpRKBYMjQ+uQNgTzg==}
 
   '@effect/platform-node-shared@0.19.22':
     resolution: {integrity: sha512-ltneO5yn6DuT9+7R/ADvioqJwxvdOKED8nPajKdzrlj+AOi33QHBJdUWON0Nyh73UvsQaC/775SSgcn6m971Tw==}
@@ -3400,13 +3400,13 @@ snapshots:
       toml: 3.0.0
       yaml: 2.6.0
 
-  '@effect/eslint-plugin@0.2.0':
+  '@effect/eslint-plugin@0.3.2':
     dependencies:
       '@dprint/formatter': 0.4.1
       '@dprint/typescript': 0.91.8
       prettier-linter-helpers: 1.0.0
 
-  '@effect/language-service@0.2.0': {}
+  '@effect/language-service@0.10.2': {}
 
   '@effect/platform-node-shared@0.19.22(@effect/platform@0.69.21(effect@3.10.14))(effect@3.10.14)':
     dependencies:
