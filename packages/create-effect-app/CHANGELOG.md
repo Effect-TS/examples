@@ -1,5 +1,15 @@
 # create-effect-app
 
+## 0.0.7
+
+### Patch Changes
+
+- [#73](https://github.com/Effect-TS/examples/pull/73) [`fe74a22`](https://github.com/Effect-TS/examples/commit/fe74a2225f32909c7ebc373d54083e6a7534302a) Thanks @wmaurer! - Fix TypeScript compilation errors in monorepo template
+
+- [#68](https://github.com/Effect-TS/examples/pull/68) [`d88d803`](https://github.com/Effect-TS/examples/commit/d88d8030518b9283bba9940b3e7b77c92475a0e3) Thanks @akoenig! - Fixes a typo in the description of the `template` option of ⁠`create-effect-app`.
+
+- [#74](https://github.com/Effect-TS/examples/pull/74) [`89df09f`](https://github.com/Effect-TS/examples/commit/89df09fb1547a106bc4eb3a18480262a0f435fd1) Thanks @collinstevens! - add `"typescript.enablePromptUseWorkspaceTsdk": true` to .vscode/settings.json in examples and templates
+
 ## 0.0.6
 
 ### Patch Changes
