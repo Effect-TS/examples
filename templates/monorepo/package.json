@@ -46,12 +46,9 @@
     "glob": "^11.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
-    "vitest": "^2.1.4"
+    "vitest": "^3.2.0"
   },
   "pnpm": {
-    "overrides": {
-      "vitest": "^2.0.5"
-    },
     "patchedDependencies": {
       "@changesets/get-github-info@0.6.0": "patches/@changesets__get-github-info@0.6.0.patch",
       "@changesets/assemble-release-plan@6.0.5": "patches/@changesets__assemble-release-plan@6.0.5.patch",
