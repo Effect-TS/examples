@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "packageManager": "pnpm@9.10.0",
+  "packageManager": "pnpm@10.14.0",
   "devDependencies": {
     "@effect/language-service": "^0.2.0",
     "@effect/vitest": "^0.13.7",
