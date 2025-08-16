@@ -28,7 +28,7 @@
     "changeset-publish": "pnpm build && TEST_DIST= pnpm vitest && changeset publish"
   },
   "dependencies": {
-    "effect": "latest"
+    "effect": "^3.17.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.8",
@@ -37,10 +37,10 @@
     "@babel/plugin-transform-modules-commonjs": "^7.24.8",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.8",
-    "@effect/build-utils": "^0.7.7",
+    "@effect/build-utils": "^0.8.9",
     "@effect/eslint-plugin": "^0.3.2",
     "@effect/language-service": "latest",
-    "@effect/vitest": "latest",
+    "@effect/vitest": "^0.25.1",
     "@eslint/compat": "1.1.1",
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.10.0",
