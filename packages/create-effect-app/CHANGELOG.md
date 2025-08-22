@@ -1,5 +1,29 @@
 # create-effect-app
 
+## 0.0.7
+
+### Patch Changes
+
+- [#77](https://github.com/Effect-TS/examples/pull/77) [`dca44c4`](https://github.com/Effect-TS/examples/commit/dca44c4b0373249b9c086b5e12ad140274673643) Thanks @beeman! - update pnpm versions to 10.14.0
+
+- [#73](https://github.com/Effect-TS/examples/pull/73) [`fe74a22`](https://github.com/Effect-TS/examples/commit/fe74a2225f32909c7ebc373d54083e6a7534302a) Thanks @wmaurer! - Fix TypeScript compilation errors in monorepo template
+
+- [#82](https://github.com/Effect-TS/examples/pull/82) [`4749117`](https://github.com/Effect-TS/examples/commit/47491170cb81871192f4de486f490c6b0abeabb5) Thanks @beeman! - update effect packages in templates/cli
+
+- [#80](https://github.com/Effect-TS/examples/pull/80) [`0452d9b`](https://github.com/Effect-TS/examples/commit/0452d9bab570af5b804d404440b8ca5e171ffb8e) Thanks @beeman! - update effect packages in examples/http-server
+
+- [#68](https://github.com/Effect-TS/examples/pull/68) [`d88d803`](https://github.com/Effect-TS/examples/commit/d88d8030518b9283bba9940b3e7b77c92475a0e3) Thanks @akoenig! - Fixes a typo in the description of the `template` option of ⁠`create-effect-app`.
+
+- [#79](https://github.com/Effect-TS/examples/pull/79) [`0237a91`](https://github.com/Effect-TS/examples/commit/0237a9112c59d383c6d30fae0fd2c127c9e8c515) Thanks @beeman! - re-apply patch for @changesets/assemble-release-plan@6.0.9 in monorepo template
+
+- [#74](https://github.com/Effect-TS/examples/pull/74) [`89df09f`](https://github.com/Effect-TS/examples/commit/89df09fb1547a106bc4eb3a18480262a0f435fd1) Thanks @collinstevens! - add `"typescript.enablePromptUseWorkspaceTsdk": true` to .vscode/settings.json in examples and templates
+
+- [#78](https://github.com/Effect-TS/examples/pull/78) [`671da74`](https://github.com/Effect-TS/examples/commit/671da74185871c9c4e372c908823ca679b977073) Thanks @beeman! - update the Node.js version to 24.5.0
+
+- [#76](https://github.com/Effect-TS/examples/pull/76) [`1526bd2`](https://github.com/Effect-TS/examples/commit/1526bd260874a31103c398e838fb29ee2cd67d6d) Thanks @chris-tse! - update @effect/vitest peer dep vitest version
+
+- [#72](https://github.com/Effect-TS/examples/pull/72) [`2fbb52e`](https://github.com/Effect-TS/examples/commit/2fbb52e8ad571d17e691766c6eca2db135317f6d) Thanks @mattiamanzati! - Update language service and eslint version
+
 ## 0.0.6
 
 ### Patch Changes
