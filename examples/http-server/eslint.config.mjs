@@ -77,7 +77,6 @@ export default [
       "import/order": "off",
       "simple-import-sort/imports": "off",
       "sort-destructure-keys/sort-destructure-keys": "error",
-      "deprecation/deprecation": "off",
 
       "@typescript-eslint/array-type": ["warn", {
         default: "generic",
